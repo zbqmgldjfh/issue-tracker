@@ -7,7 +7,7 @@ assignees: bukim0329, youryu0212
 
 ---
 
-제목: [FEAT] iOS 기능제목
+제목: [FEAT] FE 기능제목
 ---
 
 ## 💡 issue
