@@ -9,7 +9,7 @@ spring:
     defer-datasource-initialization: true # 추후 초기화 데이터 삽입용
   sql:
     init:
-      mode: always
+      mode: never
       data-locations: classpath:sql/data.sql
 
 logging.level:
