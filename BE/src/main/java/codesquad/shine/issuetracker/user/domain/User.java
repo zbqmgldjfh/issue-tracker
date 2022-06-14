@@ -1,15 +1,17 @@
 package codesquad.shine.issuetracker.user.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import codesquad.shine.issuetracker.issue.domain.IssueAssignee;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
 @Entity
+@EqualsAndHashCode(of = "id")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -22,10 +24,6 @@ public class User {
     private String email;
     private String imageUrl;
 
-    public User(long id, String userName, String email, String imageUrl) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.imageUrl = imageUrl;
-    }
+    @OneToMany(mappedBy = "issue")
+    private List<IssueAssignee> issueAssignees = new ArrayList<>();
 }
