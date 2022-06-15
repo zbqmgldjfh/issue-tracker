@@ -10,13 +10,13 @@ spring:
 oauth:
   user:
     github:
-      client-id: ${GITHUB_CLIENT_ID}
-      client-secret: ${GITHUB_CLIENT_SECRET}
-      redirect-uri: "http://localhost:8080/auth/github/callback"
-  path:
-    accessTokenPath: "https://github.com/login/oauth/access_token"
-    authorizePath: ""
-    resourcePath: "https://api.github.com/user"
+      clientId: ${GITHUB_CLIENT_ID}
+      clientSecret: ${GITHUB_CLIENT_SECRET}
+      redirectUri: "http://localhost:8080/auth/github/callback"
+  provider:
+    github:
+      accessTokenPath: "https://github.com/login/oauth/access_token"
+      resourcePath: "https://api.github.com/user"
 
 jwt:
   token:
