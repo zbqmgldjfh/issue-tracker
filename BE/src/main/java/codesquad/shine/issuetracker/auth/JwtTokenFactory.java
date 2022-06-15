@@ -1,5 +1,7 @@
 package codesquad.shine.issuetracker.auth;
 
+import codesquad.shine.issuetracker.exception.ErrorCode;
+import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,7 +38,7 @@ public class JwtTokenFactory {
         } catch (ExpiredJwtException e) {
             return e.getClaims().getSubject();
         } catch (JwtException e) {
-            throw new IllegalStateException("유효하지 않은 토큰입니다.");
+            throw new NotAvailableException(ErrorCode.INVALID_TOKEN);
         }
     }
 }

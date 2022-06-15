@@ -1,6 +1,9 @@
 package codesquad.shine.issuetracker.auth.interceptor;
 
 import codesquad.shine.issuetracker.auth.JwtTokenFactory;
+import codesquad.shine.issuetracker.exception.ErrorCode;
+import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
+import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,11 +35,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private String resolveToken(HttpServletRequest request) {
         String authorizationInfo = request.getHeader("Authorization");
         if (authorizationInfo == null) {
-            throw new IllegalStateException("토큰이 없습니다. 로그인 먼저 해주세요.");
+            throw new NotFoundException(ErrorCode.TOKEN_NOT_FOUND);
         }
         String[] parts = authorizationInfo.split(" ");
         if (isInvalidToken(parts)) {
-            throw new IllegalStateException("정상적인 형태로 토큰을 전달해주세요.");
+            throw new NotAvailableException(ErrorCode.INVALID_TOKEN);
         }
         return parts[1];
     }
