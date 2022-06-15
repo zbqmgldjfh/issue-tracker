@@ -6,3 +6,19 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${username}
     password: ${password}
+
+oauth:
+  user:
+    github:
+      clientId: ${GITHUB_CLIENT_ID}
+      clientSecret: ${GITHUB_CLIENT_SECRET}
+      redirectUri: "http://localhost:8080/auth/github/callback"
+  provider:
+    github:
+      accessTokenPath: "https://github.com/login/oauth/access_token"
+      resourcePath: "https://api.github.com/user"
+
+jwt:
+  token:
+    validate-time: 1800
+    token-secret: "Shine"
