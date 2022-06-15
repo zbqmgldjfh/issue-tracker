@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker.user.domain;
 
+import codesquad.shine.issuetracker.auth.OAuthUser;
 import codesquad.shine.issuetracker.issue.domain.IssueAssignee;
 import lombok.*;
 
@@ -22,8 +23,16 @@ public class User {
 
     private String userName;
     private String email;
-    private String imageUrl;
+    private String avatarUrl;
 
     @OneToMany(mappedBy = "issue")
     private List<IssueAssignee> issueAssignees = new ArrayList<>();
+
+    public static User of(OAuthUser user) {
+        return User.builder()
+                .userName(user.getName())
+                .email(user.getEmail())
+                .avatarUrl(user.getAvatarUrl())
+                .build();
+    }
 }
