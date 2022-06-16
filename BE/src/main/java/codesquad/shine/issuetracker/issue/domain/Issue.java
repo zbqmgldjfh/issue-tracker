@@ -2,21 +2,21 @@ package codesquad.shine.issuetracker.issue.domain;
 
 import codesquad.shine.issuetracker.comment.domain.Comment;
 import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
+import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import codesquad.shine.issuetracker.photo.domain.Photo;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Issue extends BaseTimeEntity {
 
     @Id
@@ -36,6 +36,24 @@ public class Issue extends BaseTimeEntity {
     @OneToMany(mappedBy = "issue")
     private List<Photo> photos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "issue")
-    private List<IssueLabel> issueLabels = new ArrayList<>();
+    @ManyToMany
+    @JoinColumn(name = "label_id")
+    private List<Label> labels = new ArrayList<>();
+
+    private Issue(String title) {
+        this.title = title;
+    }
+
+    public static Issue createBasic(String title) {
+        return new Issue(title);
+    }
+
+    public void addLabel(Label newLabel) {
+        labels.add(newLabel);
+        newLabel.addIssue(this);
+    }
+
+    public void detachLabel(Label label) {
+        labels.remove(label);
+    }
 }
