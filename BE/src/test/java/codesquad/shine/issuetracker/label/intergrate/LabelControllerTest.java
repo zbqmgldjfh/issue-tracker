@@ -1,7 +1,7 @@
 package codesquad.shine.issuetracker.label.intergrate;
 
 import codesquad.shine.issuetracker.auth.JwtTokenFactory;
-import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
+import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.user.domain.User;
@@ -81,6 +81,7 @@ class LabelControllerTest {
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("header content type"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
                 ),
                 requestFields(
@@ -93,31 +94,30 @@ class LabelControllerTest {
     }
 
     @Test
-    @DisplayName("가입되지 않은 회원이 Label을 생성하면 예외를 던진다.")
+    @DisplayName("토큰이 없는 회원이 Label을 생성하면 예외를 던진다.")
     public void create_label_without_login_fail_test() throws Exception {
         // given
         LabelCreateRequest request = new LabelCreateRequest("색상1", "test", new Color("bg", "font"));
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/labels")
-                .header("Authorization", "Bearer " + "")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         ).andDo(print());
 
         // then
         resultActions.andExpect(
-                (rslt) -> assertTrue(rslt.getResolvedException().getClass().isAssignableFrom(NotAvailableException.class))
+                (result) -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(NotFoundException.class))
         ).andReturn();
 
-        resultActions.andExpect(status().isUnauthorized());
+        resultActions.andExpect(status().isNotFound());
 
         //documentation
         resultActions.andDo(document("label-create-fail",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestHeaders(
-                        headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("header content type")
                 ),
                 requestFields(
                         fieldWithPath("title").description("title of label"),
