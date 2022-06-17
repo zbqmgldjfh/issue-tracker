@@ -1,12 +1,14 @@
 package codesquad.shine.issuetracker.auth.interceptor;
 
 import codesquad.shine.issuetracker.auth.JwtTokenFactory;
+import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,12 +26,18 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = resolveToken(request);
-        String userEmail = tokenFactory.parsePayload(token);
-        log.debug("token is : {}", token);
-        log.debug("userEmail is : {}", userEmail);
-        request.setAttribute("userEmail", userEmail);
+        if (loginRequired(handler)) {
+            String token = resolveToken(request);
+            String userEmail = tokenFactory.parsePayload(token);
+            log.debug("token is : {}", token);
+            log.debug("userEmail is : {}", userEmail);
+            request.setAttribute("userEmail", userEmail);
+        }
         return true;
+    }
+
+    private boolean loginRequired(Object handler) {
+        return (handler instanceof HandlerMethod) && ((HandlerMethod) handler).hasMethodAnnotation(ForLoginUser.class);
     }
 
     private String resolveToken(HttpServletRequest request) {
