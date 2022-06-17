@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker.label.presentation;
 
+import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
@@ -14,6 +15,7 @@ public class LabelController {
 
     private final LabelService labelService;
 
+    @ForLoginUser
     @PostMapping
     public void create(@RequestBody LabelCreateRequest request) {
         labelService.create(request.getTitle(), request.getDescription(), request.getColor());
@@ -24,11 +26,13 @@ public class LabelController {
         return labelService.findALL();
     }
 
+    @ForLoginUser
     @PatchMapping("/{labelId}")
     public void edit(@PathVariable Long labelId, @RequestBody LabelEditRequest request) {
         labelService.edit(labelId, request);
     }
 
+    @ForLoginUser
     @DeleteMapping("/{labelId}")
     public void delete(@PathVariable Long labelId) {
         labelService.delete(labelId);
