@@ -28,6 +28,12 @@ public class User {
     @OneToMany(mappedBy = "issue")
     private List<IssueAssignee> issueAssignees = new ArrayList<>();
 
+    public User(String userName, String email, String avatarUrl) {
+        this.userName = userName;
+        this.email = email;
+        this.avatarUrl = avatarUrl;
+    }
+
     public static User of(OAuthUser user) {
         return User.builder()
                 .userName(user.getName())

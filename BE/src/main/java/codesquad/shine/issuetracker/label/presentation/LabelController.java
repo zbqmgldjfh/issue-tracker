@@ -6,6 +6,7 @@ import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +18,9 @@ public class LabelController {
 
     @ForLoginUser
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody LabelCreateRequest request) {
-        labelService.create(request.getTitle(), request.getDescription(), request.getColor());
+        labelService.create(request);
     }
 
     @GetMapping
