@@ -3,6 +3,8 @@ package codesquad.shine.issuetracker.label.intergrate;
 import codesquad.shine.issuetracker.auth.JwtTokenFactory;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.label.domain.Color;
+import codesquad.shine.issuetracker.label.domain.Label;
+import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
@@ -16,10 +18,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentRequest;
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentResponse;
@@ -27,6 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,6 +57,9 @@ class LabelControllerTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
 
     @Test
     @DisplayName("가입된 회원이 Label을 생성하면 서버에 저장후, OK응답을 반환한다.")
@@ -166,6 +176,50 @@ class LabelControllerTest {
                         fieldWithPath("labels[].description").description("result message"),
                         fieldWithPath("labels[].backgroundColorCode").description("result message"),
                         fieldWithPath("labels[].fontColorCode").description("result message")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName("가입된 회원이 Label을 삭제후, OK를 반환한다.")
+    public void delete_label_login_user_success_test() throws Exception {
+        // given
+
+        // 가입된 유저
+        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
+        userRepository.save(newUser);
+
+        // 유저가 등록한 Label
+        Label newLabel = Label.builder()
+                .title("test label")
+                .description("test!!!!")
+                .issues(new ArrayList<>())
+                .color(new Color("bg", "font"))
+                .build();
+
+        Label savedLabel = labelRepository.save(newLabel);
+        Long savedId = savedLabel.getId();
+
+        // 유저의 token 생성
+        String token = jwtTokenFactory.createAccessToken("zbqmgldjfh@gmail.com");
+
+        // when
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/labels/{labelId}", savedId)
+                .header("Authorization", "Bearer " + token)
+        ).andDo(print());
+
+        // then
+        resultActions.andExpect(status().isOk());
+
+        //documentation
+        resultActions.andDo(document("label-delete-success",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
+                ),
+                pathParameters(
+                        parameterWithName("labelId").description("Id of Label")
                 )
         ));
     }
