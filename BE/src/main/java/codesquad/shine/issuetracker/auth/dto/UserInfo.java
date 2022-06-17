@@ -1,19 +1,19 @@
 package codesquad.shine.issuetracker.auth.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
+public class UserInfo {
     private Long id;
     private String name;
     private String email;
     private String avatarUrl;
-
-    public static LoginResponse of(UserInfo userInfo) {
-        return new LoginResponse(userInfo.getId(), userInfo.getName(), userInfo.getEmail(), userInfo.getAvatarUrl());
-    }
+    private String tokenType;
+    private String accessToken;
 }

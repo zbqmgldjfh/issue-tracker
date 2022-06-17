@@ -1,6 +1,6 @@
 package codesquad.shine.issuetracker.auth;
 
-import codesquad.shine.issuetracker.auth.dto.LoginResponse;
+import codesquad.shine.issuetracker.auth.dto.UserInfo;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class AuthService {
     private final InMemoryProviderRepository providerRepository;
     private final Map<String, AuthClient> authClientMap;
 
-    public LoginResponse login(String providerName, String code) {
+    public UserInfo login(String providerName, String code) {
         OAuthProvider oAuthProvider = providerRepository.findByProviderName(providerName);
         log.info("[oAuthProvider] {}", oAuthProvider.toString());
 
@@ -39,12 +39,12 @@ public class AuthService {
         String jwtToken = jwtTokenFactory.createAccessToken(user.getEmail());
         log.info("[jwtToken]: {}", jwtToken);
 
-        return LoginResponse.builder()
+        return UserInfo.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getUserName())
                 .avatarUrl(user.getAvatarUrl())
-                .accessToken(oAuthToken.getAccessToken())
+                .accessToken(jwtToken)
                 .tokenType(oAuthToken.getTokenType())
                 .build();
     }
