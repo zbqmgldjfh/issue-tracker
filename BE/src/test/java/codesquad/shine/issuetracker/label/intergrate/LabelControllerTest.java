@@ -6,6 +6,7 @@ import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
+import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -213,6 +214,55 @@ class LabelControllerTest {
 
         //documentation
         resultActions.andDo(document("label-delete-success",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
+                ),
+                pathParameters(
+                        parameterWithName("labelId").description("Id of Label")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName("가입된 회원이 Label을 변경한 후, OK를 반환한다.")
+    public void edit_label_login_user_success_test() throws Exception {
+        // given
+
+        // 가입된 유저
+        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
+        userRepository.save(newUser);
+
+        // 유저가 등록한 Label
+        Label newLabel = Label.builder()
+                .title("test label")
+                .description("test!!!!")
+                .issues(new ArrayList<>())
+                .color(new Color("bg", "font"))
+                .build();
+
+        Label savedLabel = labelRepository.save(newLabel);
+        Long savedId = savedLabel.getId();
+
+        // 유저의 token 생성
+        String token = jwtTokenFactory.createAccessToken("zbqmgldjfh@gmail.com");
+
+        // 변경 request
+        LabelEditRequest request = new LabelEditRequest("색상 after", "edit!!", new Color("edit1", "edit2"));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/labels/{labelId}", savedId)
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        ).andDo(print());
+
+        // then
+        resultActions.andExpect(status().isOk());
+
+        //documentation
+        resultActions.andDo(document("label-edit-success",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestHeaders(
