@@ -37,6 +37,7 @@ public class AuthService {
 
         // email로 token 발급
         String jwtToken = jwtTokenFactory.createAccessToken(user.getEmail());
+        log.info("[jwtToken]: {}", jwtToken);
 
         return LoginResponse.builder()
                 .id(user.getId())

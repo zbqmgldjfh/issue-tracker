@@ -29,8 +29,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (loginRequired(handler)) {
             String token = resolveToken(request);
             String userEmail = tokenFactory.parsePayload(token);
-            log.debug("token is : {}", token);
-            log.debug("userEmail is : {}", userEmail);
+            log.info("token is : {}", token);
+            log.info("userEmail is : {}", userEmail);
             request.setAttribute("userEmail", userEmail);
         }
         return true;
