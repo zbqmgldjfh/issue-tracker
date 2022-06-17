@@ -39,7 +39,7 @@ class LabelServiceTest {
     @DisplayName("로그인 한 유저는 label을 생성한 후 id를 검증한다.")
     public void create_label_test_login_success() {
         // given
-        LabelCreateRequest request = new LabelCreateRequest("색상1", new Color("bg", "font"), "test");
+        LabelCreateRequest request = new LabelCreateRequest("색상1", "test", new Color("bg", "font"));
         Label newLabel = Label.builder()
                 .id(1L)
                 .title(request.getTitle())
@@ -49,7 +49,7 @@ class LabelServiceTest {
         given(labelRepository.save(Label.createEntity(request.getTitle(), request.getDescription(), request.getColor()))).willReturn(newLabel);
 
         // when
-        Long labelId = labelService.create(request.getTitle(), request.getDescription(), request.getColor());
+        Long labelId = labelService.create(request);
 
         // then
         then(labelId).isEqualTo(1L);
