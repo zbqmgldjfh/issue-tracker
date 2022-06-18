@@ -1,12 +1,17 @@
-package codesquad.shine.issuetracker.label.intergrate;
+package codesquad.shine.issuetracker.label.unit;
 
 import codesquad.shine.issuetracker.auth.JwtTokenFactory;
+import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.issuetracker.label.business.LabelService;
+import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
-import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
+import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelListResponse;
+import codesquad.shine.issuetracker.label.presentation.LabelController;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,22 +19,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentRequest;
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentResponse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -40,11 +47,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest({LabelController.class})
 @AutoConfigureRestDocs
-@ActiveProfiles("local")
 class LabelControllerTest {
 
     @Autowired
@@ -53,33 +57,29 @@ class LabelControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     private JwtTokenFactory jwtTokenFactory;
 
-    @Autowired
+    @MockBean
     private UserRepository userRepository;
 
-    @Autowired
-    private LabelRepository labelRepository;
+    @MockBean
+    private LabelService labelService;
 
     @Test
     @DisplayName("가입된 회원이 Label을 생성하면 서버에 저장후, OK응답을 반환한다.")
     public void create_label_login_user_success_test() throws Exception {
         // given
 
-        // 가입된 유저
-        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
-        userRepository.save(newUser);
-
-        // 유저의 token 생성
-        String token = jwtTokenFactory.createAccessToken("zbqmgldjfh@gmail.com");
-
         // 요청 생성
         LabelCreateRequest request = new LabelCreateRequest("색상1", "test", new Color("bg", "font"));
 
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
+
         // when
         ResultActions resultActions = mockMvc.perform(post("/labels")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         ).andDo(print());
@@ -109,6 +109,9 @@ class LabelControllerTest {
     public void create_label_without_login_fail_test() throws Exception {
         // given
         LabelCreateRequest request = new LabelCreateRequest("색상1", "test", new Color("bg", "font"));
+
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willThrow(NotAvailableException.class);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/labels")
@@ -143,17 +146,27 @@ class LabelControllerTest {
     @DisplayName("가입된 회원이 Label을 조회하면, 전체 라벨을 반환한다.")
     public void get_label_list_login_user_success_test() throws Exception {
         // given
+        Label label1 = createLabel("test색", 1);
+        Label label2 = createLabel("test색", 2);
+        LabelDto labelDto1 = new LabelDto(label1);
+        LabelDto labelDto2 = new LabelDto(label2);
+        List<LabelDto> labelDtoList = new ArrayList<>();
+        labelDtoList.add(labelDto1);
+        labelDtoList.add(labelDto2);
+        LabelListResponse response = new LabelListResponse(labelDtoList);
 
         // 가입된 유저
         User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
         userRepository.save(newUser);
 
         // 유저의 token 생성
-        String token = jwtTokenFactory.createAccessToken("zbqmgldjfh@gmail.com");
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
+        given(labelService.findALL()).willReturn(response);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/labels")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaTypes.HAL_JSON)
         ).andDo(print());
@@ -181,32 +194,28 @@ class LabelControllerTest {
         ));
     }
 
+    private Label createLabel(String title, int num) {
+        return Label.builder()
+                .title(title)
+                .description("test" + num)
+                .issues(new ArrayList<>())
+                .color(new Color("bg" + num, "font" + num))
+                .build();
+    }
+
     @Test
     @DisplayName("가입된 회원이 Label을 삭제후, OK를 반환한다.")
     public void delete_label_login_user_success_test() throws Exception {
         // given
 
-        // 가입된 유저
-        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
-        userRepository.save(newUser);
-
-        // 유저가 등록한 Label
-        Label newLabel = Label.builder()
-                .title("test label")
-                .description("test!!!!")
-                .issues(new ArrayList<>())
-                .color(new Color("bg", "font"))
-                .build();
-
-        Label savedLabel = labelRepository.save(newLabel);
-        Long savedId = savedLabel.getId();
-
-        // 유저의 token 생성
-        String token = jwtTokenFactory.createAccessToken("zbqmgldjfh@gmail.com");
+        // 가입된 유저의 토큰 반환
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
+        willDoNothing().given(labelService).delete(any(Long.class));
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/labels/{labelId}", savedId)
-                .header("Authorization", "Bearer " + token)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/labels/{labelId}", 1L)
+                .header("Authorization", "Bearer " + "testAccessToken")
         ).andDo(print());
 
         // then
@@ -229,31 +238,25 @@ class LabelControllerTest {
     @DisplayName("가입된 회원이 Label을 변경한 후, OK를 반환한다.")
     public void edit_label_login_user_success_test() throws Exception {
         // given
-
-        // 가입된 유저
-        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
-        userRepository.save(newUser);
-
-        // 유저가 등록한 Label
-        Label newLabel = Label.builder()
-                .title("test label")
-                .description("test!!!!")
-                .issues(new ArrayList<>())
-                .color(new Color("bg", "font"))
+        LabelEditResponse response = LabelEditResponse.builder()
+                .title("색상 after")
+                .description("edit!!")
+                .color(new Color("bg", "fg"))
                 .build();
 
-        Label savedLabel = labelRepository.save(newLabel);
-        Long savedId = savedLabel.getId();
-
         // 유저의 token 생성
-        String token = jwtTokenFactory.createAccessToken("zbqmgldjfh@gmail.com");
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
+
+        // 유저의 edit 호출
+        given(labelService.edit(any(Long.class), any(LabelEditRequest.class))).willReturn(response);
 
         // 변경 request
-        LabelEditRequest request = new LabelEditRequest("색상 after", "edit!!", new Color("edit1", "edit2"));
+        LabelEditRequest request = new LabelEditRequest("색상 after", "edit!!", new Color("bg", "fg"));
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/labels/{labelId}", savedId)
-                .header("Authorization", "Bearer " + token)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/labels/{labelId}", 1L)
+                .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         ).andDo(print());
