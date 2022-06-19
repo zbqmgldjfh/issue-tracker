@@ -2,19 +2,20 @@ package codesquad.shine.issuetracker.milestone.domain;
 
 import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
 import codesquad.shine.issuetracker.issue.domain.Issue;
-import lombok.*;
+import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Milestone extends BaseTimeEntity {
 
     @Id
@@ -24,9 +25,52 @@ public class Milestone extends BaseTimeEntity {
 
     private String title;
     private String description;
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
     private boolean isOpen;
 
+    @Builder.Default
     @OneToMany(mappedBy = "milestone")
-    private List<Issue> issueList = new ArrayList<>();
+    private List<Issue> issues = new ArrayList<>();
+
+    protected Milestone() {
+    }
+
+    @Builder
+    public Milestone(Long id, String title, String description, LocalDate dueDate, boolean isOpen) {
+        Assert.hasText(title, "title must not be null and must contain at least one non-whitespace  character");
+        Assert.hasText(description, "description must not be null and must contain at least one non-whitespace  character");
+
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.isOpen = isOpen;
+    }
+
+    public static Milestone of(MilestoneCreateRequest request) {
+        return Milestone.builder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .dueDate(request.getDueDate())
+                .isOpen(true)
+                .build();
+    }
+
+    public void editProperties(String title, String description, LocalDate dueDate) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+    }
+
+    public Long countOpenedIssues() {
+        return issues.stream()
+                .filter(Issue::isOpen)
+                .count();
+    }
+
+    public Long countClosedIssues() {
+        return issues.stream()
+                .filter(Issue::isClosed)
+                .count();
+    }
 }
