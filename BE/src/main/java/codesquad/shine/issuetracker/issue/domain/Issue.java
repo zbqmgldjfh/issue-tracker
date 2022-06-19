@@ -25,6 +25,7 @@ public class Issue extends BaseTimeEntity {
     private Long id;
 
     private String title;
+    private boolean isOpen;
 
     @OneToMany(mappedBy = "issue")
     private List<Comment> comments = new ArrayList<>();
@@ -55,5 +56,13 @@ public class Issue extends BaseTimeEntity {
 
     public void detachLabel(Label label) {
         labels.remove(label);
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public boolean isClosed() {
+        return !isOpen();
     }
 }
