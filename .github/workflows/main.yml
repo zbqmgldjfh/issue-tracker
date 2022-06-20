@@ -11,7 +11,7 @@ permissions:
   
 env:
   S3_BUCKET_NAME: build-jar-shine-deploy
-  PROJECT_NAME: test-deploy
+  PROJECT_NAME: BE-deploy
   
 jobs:
   build:
