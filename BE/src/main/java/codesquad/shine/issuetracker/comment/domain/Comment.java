@@ -29,4 +29,34 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Comment(String description, Issue issue, User user) {
+        this.description = description;
+        this.issue = issue;
+        this.user = user;
+    }
+
+    public static Comment create(String comment, Issue issue, User user) {
+        return new Comment(comment, issue, user);
+    }
+
+    public void addIssue(Issue issue) {
+        this.issue = issue;
+    }
+
+    public boolean isOwner(User findUser) {
+        return user.equals(findUser);
+    }
+
+    public void deleteIssue() {
+        this.issue = null;
+    }
+
+    public boolean isSameCommentId(Long commentId) {
+        return this.id == commentId;
+    }
+
+    public void edit(String comment) {
+        this.description = comment;
+    }
 }

@@ -16,4 +16,3 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   codesqusd.shine.issuetracker.auth.interceptor: debug
-  s
