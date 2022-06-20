@@ -27,7 +27,7 @@ public class Issue extends BaseTimeEntity {
     private String title;
     private boolean isOpen;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @JoinColumn(name = "milestone_id")
@@ -64,5 +64,15 @@ public class Issue extends BaseTimeEntity {
 
     public boolean isClosed() {
         return !isOpen();
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.addIssue(this);
+    }
+
+    public void deleteComment(Comment comment) {
+        this.comments.remove(comment);
+        comment.deleteIssue();
     }
 }
