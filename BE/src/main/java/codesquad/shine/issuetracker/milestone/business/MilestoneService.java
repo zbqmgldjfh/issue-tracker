@@ -9,6 +9,7 @@ import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneEditRequest;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneEditResponse;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,10 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class MilestoneService {
 
-    private MilestoneRepository milestoneRepository;
+    private final MilestoneRepository milestoneRepository;
 
     public Long create(MilestoneCreateRequest request) {
         Milestone milestone = Milestone.of(request);
