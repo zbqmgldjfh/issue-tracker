@@ -1,4 +1,4 @@
-package codesquad.shine.issuetracker.milestone.business.dto.response;
+package codesquad.shine.issuetracker.milestone.business.dto;
 
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import lombok.Getter;

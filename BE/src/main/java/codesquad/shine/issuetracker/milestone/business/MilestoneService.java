@@ -2,7 +2,7 @@ package codesquad.shine.issuetracker.milestone.business;
 
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
-import codesquad.shine.issuetracker.milestone.business.dto.response.MilestoneDto;
+import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import codesquad.shine.issuetracker.milestone.domain.MilestoneRepository;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
