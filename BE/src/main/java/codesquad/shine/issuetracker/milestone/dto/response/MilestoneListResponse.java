@@ -1,6 +1,6 @@
 package codesquad.shine.issuetracker.milestone.dto.response;
 
-import codesquad.shine.issuetracker.milestone.business.dto.response.MilestoneDto;
+import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

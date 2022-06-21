@@ -12,8 +12,9 @@ public class LoginResponse {
     private String name;
     private String email;
     private String avatarUrl;
+    private String token;
 
     public static LoginResponse of(UserInfo userInfo) {
-        return new LoginResponse(userInfo.getId(), userInfo.getName(), userInfo.getEmail(), userInfo.getAvatarUrl());
+        return new LoginResponse(userInfo.getId(), userInfo.getName(), userInfo.getEmail(), userInfo.getAvatarUrl(), userInfo.getAccessToken());
     }
 }

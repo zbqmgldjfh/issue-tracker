@@ -18,7 +18,6 @@ public class AuthController {
     @GetMapping("/{provider}/callback")
     public ResponseEntity<LoginResponse> login(@PathVariable String provider, @RequestParam String code, HttpServletResponse response) {
         UserInfo userInfo = authService.login(provider, code);
-        response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
         return ResponseEntity.ok().body(LoginResponse.of(userInfo));
     }
 }
