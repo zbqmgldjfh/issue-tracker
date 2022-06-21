@@ -27,3 +27,12 @@ jwt:
 server:
   servlet:
     context-path: /api
+
+# actuator
+management:
+  endpoint:
+    web:
+      exposure:
+        include: health
+    health:
+      show-details: always
