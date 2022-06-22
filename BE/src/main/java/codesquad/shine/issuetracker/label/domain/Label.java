@@ -2,18 +2,17 @@ package codesquad.shine.issuetracker.label.domain;
 
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import lombok.*;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Builder
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Label {
 
     @Id
@@ -27,7 +26,18 @@ public class Label {
     @ManyToMany(mappedBy = "labels")
     private List<Issue> issues = new ArrayList<>();
 
+    public Label(Long id, String title, String description, Color color) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.color = color;
+    }
+
+    @Builder
     public Label(String title, String description, Color color) {
+        Assert.hasText(title, "title must not be null and must contain at least one non-whitespace  character");
+        Assert.hasText(description, "description must not be null and must contain at least one non-whitespace  character");
+        Assert.notNull(color, "color must not be null");
         this.title = title;
         this.description = description;
         this.color = color;

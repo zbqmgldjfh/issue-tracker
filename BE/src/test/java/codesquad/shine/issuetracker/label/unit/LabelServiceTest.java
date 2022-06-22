@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,12 +39,8 @@ class LabelServiceTest {
     public void create_label_test_login_success() {
         // given
         LabelCreateRequest request = new LabelCreateRequest("색상1", "test", new Color("bg", "font"));
-        Label newLabel = Label.builder()
-                .id(1L)
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .color(request.getColor())
-                .build();
+        Label newLabel = new Label(1L, request.getTitle(), request.getDescription(), request.getColor());
+
         given(labelRepository.save(Label.createEntity(request.getTitle(), request.getDescription(), request.getColor()))).willReturn(newLabel);
 
         // when
@@ -81,12 +76,7 @@ class LabelServiceTest {
     public void edit_label_test_login_success() {
         // given
         Color color = new Color("bg", "font");
-        Label newLabel = Label.builder()
-                .id(1L)
-                .title("변경 전")
-                .description("변경 전")
-                .color(color)
-                .build();
+        Label newLabel = new Label(1L, "변경 전", "변경 전", color);
 
         LabelEditRequest updateRequest = LabelEditRequest.builder()
                 .title("변경 후")
@@ -110,13 +100,7 @@ class LabelServiceTest {
         // given
         // 라벨 만들기
         Color color = new Color("bg", "font");
-        Label newLabel = Label.builder()
-                .id(1L)
-                .title("변경 전")
-                .description("변경 전")
-                .color(color)
-                .issues(new ArrayList<>())
-                .build();
+        Label newLabel = new Label(1L, "변경 전", "변경 전", color);
 
         // 이슈를 만들기
         Issue newIssue = Issue.createBasic("issue 이름");

@@ -173,7 +173,6 @@ class LabelControllerTest extends ControllerTest {
         return Label.builder()
                 .title(title)
                 .description("test" + num)
-                .issues(new ArrayList<>())
                 .color(new Color("bg" + num, "font" + num))
                 .build();
     }
