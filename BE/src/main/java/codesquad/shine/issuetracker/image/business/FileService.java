@@ -1,4 +1,4 @@
-package codesquad.shine.issuetracker.photo.business;
+package codesquad.shine.issuetracker.image.business;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
