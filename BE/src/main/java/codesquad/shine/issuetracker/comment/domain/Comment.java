@@ -4,14 +4,13 @@ import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.user.domain.User;
 import lombok.*;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
-@Builder
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
 
@@ -30,14 +29,34 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Comment(Long id, String description, Issue issue, User user) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(description, "description must not be null");
+        Assert.notNull(issue, "issue must not be null");
+        Assert.notNull(user, "user must not be null");
+
+        this.id = id;
+        this.description = description;
+        this.issue = issue;
+        this.user = user;
+    }
+
+    @Builder
     public Comment(String description, Issue issue, User user) {
+        Assert.notNull(description, "description must not be null");
+        Assert.notNull(issue, "issue must not be null");
+        Assert.notNull(user, "user must not be null");
         this.description = description;
         this.issue = issue;
         this.user = user;
     }
 
     public static Comment create(String comment, Issue issue, User user) {
-        return new Comment(comment, issue, user);
+        return Comment.builder()
+                .description(comment)
+                .issue(issue)
+                .user(user)
+                .build();
     }
 
     public void addIssue(Issue issue) {
