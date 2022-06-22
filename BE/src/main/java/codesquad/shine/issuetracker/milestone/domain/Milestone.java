@@ -35,12 +35,19 @@ public class Milestone extends BaseTimeEntity {
     protected Milestone() {
     }
 
-    @Builder
     public Milestone(Long id, String title, String description, LocalDate dueDate, boolean isOpen) {
-        Assert.hasText(title, "title must not be null and must contain at least one non-whitespace  character");
-        Assert.hasText(description, "description must not be null and must contain at least one non-whitespace  character");
-
         this.id = id;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.isOpen = isOpen;
+    }
+
+    @Builder
+    public Milestone(String title, String description, LocalDate dueDate, boolean isOpen) {
+        Assert.hasText(title, "title must not be null and must contain at least one non-whitespace  character");
+        Assert.hasText(description, "description must not be null and must contain at least one non-whitespace");
+        Assert.notNull(dueDate, "dueDate must not be null");
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
