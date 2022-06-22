@@ -2,9 +2,9 @@ package codesquad.shine.issuetracker.issue.domain;
 
 import codesquad.shine.issuetracker.comment.domain.Comment;
 import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
+import codesquad.shine.issuetracker.image.domain.Image;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
-import codesquad.shine.issuetracker.photo.domain.Photo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,7 +35,7 @@ public class Issue extends BaseTimeEntity {
     private Milestone milestone;
 
     @OneToMany(mappedBy = "issue")
-    private List<Photo> photos = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     @ManyToMany
     @JoinColumn(name = "label_id")
