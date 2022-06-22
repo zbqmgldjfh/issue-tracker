@@ -23,10 +23,11 @@ jwt:
     validate-time: 1800
     token-secret: "Shine"
 
-# url prefix
+# url prefix, graceful shutdown
 server:
   servlet:
     context-path: /api
+  shutdown: "graceful"
 
 # actuator
 management:
