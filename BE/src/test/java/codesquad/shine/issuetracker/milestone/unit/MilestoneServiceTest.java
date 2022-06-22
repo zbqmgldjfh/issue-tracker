@@ -39,13 +39,7 @@ class MilestoneServiceTest {
         // given
         MilestoneCreateRequest request = new MilestoneCreateRequest("test milestone", "test!!", LocalDate.now());
 
-        Milestone milestone = Milestone.builder()
-                .id(1L)
-                .title("test milestone")
-                .description("test!!")
-                .isOpen(true)
-                .dueDate(LocalDate.now())
-                .build();
+        Milestone milestone = new Milestone(1L, "test milestone", "test!!", LocalDate.now(), true);
 
         given(milestoneRepository.save(any(Milestone.class))).willReturn(milestone);
 
@@ -61,13 +55,7 @@ class MilestoneServiceTest {
     @DisplayName("milestone을 정상 삭제한다.")
     public void delete_milestone_test_login_sucess() {
         // given
-        Milestone milestone = Milestone.builder()
-                .id(1L)
-                .title("test milestone")
-                .description("test!!")
-                .isOpen(true)
-                .dueDate(LocalDate.now())
-                .build();
+        Milestone milestone = new Milestone(1L, "test milestone", "test!!", LocalDate.now(), true);
 
         given(milestoneRepository.findById(any())).willReturn(Optional.of(milestone));
 
