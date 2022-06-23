@@ -66,7 +66,11 @@ class CommentServiceTest {
         // given
         Issue testIssue = Issue.createBasic("test1");
         User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
-        Comment comment = Comment.create("댓글", testIssue, newUser);
+        Comment comment = Comment.builder()
+                .description("댓글")
+                .issue(testIssue)
+                .user(newUser)
+                .build();
 
         testIssue.addComment(comment);
 
