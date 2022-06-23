@@ -10,6 +10,7 @@ public enum ErrorCode {
     INVALID_USER(HttpStatus.UNAUTHORIZED, "해당 회원은 권한이 없습니다."),
     LABEL_NOT_FOUND(HttpStatus.NOT_FOUND, "Label 정보가 존재하지 않습니다."),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment 정보가 존재하지 않습니다."),
+    COMMENT_IS_EMPTY(HttpStatus.BAD_REQUEST, "비어있는 Comment 입니다."),
     ISSUE_NOT_FOUND(HttpStatus.NOT_FOUND, "Issue 정보가 존재하지 않습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User 정보가 존재하지 않습니다."),
     MILESTONE_NOT_FOUND(HttpStatus.NOT_FOUND, "MileStone 정보가 존재하지 않습니다."),
