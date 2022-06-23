@@ -16,3 +16,15 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   codesqusd.shine.issuetracker.auth.interceptor: debug
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
+    region:
+      static: ${REGION}
+    stack:
+      auto: false
+    s3:
+      bucket: ${BUCKET_NAME}
