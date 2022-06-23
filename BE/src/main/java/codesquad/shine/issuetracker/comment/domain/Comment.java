@@ -64,7 +64,7 @@ public class Comment extends BaseTimeEntity {
     }
 
     public boolean isSameCommentId(Long commentId) {
-        return this.id == commentId;
+        return this.id.equals(commentId);
     }
 
     public void edit(String comment) {
