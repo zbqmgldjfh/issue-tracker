@@ -2,7 +2,10 @@ package codesquad.shine.issuetracker.image.domain;
 
 import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
 import codesquad.shine.issuetracker.issue.domain.Issue;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -10,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Image extends BaseTimeEntity {
 
     @Id
@@ -22,16 +25,11 @@ public class Image extends BaseTimeEntity {
     private String oriImgName;
     private String imgUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "issue_id")
-    private Issue issue;
-
-    public Image(Long id, String imgName, String oriImgName, String imgUrl, Issue issue) {
+    public Image(Long id, String imgName, String oriImgName, String imgUrl) {
         this.id = id;
         this.imgName = imgName;
         this.oriImgName = oriImgName;
         this.imgUrl = imgUrl;
-        this.issue = issue;
     }
 
     @Builder
@@ -39,10 +37,14 @@ public class Image extends BaseTimeEntity {
         Assert.hasText(imgName, "title must not be null and must contain at least one non-whitespace character");
         Assert.hasText(oriImgName, "title must not be null and must contain at least one non-whitespace character");
         Assert.hasText(imgUrl, "title must not be null and must contain at least one non-whitespace character");
-        Assert.notNull(issue, "issue must not be null");
         this.imgName = imgName;
         this.oriImgName = oriImgName;
         this.imgUrl = imgUrl;
-        this.issue = issue;
+    }
+
+    public void updateItemImg(String oriImgName, String imgName, String imgUrl) {
+        this.oriImgName = oriImgName;
+        this.imgName = imgName;
+        this.imgUrl = imgUrl;
     }
 }
