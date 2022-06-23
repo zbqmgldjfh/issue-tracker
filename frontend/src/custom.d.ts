@@ -5,3 +5,11 @@ declare module '*.svg' {
   const src: string;
   export default src;
 }
+
+declare module '*.gif' {
+  import React = require('react');
+
+  export const ReactComponent: React.SFC<React.SVGProps<SVGSVGElement>>;
+  const src: string;
+  export default src;
+}
