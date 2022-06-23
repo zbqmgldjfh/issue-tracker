@@ -12,7 +12,9 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment 정보가 존재하지 않습니다."),
     ISSUE_NOT_FOUND(HttpStatus.NOT_FOUND, "Issue 정보가 존재하지 않습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User 정보가 존재하지 않습니다."),
-    MILESTONE_NOT_FOUND(HttpStatus.NOT_FOUND, "MileStone 정보가 존재하지 않습니다.");
+    MILESTONE_NOT_FOUND(HttpStatus.NOT_FOUND, "MileStone 정보가 존재하지 않습니다."),
+    FILE_NAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "File의 이름이 존재하지 않습니다."),
+    FILE_CANT_UPLOAD(HttpStatus.SERVICE_UNAVAILABLE, "File을 업로드 할 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;
