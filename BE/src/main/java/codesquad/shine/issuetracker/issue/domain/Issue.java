@@ -26,7 +26,7 @@ public class Issue extends BaseTimeEntity {
     private String title;
     private boolean isOpen;
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @JoinColumn(name = "milestone_id")
