@@ -43,7 +43,6 @@ public class Comment extends BaseTimeEntity {
 
     @Builder
     public Comment(String description, Issue issue, User user) {
-        Assert.notNull(description, "description must not be null");
         Assert.notNull(issue, "issue must not be null");
         Assert.notNull(user, "user must not be null");
         this.description = description;

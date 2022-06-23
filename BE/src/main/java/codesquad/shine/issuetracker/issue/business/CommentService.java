@@ -3,6 +3,7 @@ package codesquad.shine.issuetracker.issue.business;
 import codesquad.shine.issuetracker.comment.domain.Comment;
 import codesquad.shine.issuetracker.comment.domain.CommentRepository;
 import codesquad.shine.issuetracker.exception.ErrorCode;
+import codesquad.shine.issuetracker.exception.unchecked.CommentFormatException;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
@@ -28,6 +29,10 @@ public class CommentService {
 
         User findUser = userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        if (comment == null || comment.isBlank()) {
+            throw new CommentFormatException(ErrorCode.COMMENT_IS_EMPTY);
+        }
 
         Comment newComment = Comment.builder()
                 .description(comment)
