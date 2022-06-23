@@ -29,7 +29,13 @@ public class CommentService {
         User findUser = userRepository.findUserByEmail(userEmail)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        findIssue.addComment(Comment.create(comment, findIssue, findUser)); // 변경감지로 저장?
+        Comment newComment = Comment.builder()
+                .description(comment)
+                .issue(findIssue)
+                .user(findUser)
+                .build();
+
+        findIssue.addComment(newComment); // 변경감지로 저장?
     }
 
     public void delete(Long issueId, Long commentId, String userEmail) {
