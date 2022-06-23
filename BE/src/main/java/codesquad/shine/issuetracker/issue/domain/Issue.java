@@ -5,17 +5,16 @@ import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import lombok.*;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Issue extends BaseTimeEntity {
 
     @Id
@@ -24,7 +23,8 @@ public class Issue extends BaseTimeEntity {
     private Long id;
 
     private String title;
-    private boolean isOpen;
+
+    private Boolean open;
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
@@ -37,12 +37,20 @@ public class Issue extends BaseTimeEntity {
     @JoinColumn(name = "label_id")
     private List<Label> labels = new ArrayList<>();
 
-    private Issue(String title) {
-        this.title = title;
+    public static Issue createBasic(String title) {
+        return Issue.builder()
+                .title(title)
+                .open(true)
+                .milestone(null)
+                .build();
     }
 
-    public static Issue createBasic(String title) {
-        return new Issue(title);
+    @Builder
+    public Issue(String title, boolean open, Milestone milestone) {
+        Assert.hasText(title, "title must not be null");
+        this.title = title;
+        this.open = open;
+        this.milestone = milestone;
     }
 
     public void addLabel(Label newLabel) {
@@ -55,7 +63,7 @@ public class Issue extends BaseTimeEntity {
     }
 
     public boolean isOpen() {
-        return isOpen;
+        return open;
     }
 
     public boolean isClosed() {
