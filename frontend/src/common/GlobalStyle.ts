@@ -4,11 +4,11 @@ import reset from 'styled-reset';
 const GlobalStyle = createGlobalStyle`
   ${reset};
   *{
-    box-sizing:border-box;
+    box-sizing: border-box;
     user-select: none; 
   }
-  body{
-    background-color:#E6E6E6;
+  body {
+    background-color: ${({ theme }) => theme.background.basic};
   }
 `;
 

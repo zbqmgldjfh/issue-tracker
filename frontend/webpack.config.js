@@ -29,6 +29,21 @@ module.exports = {
             transpileOnly: !isProduction,
           },
         },
+        // eslint-disable-next-line array-element-newline
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+        // eslint-disable-next-line array-element-newline
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack'],
       },
     ],
   },
