@@ -21,10 +21,11 @@
       }
     ],
     "quotes": [2, "single", { "avoidEscape": true }],
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "@typescript-eslint/no-var-requires": 0,
     "object-curly-spacing": [2, "always"],
     "consistent-return": "off",
-    "max-len": ["error", { "code": 120 }]
+    "max-len": ["error", { "code": 120 }],
+    "arrow-parens": "as-needed"
   }
 }
