@@ -1,4 +1,4 @@
-package codesquad.shine.issuetracker.issue.dto.request;
+package codesquad.shine.issuetracker.issue.presentation.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

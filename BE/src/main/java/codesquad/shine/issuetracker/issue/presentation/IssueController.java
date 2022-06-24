@@ -2,7 +2,9 @@ package codesquad.shine.issuetracker.issue.presentation;
 
 import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.issue.business.CommentService;
-import codesquad.shine.issuetracker.issue.dto.request.CommentRequest;
+import codesquad.shine.issuetracker.issue.business.IssueService;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class IssueController {
 
     private final CommentService commentService;
+    private final IssueService issueService;
 
     @ForLoginUser
     @ResponseStatus(HttpStatus.CREATED)
@@ -37,4 +40,9 @@ public class IssueController {
         commentService.edit(issueId, commentId, request.getComment(), userEmail);
     }
 
+    @ForLoginUser
+    @GetMapping("/form")
+    public IssueFormResponse showIssueForm() {
+        return issueService.getIssueForm();
+    }
 }

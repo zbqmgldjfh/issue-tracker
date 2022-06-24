@@ -5,7 +5,7 @@ import codesquad.shine.issuetracker.comment.domain.CommentRepository;
 import codesquad.shine.issuetracker.issue.business.CommentService;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
-import codesquad.shine.issuetracker.issue.dto.request.CommentRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import org.junit.jupiter.api.DisplayName;
