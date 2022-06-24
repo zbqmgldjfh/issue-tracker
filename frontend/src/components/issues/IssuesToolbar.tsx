@@ -1,10 +1,14 @@
 import React from 'react';
 import ClosedIssues from 'src/assets/ClosedIssues.svg';
 import OpenIssues from 'src/assets/OpenIssues.svg';
-import DropdownButton from '../common/dropdownButton/DropdownButton';
+import DropdownButton from './DropdownButton';
 import { ToolbarBox, ToggleBox, OpenText, ClosedText, Toggle, DropdownList } from './IssuesToolbar.styled';
 
 export default function IssuesToolbar() {
+  const makeAuthorMenu = () => {
+    return <></>;
+  };
+
   return (
     <ToolbarBox>
       <ToggleBox>
@@ -19,12 +23,12 @@ export default function IssuesToolbar() {
         </Toggle>
       </ToggleBox>
       <DropdownList>
-        <DropdownButton text="Author" />
-        <DropdownButton text="Label" />
-        <DropdownButton text="Projects" />
-        <DropdownButton text="Milestones" />
-        <DropdownButton text="Assignee" />
-        <DropdownButton text="Sort" />
+        <DropdownButton modalWidth="300px" text="Author" makeItem={makeAuthorMenu} />
+        <DropdownButton modalWidth="300px" text="Label" makeItem={makeAuthorMenu} />
+        <DropdownButton modalWidth="300px" text="Projects" makeItem={makeAuthorMenu} />
+        <DropdownButton modalWidth="300px" text="Milestones" makeItem={makeAuthorMenu} />
+        <DropdownButton modalWidth="300px" text="Assignee" makeItem={makeAuthorMenu} />
+        <DropdownButton modalWidth="300px" text="Sort" makeItem={makeAuthorMenu} />
       </DropdownList>
     </ToolbarBox>
   );
