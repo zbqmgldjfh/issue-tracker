@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { RootState } from 'src';
 import DropdownCaret from 'src/assets/DropdownCaret.svg';
-import { changeTab } from 'src/modules/clickedTab';
+import { changeTab, deleteTab } from 'src/modules/clickedTab';
 import { ButtonBox, Button } from './DropdownButton.styled';
 import DropdownMenu from './DropdownMenu';
 
@@ -13,10 +15,15 @@ type propsType = {
 
 export default function DropdownButton({ modalWidth, text, makeItem }: propsType) {
   const dispatch = useDispatch();
+  const clickedTab = useSelector((state: RootState) => state.clickedTab);
+  const btnEvent = (e: any) => {
+    if (e.target.closest('[data-buttonname]').dataset.buttonname === clickedTab.clickedTab) dispatch(deleteTab());
+    else dispatch(changeTab(text));
+  };
 
   return (
     <ButtonBox>
-      <Button onClick={() => dispatch(changeTab(text))}>
+      <Button onClick={btnEvent} data-buttonname={text}>
         {text}
         <DropdownCaret />
       </Button>
