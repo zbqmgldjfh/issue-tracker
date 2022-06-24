@@ -28,7 +28,6 @@ public class Milestone extends BaseTimeEntity {
     private LocalDate dueDate;
     private boolean isOpen;
 
-    @Builder.Default
     @OneToMany(mappedBy = "milestone")
     private List<Issue> issues = new ArrayList<>();
 
