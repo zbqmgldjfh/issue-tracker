@@ -56,4 +56,11 @@ public class LabelService {
         findLabel.getIssues()
                 .forEach(issue -> issue.detachLabel(findLabel));
     }
+
+    public List<LabelDto> findAllDto() {
+        return labelRepository.findAll()
+                .stream()
+                .map(LabelDto::new)
+                .collect(Collectors.toList());
+    }
 }
