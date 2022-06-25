@@ -57,10 +57,16 @@ public class LabelService {
                 .forEach(issue -> issue.detachLabel(findLabel));
     }
 
+    @Transactional(readOnly = true)
     public List<LabelDto> findAllDto() {
         return labelRepository.findAll()
                 .stream()
                 .map(LabelDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Label> getLabelsInId(List<Long> ids) {
+        return labelRepository.findAllById(ids);
     }
 }

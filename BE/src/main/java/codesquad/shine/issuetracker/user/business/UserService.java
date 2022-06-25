@@ -1,6 +1,9 @@
 package codesquad.shine.issuetracker.user.business;
 
 import codesquad.shine.issuetracker.common.vo.Assignee;
+import codesquad.shine.issuetracker.exception.ErrorCode;
+import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,5 +23,14 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(u -> new Assignee(u.getId(), u.getUserName(), u.getAvatarUrl(), false))
                 .collect(Collectors.toList());
+    }
+
+    public User findUserByEmail(String userEmail) {
+        return userRepository.findUserByEmail(userEmail)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public List<User> getAssigneeInId(List<Long> ids) {
+        return userRepository.findAllById(ids);
     }
 }
