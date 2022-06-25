@@ -24,4 +24,9 @@ public class IssueAssignee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public IssueAssignee(Issue issue, User user) {
+        this.issue = issue;
+        this.user = user;
+    }
 }
