@@ -61,7 +61,7 @@ public class IssueServiceTest {
 
         // 마일스톤 만들기
         Milestone milestone = new Milestone(1L, "test milestone", "test!!", LocalDate.now(), true);
-        MilestoneDto milestoneDto = new MilestoneDto(milestone);
+        MilestoneDto milestoneDto = MilestoneDto.of(milestone);
 
         given(userService.getAllAssignee()).willReturn(List.of(assignee));
         given(labelService.findAllDto()).willReturn(List.of(labelDto));
