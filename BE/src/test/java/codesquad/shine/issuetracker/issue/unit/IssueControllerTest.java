@@ -5,6 +5,7 @@ import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Color;
@@ -88,6 +89,44 @@ public class IssueControllerTest extends ControllerTest {
                         fieldWithPath("milestones[].dueDate").description("DueDate of milestones"),
                         fieldWithPath("milestones[].openedIssues").description("OpenedIssues count of milestones"),
                         fieldWithPath("milestones[].closedIssues").description("ClosedIssues count of milestones")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName("Issue를 정상생성하고 201 응답을 반환한다.")
+    public void create_issue_success_test() throws Exception {
+        // given
+        IssueRequest request = new IssueRequest("title", "this is comment", null, null, 2L);
+
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naver.com");
+        willDoNothing().given(issueService).create(any(IssueRequest.class), any(String.class));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(post("/issues/form")
+                .header("Authorization", "Bearer " + "testAccessToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        ).andDo(print());
+
+        // then
+        resultActions.andExpect(status().isCreated());
+
+        // documentation
+        resultActions.andDo(document("issue-create-success",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("header content type"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
+                ),
+                requestFields(
+                        fieldWithPath("title").description("Title of comment"),
+                        fieldWithPath("comment").description("User created comments"),
+                        fieldWithPath("assigneeIds").description("Id of assignee"),
+                        fieldWithPath("labelIds").description("Id of Label"),
+                        fieldWithPath("milestoneId").description("Id of milestone")
                 )
         ));
     }
