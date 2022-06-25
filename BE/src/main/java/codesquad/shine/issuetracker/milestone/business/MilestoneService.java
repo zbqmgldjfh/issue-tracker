@@ -60,4 +60,12 @@ public class MilestoneService {
                 .map(MilestoneDto::new)
                 .collect(Collectors.toList());
     }
+
+    public Milestone findById(Long milestoneId) {
+        if (milestoneId == null) {
+            return null;
+        }
+        return milestoneRepository.findById(milestoneId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MILESTONE_NOT_FOUND));
+    }
 }
