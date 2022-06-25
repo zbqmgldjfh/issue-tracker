@@ -29,6 +29,11 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Comment(String description, User user) {
+        this.description = description;
+        this.user = user;
+    }
+
     public Comment(Long id, String description, Issue issue, User user) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(description, "description must not be null");
