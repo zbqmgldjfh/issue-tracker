@@ -46,7 +46,7 @@ public class IssueControllerTest extends ControllerTest {
         // given
         Assignee assignee = new Assignee(1L, "testUser", "testUrl", false);
         LabelDto labelDto = new LabelDto(new Label(2L, "label", "this is label", new Color("bg", "font")));
-        MilestoneDto milestoneDto = new MilestoneDto(new Milestone(3L, "mile", "this is mile", LocalDate.now(), true));
+        MilestoneDto milestoneDto = MilestoneDto.of(new Milestone(3L, "mile", "this is mile", LocalDate.now(), true));
 
         given(issueService.getIssueForm()).willReturn(new IssueFormResponse(List.of(assignee), List.of(labelDto), List.of(milestoneDto)));
 

@@ -50,14 +50,14 @@ public class MilestoneService {
 
     public MilestoneListResponse findALL() {
         List<MilestoneDto> milestoneDtoList = milestoneRepository.findAll().stream()
-                .map(MilestoneDto::new)
+                .map(m -> MilestoneDto.of(m))
                 .collect(Collectors.toList());
         return new MilestoneListResponse(milestoneDtoList);
     }
 
     public List<MilestoneDto> findAllDto() {
         return milestoneRepository.findAll().stream()
-                .map(MilestoneDto::new)
+                .map(m -> MilestoneDto.of(m))
                 .collect(Collectors.toList());
     }
 

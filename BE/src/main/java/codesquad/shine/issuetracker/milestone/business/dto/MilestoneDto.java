@@ -18,7 +18,7 @@ public class MilestoneDto {
     private Long openedIssues;
     private Long closedIssues;
 
-    public MilestoneDto(Milestone milestone) {
+    private MilestoneDto(Milestone milestone) {
         this.id = milestone.getId();
         this.title = milestone.getTitle();
         this.description = milestone.getDescription();
@@ -26,5 +26,9 @@ public class MilestoneDto {
         this.dueDate = milestone.getDueDate();
         this.openedIssues = milestone.countOpenedIssues();
         this.closedIssues = milestone.countClosedIssues();
+    }
+
+    public static MilestoneDto of(Milestone milestone) {
+        return new MilestoneDto(milestone);
     }
 }
