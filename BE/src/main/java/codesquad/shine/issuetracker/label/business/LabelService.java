@@ -69,4 +69,8 @@ public class LabelService {
     public List<Label> getLabelsInId(List<Long> ids) {
         return labelRepository.findAllById(ids);
     }
+
+    public Long count() {
+        return labelRepository.count();
+    }
 }

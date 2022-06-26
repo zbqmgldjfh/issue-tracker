@@ -68,4 +68,8 @@ public class MilestoneService {
         return milestoneRepository.findById(milestoneId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.MILESTONE_NOT_FOUND));
     }
+
+    public Long count() {
+        return milestoneRepository.count();
+    }
 }
