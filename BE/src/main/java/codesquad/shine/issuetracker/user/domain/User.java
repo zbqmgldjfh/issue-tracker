@@ -1,13 +1,9 @@
 package codesquad.shine.issuetracker.user.domain;
 
 import codesquad.shine.issuetracker.auth.OAuthUser;
-import codesquad.shine.issuetracker.issue.domain.Issue;
-import codesquad.shine.issuetracker.issue.domain.IssueAssignee;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Getter
@@ -26,11 +22,11 @@ public class User {
     private String email;
     private String avatarUrl;
 
-    @OneToMany(mappedBy = "author")
-    private List<Issue> issues;
+//    @OneToMany(mappedBy = "author")
+//    private List<Issue> issues;
 
-    @OneToMany(mappedBy = "issue")
-    private List<IssueAssignee> issueAssignees = new ArrayList<>();
+//    @OneToMany(mappedBy = "issue")
+//    private List<IssueAssignee> issueAssignees = new ArrayList<>();
 
     public User(String userName, String email, String avatarUrl) {
         this.userName = userName;
