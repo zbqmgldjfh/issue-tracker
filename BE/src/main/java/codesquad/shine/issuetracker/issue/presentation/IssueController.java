@@ -57,7 +57,7 @@ public class IssueController {
 
     @ForLoginUser
     @GetMapping("/{issueId}")
-    public IssueDetailResponse showIssueDetail(@PathVariable Long issueId, @RequestAttribute String userEmail) {
-        return issueService.findIssueDetailById(issueId, userEmail);
+    public IssueDetailResponse showIssueDetail(@PathVariable Long issueId) {
+        return issueService.findIssueDetailById(issueId);
     }
 }
