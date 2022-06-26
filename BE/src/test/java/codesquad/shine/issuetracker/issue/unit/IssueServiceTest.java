@@ -85,7 +85,7 @@ public class IssueServiceTest {
     @DisplayName("Issue Service에 issue 생성 요청시 정상적으로 생성한다.")
     public void create_issue_test() {
         // given
-        User user = new User(1L, "shine", "shine@naver.com", "avatarurl", null, null);
+        User user = new User(1L, "shine", "shine@naver.com", "avatarurl");
         Label label = new Label(2L, "label", "this is label", new Color("bg", "font"));
         Milestone milestone = new Milestone(3L, "mile", "this is mile", LocalDate.now(), true);
 
