@@ -2,8 +2,10 @@ package codesquad.shine.issuetracker.issue.unit;
 
 import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.issue.business.IssueService;
+import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
@@ -22,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -104,5 +107,32 @@ public class IssueServiceTest {
         verify(userService, times(1)).getAssigneeInId(any());
         verify(labelService, times(1)).getLabelsInId(any());
         verify(milestoneService, times(1)).findById(any());
+    }
+
+    @Test
+    @DisplayName("Issue의 상태를 변경한다.")
+    public void change_issue_status_test() {
+        // given
+        User owner = new User(1L, "shine", "shine@naver.com", "avatar");
+        User other = new User(2L, "test", "test@naver.com", "avatar test");
+
+        Issue issue1 = new Issue("title1", true, owner);
+        Issue issue2 = new Issue("title2", true, owner);
+        Issue issue3 = new Issue("title3", false, owner);
+        Issue issue4 = new Issue("title-test-1", true, other);
+        Issue issue5 = new Issue("title-test-2", false, other);
+        List<Issue> issueList = List.of(issue1, issue2, issue3, issue4, issue5);
+
+        StatusRequest request = new StatusRequest(false, new ArrayList<>());
+
+        given(userService.findUserByEmail(any(String.class))).willReturn(owner);
+        given(issueRepository.findAllById(any())).willReturn(issueList);
+
+        // when
+        issueService.changeOpenStatus(request, "test@naver.com");
+
+        // then
+        then(issueList).extracting("open").containsExactly(false, false, false, true, false);
+        then(issueList).extracting("author").containsExactly(owner, owner, owner, other, other);
     }
 }
