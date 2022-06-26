@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker.common.vo;
 
+import codesquad.shine.issuetracker.user.domain.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -21,6 +22,10 @@ public class Assignee {
         this.userName = userName;
         this.avatarUrl = avatarUrl;
         this.isAssigned = isAssigned;
+    }
+
+    public static Assignee of(User user, Boolean isAssigned) {
+        return new Assignee(user.getId(), user.getUserName(), user.getAvatarUrl(), isAssigned);
     }
 
     private void isValidRangeId(Long userId) {
