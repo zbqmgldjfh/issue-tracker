@@ -82,12 +82,9 @@ public class IssueService {
     }
 
     @Transactional(readOnly = true)
-    public IssueDetailResponse findIssueDetailById(Long issueId, String userEmail) {
+    public IssueDetailResponse findIssueDetailById(Long issueId) {
         Issue findIssue = issueRepository.optimizationFindById(issueId) // toOne relation fetch-join
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
-
-        log.info("[findIssueDetailById]: find Issue");
-        //User findUser = userService.findUserByEmail(userEmail);
 
         return IssueDetailResponse.builder()
                 .title(findIssue.getTitle()) // 즉시로딩

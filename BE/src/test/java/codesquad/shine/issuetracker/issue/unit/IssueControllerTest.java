@@ -1,17 +1,23 @@
 package codesquad.shine.issuetracker.issue.unit;
 
 import codesquad.shine.issuetracker.ControllerTest;
+import codesquad.shine.issuetracker.comment.domain.Comment;
+import codesquad.shine.issuetracker.comment.presentation.dto.response.CommentDto;
 import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
+import codesquad.shine.issuetracker.user.domain.User;
+import codesquad.shine.issuetracker.user.presentation.dto.UserResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +26,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentRequest;
@@ -127,6 +134,86 @@ public class IssueControllerTest extends ControllerTest {
                         fieldWithPath("assigneeIds").description("Id of assignee"),
                         fieldWithPath("labelIds").description("Id of Label"),
                         fieldWithPath("milestoneId").description("Id of milestone")
+                )
+        ));
+    }
+
+    @Test
+    @DisplayName("Issue Detail 단건을 조화한다.")
+    public void search_issue_detail_success_test() throws Exception {
+        // given
+        User user = new User(1L, "shine", "test@naver.com", "url");
+        Issue issue = new Issue("issue title", true, user);
+        Comment comment = new Comment(2L, "comment", issue, user);
+        Assignee assignee = Assignee.of(user, true);
+        LabelDto labelDto = new LabelDto(new Label(1L, "label", "this is label", new Color("bg", "fe")));
+        MilestoneDto milestoneDto = MilestoneDto.of(new Milestone(3L, "mile", "this is mile", LocalDate.now(), true));
+
+        IssueDetailResponse response = IssueDetailResponse.builder()
+                .title("this is issue") // 즉시로딩
+                .author(UserResponseDto.of(user)) // lazy로딩 fetch-join
+                .open(true) // 즉시로딩
+                .createdDateTime(LocalDateTime.now()) // 즉시로딩
+                .comments(List.of(CommentDto.of(comment))) // lazy로딩 batch-fetch
+                .assignees(List.of(assignee)) // lazy로딩 batch-fetch
+                .labels(List.of(labelDto)) // lazy로딩 batch-fetch
+                .milestone(milestoneDto) // lazy로딩 fetch-join
+                .build();
+
+        given(issueService.findIssueDetailById(any(Long.class))).willReturn(response);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/issues/{issueId}", 1L)
+                .header("Authorization", "Bearer " + "testAccessToken")
+        ).andDo(print());
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        //documentation
+        resultActions.andDo(document("search-issue-detail-success",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
+                ),
+                responseHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON)
+                ),
+                responseFields(
+                        fieldWithPath("title").description("Title of Issue"),
+                        fieldWithPath("author.userName").description("User name"),
+                        fieldWithPath("author.avatarUrl").description("AvatarUrl of User"),
+                        fieldWithPath("open").description("Is open issue?"),
+                        fieldWithPath("createdDateTime").description("Label created date-time"),
+
+                        fieldWithPath("comments[].user.id").description("Id of User"),
+                        fieldWithPath("comments[].user.userName").description("Name of User"),
+                        fieldWithPath("comments[].user.email").description("Email of User"),
+                        fieldWithPath("comments[].user.avatarUrl").description("AvatarUrl of User"),
+                        fieldWithPath("comments[].description").description("Description of comment"),
+                        fieldWithPath("comments[].avatarUrl").description("user avatar url"),
+                        fieldWithPath("comments[].createdDateTime").description("User created data-time"),
+
+                        fieldWithPath("assignees[].userId").description("Id of assignee"),
+                        fieldWithPath("assignees[].userName").description("Title of assignee"),
+                        fieldWithPath("assignees[].avatarUrl").description("avatarUrl of assignee"),
+                        fieldWithPath("assignees[].assigned").description("Is assigned user?"),
+
+                        fieldWithPath("labels[].id").description("DueDate of labels"),
+                        fieldWithPath("labels[].title").description("Title of labels"),
+                        fieldWithPath("labels[].description").description("Description of labels"),
+                        fieldWithPath("labels[].backgroundColorCode").description("Background Color of labels"),
+                        fieldWithPath("labels[].fontColorCode").description("Font Color of labels"),
+
+                        fieldWithPath("milestone.id").description("Id of milestone"),
+                        fieldWithPath("milestone.title").description("Title of milestone"),
+                        fieldWithPath("milestone.description").description("Description of milestone"),
+                        fieldWithPath("milestone.createdDateTime").description("Milestone created date-time"),
+                        fieldWithPath("milestone.dueDate").description("Due-date of milestone"),
+                        fieldWithPath("milestone.openedIssues").description("OpenedIssues of milestone"),
+                        fieldWithPath("milestone.closedIssues").description("ClosedIssues of milestone")
                 )
         ));
     }
