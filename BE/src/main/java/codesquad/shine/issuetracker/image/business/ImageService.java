@@ -30,9 +30,9 @@ public class ImageService {
         uploadFileResponse = fileService.uploadFile(originalFilename, file);
 
         Image newImage = Image.builder()
-                .oriImgName(originalFilename)
-                .imgName(uploadFileResponse.getSavedFileName())
-                .imgUrl(uploadFileResponse.getUploadFullUrl())
+                .originImageName(originalFilename)
+                .imageName(uploadFileResponse.getSavedFileName())
+                .imageUrl(uploadFileResponse.getUploadFullUrl())
                 .build();
 
         return imageRepository.save(newImage);
