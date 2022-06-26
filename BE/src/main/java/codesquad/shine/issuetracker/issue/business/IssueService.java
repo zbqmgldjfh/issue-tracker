@@ -11,6 +11,8 @@ import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Label;
@@ -22,6 +24,8 @@ import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,6 +103,32 @@ public class IssueService {
                 .build();
     }
 
+    public void changeOpenStatus(StatusRequest request, String userEmail) {
+        User findUser = userService.findUserByEmail(userEmail);
+
+        List<Issue> issueList = issueRepository.findAllById(request.getIssueNumbers());
+        issueList.stream()
+                .filter(issue -> issue.isSameAuthor(findUser))
+                .forEach(issue -> issue.changeOpenStatus(request.getOpen()));
+    }
+
+    @Transactional(readOnly = true)
+    public IssuesResponse searchIssueByStatus(Boolean status, Pageable pageable) {
+        Page<IssueResponse> issues = issueRepository.optimizationFindIssueByStatus(status, pageable)
+                .map(i -> new IssueResponse(i.getTitle(), UserResponseDto.of(i.getAuthor()), i.getCreatedDateTime(),
+                        AssigneeGraph(i), LabelToDto(i.getLabels()), MilestoneDto.of(i.getMilestone())
+                ));
+
+        // TODO : count를 구하는 다른 방법 찾아보기, 너무 매번 쿼리를 날려서 count 하고 있음
+        Long totalElementsCount = issueRepository.count();
+        Long openCount = issues.getTotalElements();
+        Long closedCount = totalElementsCount - openCount;
+        Long labelCount = labelService.count();
+        Long milestoneCount = milestoneService.count();
+
+        return new IssuesResponse(openCount, closedCount, labelCount, milestoneCount, issues);
+    }
+
     private List<CommentDto> commentToDto(List<Comment> comments) {
         log.info("[commentToDto]");
         return comments.stream()
@@ -120,14 +150,5 @@ public class IssueService {
         return labels.stream()
                 .map(LabelDto::new)
                 .collect(Collectors.toList());
-    }
-
-    public void changeOpenStatus(StatusRequest request, String userEmail) {
-        User findUser = userService.findUserByEmail(userEmail);
-
-        List<Issue> issueList = issueRepository.findAllById(request.getIssueNumbers());
-        issueList.stream()
-                .filter(issue -> issue.isSameAuthor(findUser))
-                .forEach(issue -> issue.changeOpenStatus(request.getOpen()));
     }
 }
