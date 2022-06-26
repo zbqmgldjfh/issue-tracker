@@ -114,4 +114,12 @@ public class Issue extends BaseTimeEntity {
     public void addLabels(List<Label> labelList) {
         labelList.forEach(label -> addLabel(label));
     }
+
+    public boolean isSameAuthor(User user) {
+        return this.author.equals(user);
+    }
+
+    public void changeOpenStatus(Boolean open) {
+        this.open = open;
+    }
 }

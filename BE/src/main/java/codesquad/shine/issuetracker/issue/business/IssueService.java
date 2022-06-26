@@ -8,6 +8,7 @@ import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.label.business.LabelService;
@@ -119,5 +120,14 @@ public class IssueService {
         return labels.stream()
                 .map(LabelDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void changeOpenStatus(StatusRequest request, String userEmail) {
+        User findUser = userService.findUserByEmail(userEmail);
+
+        List<Issue> issueList = issueRepository.findAllById(request.getIssueNumbers());
+        issueList.stream()
+                .filter(issue -> issue.isSameAuthor(findUser))
+                .forEach(issue -> issue.changeOpenStatus(request.getOpen()));
     }
 }
