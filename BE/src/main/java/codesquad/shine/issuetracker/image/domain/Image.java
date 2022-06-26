@@ -21,30 +21,30 @@ public class Image extends BaseTimeEntity {
     @Column(name = "image_id")
     private Long id;
 
-    private String imgName;
-    private String oriImgName;
-    private String imgUrl;
+    private String imageName;
+    private String originImageName;
+    private String imageUrl;
 
-    public Image(Long id, String imgName, String oriImgName, String imgUrl) {
+    public Image(Long id, String imageName, String originImageName, String imageUrl) {
         this.id = id;
-        this.imgName = imgName;
-        this.oriImgName = oriImgName;
-        this.imgUrl = imgUrl;
+        this.imageName = imageName;
+        this.originImageName = originImageName;
+        this.imageUrl = imageUrl;
     }
 
     @Builder
-    public Image(String imgName, String oriImgName, String imgUrl, Issue issue) {
-        Assert.hasText(imgName, "title must not be null and must contain at least one non-whitespace character");
-        Assert.hasText(oriImgName, "title must not be null and must contain at least one non-whitespace character");
-        Assert.hasText(imgUrl, "title must not be null and must contain at least one non-whitespace character");
-        this.imgName = imgName;
-        this.oriImgName = oriImgName;
-        this.imgUrl = imgUrl;
+    public Image(String imageName, String originImageName, String imageUrl, Issue issue) {
+        Assert.hasText(imageName, "title must not be null and must contain at least one non-whitespace character");
+        Assert.hasText(originImageName, "title must not be null and must contain at least one non-whitespace character");
+        Assert.hasText(imageUrl, "title must not be null and must contain at least one non-whitespace character");
+        this.imageName = imageName;
+        this.originImageName = originImageName;
+        this.imageUrl = imageUrl;
     }
 
     public void updateItemImg(String oriImgName, String imgName, String imgUrl) {
-        this.oriImgName = oriImgName;
-        this.imgName = imgName;
-        this.imgUrl = imgUrl;
+        this.originImageName = oriImgName;
+        this.imageName = imgName;
+        this.imageUrl = imgUrl;
     }
 }

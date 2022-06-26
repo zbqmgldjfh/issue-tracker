@@ -24,6 +24,6 @@ public class ImageController {
     @PostMapping
     public ImageResponse upload(@RequestParam("file") MultipartFile file) throws IOException {
         Image savedImg = imageService.upload(file);
-        return new ImageResponse(savedImg.getImgUrl());
+        return new ImageResponse(savedImg.getImageUrl());
     }
 }
