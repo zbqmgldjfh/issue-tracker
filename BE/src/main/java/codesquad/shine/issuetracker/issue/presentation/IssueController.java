@@ -5,6 +5,7 @@ import codesquad.shine.issuetracker.issue.business.CommentService;
 import codesquad.shine.issuetracker.issue.business.IssueService;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +60,11 @@ public class IssueController {
     @GetMapping("/{issueId}")
     public IssueDetailResponse showIssueDetail(@PathVariable Long issueId) {
         return issueService.findIssueDetailById(issueId);
+    }
+
+    @ForLoginUser
+    @PatchMapping
+    public void changeOpenStatus(@RequestBody StatusRequest request, @RequestAttribute String userEmail) {
+        issueService.changeOpenStatus(request, userEmail);
     }
 }
