@@ -8,7 +8,11 @@ import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +45,13 @@ public class IssueController {
             @RequestBody CommentRequest request,
             @RequestAttribute String userEmail) {
         commentService.edit(issueId, commentId, request.getComment(), userEmail);
+    }
+
+    @GetMapping
+    public IssuesResponse filterIssueByStatus(
+            @RequestParam(defaultValue = "true") Boolean status,
+            @PageableDefault(size = 5, page = 0, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        return issueService.searchIssueByStatus(status, pageable);
     }
 
     @ForLoginUser
