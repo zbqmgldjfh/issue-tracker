@@ -29,4 +29,8 @@ public class IssueAssignee {
         this.issue = issue;
         this.user = user;
     }
+
+    public void clearUser() {
+        user = null;
+    }
 }

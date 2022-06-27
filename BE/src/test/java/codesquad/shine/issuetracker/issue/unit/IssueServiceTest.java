@@ -4,6 +4,7 @@ import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.issue.business.IssueService;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
@@ -155,5 +156,37 @@ public class IssueServiceTest {
         then(issue.getTitle()).isEqualTo("변경된 title");
         verify(issueRepository, times(1)).optimizationFindById(any());
         verify(userService, times(1)).findUserByEmail(any());
+    }
+
+    @Test
+    @DisplayName("Issue의 assignees 를 변경한다.")
+    public void change_assignees_test() {
+        // given
+        AssigneesEditRequest request = new AssigneesEditRequest(List.of());
+        User user1 = new User(1L, "test1", "shine@naver.com", "testUrl");
+        User user2 = new User(2L, "test2", "shine@naver.com", "testUrl");
+        User user3 = new User(3L, "test3", "shine@naver.com", "testUrl");
+        User user4 = new User(4L, "shin4", "shine@naver.com", "avatar");
+        User user5 = new User(5L, "shin5", "shine@naver.com", "avatar");
+
+        User owner = new User(6L, "shine", "shine@naver.com", "avatar");
+        Issue issue = new Issue("title1", true, owner);
+
+        issue.addAssignees(List.of(user4, user5));
+
+        given(issueRepository.optimizationFindById(any(Long.class))).willReturn(Optional.of(issue));
+        given(userService.findAllByIds(any())).willReturn(List.of(user1, user2, user3));
+
+        // when
+        issueService.editAssignees(1L, request);
+
+        // then
+        then(issue.getIssueAssignees().get(0).getUser().getUserName()).isEqualTo("test1");
+        then(issue.getIssueAssignees().get(1).getUser().getUserName()).isEqualTo("test2");
+        then(issue.getIssueAssignees().get(2).getUser().getUserName()).isEqualTo("test3");
+        then(issue.getIssueAssignees().size()).isEqualTo(3);
+
+        verify(issueRepository, times(1)).optimizationFindById(any());
+        verify(userService, times(1)).findAllByIds(any());
     }
 }

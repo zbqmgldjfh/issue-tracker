@@ -91,8 +91,8 @@ public class IssueController {
     }
 
     @ForLoginUser
-    @GetMapping("/{issueId}/assignees")
-    public void 거(@PathVariable Long issueId, @RequestBody AssigneesEditRequest request) {
+    @PatchMapping("/{issueId}/assignees")
+    public void editIssueAssignee(@PathVariable Long issueId, @RequestBody AssigneesEditRequest request) {
         issueService.editAssignees(issueId, request);
     }
 }

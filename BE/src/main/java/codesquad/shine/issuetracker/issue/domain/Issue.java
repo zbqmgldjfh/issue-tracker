@@ -111,6 +111,12 @@ public class Issue extends BaseTimeEntity {
         });
     }
 
+    public void editAssignees(List<User> assigneeList) {
+        this.issueAssignees.forEach(IssueAssignee::clearUser);
+        this.issueAssignees.clear(); // 우선 초기화 후 선택된 유저만 새롭게 할당
+        addAssignees(assigneeList);
+    }
+
     public void addLabels(List<Label> labelList) {
         labelList.forEach(label -> addLabel(label));
     }

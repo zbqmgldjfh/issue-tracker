@@ -8,6 +8,7 @@ import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
@@ -169,5 +170,18 @@ public class IssueService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
 
         return new AssigneesResponse(AssigneeGraph(findIssue));
+    }
+
+    public void editAssignees(Long issueId, AssigneesEditRequest request) {
+        Issue findIssue = issueRepository.optimizationFindById(issueId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+
+        List<Long> assigneeIds = request.getAssignees().stream()
+                .filter(Assignee::isAssigned)
+                .map(Assignee::getUserId)
+                .collect(Collectors.toList());
+
+        List<User> users = userService.findAllByIds(assigneeIds);
+        findIssue.editAssignees(users);
     }
 }
