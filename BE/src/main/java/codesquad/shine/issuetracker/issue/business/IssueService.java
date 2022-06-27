@@ -11,10 +11,7 @@ import codesquad.shine.issuetracker.issue.domain.IssueRepository;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
-import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
-import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueResponse;
-import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.*;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Label;
@@ -165,5 +162,12 @@ public class IssueService {
         }
 
         findIssue.changeTitle(request.getTitle());
+    }
+
+    public AssigneesResponse getAssignees(Long issueId) {
+        Issue findIssue = issueRepository.optimizationFindById(issueId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+
+        return new AssigneesResponse(AssigneeGraph(findIssue));
     }
 }
