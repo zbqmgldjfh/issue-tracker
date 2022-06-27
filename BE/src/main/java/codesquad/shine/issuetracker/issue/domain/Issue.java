@@ -122,4 +122,8 @@ public class Issue extends BaseTimeEntity {
     public void changeOpenStatus(Boolean open) {
         this.open = open;
     }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
 }

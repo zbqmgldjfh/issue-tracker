@@ -4,10 +4,12 @@ import codesquad.shine.issuetracker.comment.domain.Comment;
 import codesquad.shine.issuetracker.comment.presentation.dto.response.CommentDto;
 import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.exception.ErrorCode;
+import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
@@ -150,5 +152,18 @@ public class IssueService {
         return labels.stream()
                 .map(LabelDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void changeTitle(Long issueId, IssueTitleRequest request, String userEmail) {
+        Issue findIssue = issueRepository.optimizationFindById(issueId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+
+        User findUser = userService.findUserByEmail(userEmail);
+
+        if (!findIssue.isSameAuthor(findUser)) {
+            throw new NotAvailableException(ErrorCode.INVALID_USER);
+        }
+
+        findIssue.changeTitle(request.getTitle());
     }
 }
