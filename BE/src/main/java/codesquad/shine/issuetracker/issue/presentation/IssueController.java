@@ -3,10 +3,7 @@ package codesquad.shine.issuetracker.issue.presentation;
 import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.issue.business.CommentService;
 import codesquad.shine.issuetracker.issue.business.IssueService;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.*;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
@@ -91,5 +88,11 @@ public class IssueController {
     @GetMapping("/{issueId}/assignees")
     public AssigneesResponse getIssueAssignee(@PathVariable Long issueId) {
         return issueService.getAssignees(issueId);
+    }
+
+    @ForLoginUser
+    @GetMapping("/{issueId}/assignees")
+    public void 거(@PathVariable Long issueId, @RequestBody AssigneesEditRequest request) {
+        issueService.editAssignees(issueId, request);
     }
 }
