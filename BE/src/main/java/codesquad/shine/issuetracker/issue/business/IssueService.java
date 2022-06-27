@@ -170,7 +170,6 @@ public class IssueService {
     @Transactional(readOnly = true)
     public AssigneesResponse getAssignees(Long issueId) {
         Issue findIssue = findIssue(issueId);
-
         return new AssigneesResponse(AssigneeGraph(findIssue));
     }
 
@@ -189,8 +188,8 @@ public class IssueService {
     @Transactional(readOnly = true)
     public LabelsResponse getLabelsByIssueId(Long issueId) {
         Issue findIssue = findIssue(issueId);
-        List<LabelDto> labelDtos = LabelToDto(findIssue.getLabels());
-        return new LabelsResponse(labelDtos);
+        List<LabelDto> labels = labelService.findAllWithCheckAssignee(findIssue);
+        return new LabelsResponse(labels);
     }
 
     public void editLabelsByIssueId(Long issueId, LabelsCheckRequest request) {

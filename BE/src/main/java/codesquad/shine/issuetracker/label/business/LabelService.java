@@ -2,6 +2,7 @@ package codesquad.shine.issuetracker.label.business;
 
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.label.domain.LabelRepository;
@@ -72,5 +73,18 @@ public class LabelService {
 
     public Long count() {
         return labelRepository.count();
+    }
+
+    public List<LabelDto> findAllWithCheckAssignee(Issue issue) {
+        return labelRepository.findAll().stream()
+                .map(label -> LabelDto.of(label, isInIssue(label, issue)))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isInIssue(Label targetLabel, Issue issue) {
+        return issue.getLabels().stream()
+                .filter(label -> label.equals(targetLabel))
+                .findAny()
+                .isPresent();
     }
 }
