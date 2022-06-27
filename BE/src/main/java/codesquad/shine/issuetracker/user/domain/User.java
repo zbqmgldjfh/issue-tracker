@@ -22,12 +22,6 @@ public class User {
     private String email;
     private String avatarUrl;
 
-//    @OneToMany(mappedBy = "author")
-//    private List<Issue> issues;
-
-//    @OneToMany(mappedBy = "issue")
-//    private List<IssueAssignee> issueAssignees = new ArrayList<>();
-
     public User(String userName, String email, String avatarUrl) {
         this.userName = userName;
         this.email = email;
