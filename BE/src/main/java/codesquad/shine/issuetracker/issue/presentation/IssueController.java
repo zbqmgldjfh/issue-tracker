@@ -9,6 +9,7 @@ import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailR
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
 import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
+import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -107,5 +108,11 @@ public class IssueController {
     @PatchMapping("/{issueId}/labels")
     public void editLabels(@PathVariable Long issueId, @RequestBody LabelsCheckRequest request) {
         issueService.editLabelsByIssueId(issueId, request);
+    }
+
+    @ForLoginUser
+    @GetMapping("/{issueId}/milestones")
+    public MilestoneListResponse getMilestoneList(@PathVariable Long issueId) {
+        return issueService.getMilestonesByIssueId(issueId);
     }
 }

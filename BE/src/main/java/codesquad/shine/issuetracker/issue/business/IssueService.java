@@ -17,6 +17,7 @@ import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import codesquad.shine.issuetracker.milestone.business.MilestoneService;
 import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
+import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
 import codesquad.shine.issuetracker.user.business.UserService;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.presentation.dto.UserResponseDto;
@@ -196,5 +197,12 @@ public class IssueService {
         Issue findIssue = findIssue(issueId);
         List<Long> labelIds = request.getLabelIds();
         findIssue.changeLabels(labelService.getLabelsInId(labelIds));
+    }
+
+    @Transactional(readOnly = true)
+    public MilestoneListResponse getMilestonesByIssueId(Long issueId) {
+        Issue findIssue = findIssue(issueId);
+        List<MilestoneDto> milestones = milestoneService.findAllWithCheckAssignee(findIssue);
+        return new MilestoneListResponse(milestones);
     }
 }
