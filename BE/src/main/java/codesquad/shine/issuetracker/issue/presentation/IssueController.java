@@ -7,6 +7,7 @@ import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentReques
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
@@ -84,5 +85,11 @@ public class IssueController {
     @PatchMapping("/{issueId}/title")
     public void changeTitle(@RequestBody IssueTitleRequest request, @PathVariable Long issueId, @RequestAttribute String userEmail) {
         issueService.changeTitle(issueId, request, userEmail);
+    }
+
+    @ForLoginUser
+    @GetMapping("/{issueId}/assignees")
+    public AssigneesResponse getIssueAssignee(@PathVariable Long issueId) {
+        return issueService.getAssignees(issueId);
     }
 }
