@@ -136,4 +136,8 @@ public class Issue extends BaseTimeEntity {
     public void changeLabels(List<Label> labels) {
         this.labels = labels;
     }
+
+    public void changeMilestone(Milestone milestone) {
+        this.milestone = milestone;
+    }
 }
