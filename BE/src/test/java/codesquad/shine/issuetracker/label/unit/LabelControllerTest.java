@@ -9,7 +9,7 @@ import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
-import codesquad.shine.issuetracker.label.dto.response.LabelListResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import codesquad.shine.issuetracker.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -128,7 +128,7 @@ class LabelControllerTest extends ControllerTest {
         List<LabelDto> labelDtoList = new ArrayList<>();
         labelDtoList.add(labelDto1);
         labelDtoList.add(labelDto2);
-        LabelListResponse response = new LabelListResponse(labelDtoList);
+        LabelsResponse response = new LabelsResponse(labelDtoList);
 
         // 가입된 유저
         User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");

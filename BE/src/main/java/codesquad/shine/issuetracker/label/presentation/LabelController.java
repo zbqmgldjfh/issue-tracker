@@ -4,7 +4,7 @@ import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
-import codesquad.shine.issuetracker.label.dto.response.LabelListResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class LabelController {
     }
 
     @GetMapping
-    public LabelListResponse searchLabelList() {
+    public LabelsResponse searchLabelList() {
         return labelService.findALL();
     }
 

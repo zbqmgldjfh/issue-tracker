@@ -8,7 +8,7 @@ import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
-import codesquad.shine.issuetracker.label.dto.response.LabelListResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,12 +29,12 @@ public class LabelService {
     }
 
     @Transactional(readOnly = true)
-    public LabelListResponse findALL() {
+    public LabelsResponse findALL() {
         List<LabelDto> labelDtoList = labelRepository.findAll()
                 .stream()
                 .map(LabelDto::new)
                 .collect(Collectors.toList());
-        return new LabelListResponse(labelDtoList);
+        return new LabelsResponse(labelDtoList);
     }
 
     public LabelEditResponse edit(Long labelId, LabelEditRequest request) {

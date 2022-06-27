@@ -8,7 +8,7 @@ import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
-import codesquad.shine.issuetracker.label.dto.response.LabelListResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,7 +62,7 @@ class LabelServiceTest {
         given(labelRepository.findAll()).willReturn(List.of(label1, label2, label3));
 
         // when
-        LabelListResponse labelList = labelService.findALL();
+        LabelsResponse labelList = labelService.findALL();
 
         // then
         then(labelList.getLabels().size()).isEqualTo(3);

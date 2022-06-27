@@ -8,6 +8,7 @@ import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesRes
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -94,5 +95,17 @@ public class IssueController {
     @PatchMapping("/{issueId}/assignees")
     public void editIssueAssignee(@PathVariable Long issueId, @RequestBody AssigneesEditRequest request) {
         issueService.editAssignees(issueId, request);
+    }
+
+    @ForLoginUser
+    @GetMapping("/{issueId}/labels")
+    public LabelsResponse getLabels(@PathVariable Long issueId) {
+        return issueService.getLabelsByIssueId(issueId);
+    }
+
+    @ForLoginUser
+    @PatchMapping("/{issueId}/labels")
+    public void editLabels(@PathVariable Long issueId, @RequestBody LabelsCheckRequest request) {
+        issueService.editLabelsByIssueId(issueId, request);
     }
 }

@@ -8,14 +8,12 @@ import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.*;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.*;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Label;
+import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import codesquad.shine.issuetracker.milestone.business.MilestoneService;
 import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
@@ -86,10 +84,14 @@ public class IssueService {
         return null;
     }
 
+    private Issue findIssue(Long issueId) {
+        return issueRepository.optimizationFindById(issueId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+    }
+
     @Transactional(readOnly = true)
     public IssueDetailResponse findIssueDetailById(Long issueId) {
-        Issue findIssue = issueRepository.optimizationFindById(issueId) // toOne relation fetch-join
-                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+        Issue findIssue = findIssue(issueId);
 
         return IssueDetailResponse.builder()
                 .title(findIssue.getTitle()) // 즉시로딩
@@ -153,8 +155,7 @@ public class IssueService {
     }
 
     public void changeTitle(Long issueId, IssueTitleRequest request, String userEmail) {
-        Issue findIssue = issueRepository.optimizationFindById(issueId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+        Issue findIssue = findIssue(issueId);
 
         User findUser = userService.findUserByEmail(userEmail);
 
@@ -165,16 +166,15 @@ public class IssueService {
         findIssue.changeTitle(request.getTitle());
     }
 
+    @Transactional(readOnly = true)
     public AssigneesResponse getAssignees(Long issueId) {
-        Issue findIssue = issueRepository.optimizationFindById(issueId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+        Issue findIssue = findIssue(issueId);
 
         return new AssigneesResponse(AssigneeGraph(findIssue));
     }
 
     public void editAssignees(Long issueId, AssigneesEditRequest request) {
-        Issue findIssue = issueRepository.optimizationFindById(issueId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.ISSUE_NOT_FOUND));
+        Issue findIssue = findIssue(issueId);
 
         List<Long> assigneeIds = request.getAssignees().stream()
                 .filter(Assignee::isAssigned)
@@ -183,5 +183,18 @@ public class IssueService {
 
         List<User> users = userService.findAllByIds(assigneeIds);
         findIssue.editAssignees(users);
+    }
+
+    @Transactional(readOnly = true)
+    public LabelsResponse getLabelsByIssueId(Long issueId) {
+        Issue findIssue = findIssue(issueId);
+        List<LabelDto> labelDtos = LabelToDto(findIssue.getLabels());
+        return new LabelsResponse(labelDtos);
+    }
+
+    public void editLabelsByIssueId(Long issueId, LabelsCheckRequest request) {
+        Issue findIssue = findIssue(issueId);
+        List<Long> labelIds = request.getLabelIds();
+        findIssue.changeLabels(labelService.getLabelsInId(labelIds));
     }
 }
