@@ -115,4 +115,10 @@ public class IssueController {
     public MilestoneListResponse getMilestoneList(@PathVariable Long issueId) {
         return issueService.getMilestonesByIssueId(issueId);
     }
+
+    @ForLoginUser
+    @PatchMapping("/{issueId}/milestones")
+    public void editMilestone(@PathVariable Long issueId, @RequestBody MilestoneCheckRequest request) {
+        issueService.editMilestoneByIssueId(issueId, request);
+    }
 }

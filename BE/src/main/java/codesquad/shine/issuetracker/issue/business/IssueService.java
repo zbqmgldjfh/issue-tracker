@@ -205,4 +205,12 @@ public class IssueService {
         List<MilestoneDto> milestones = milestoneService.findAllWithCheckAssignee(findIssue);
         return new MilestoneListResponse(milestones);
     }
+
+    public void editMilestoneByIssueId(Long issueId, MilestoneCheckRequest request) {
+        Issue findIssue = findIssue(issueId);
+
+        // 요청시 선탠된 마일스톤의 id가 있다면 해당 마일스톤을 할당, 없다면 null로 변경하게 된다.
+        Milestone findMilestone = milestoneService.findById(request.getMilestoneId());
+        findIssue.changeMilestone(findMilestone);
+    }
 }
