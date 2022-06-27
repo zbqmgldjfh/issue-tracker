@@ -33,4 +33,8 @@ public class UserService {
     public List<User> getAssigneeInId(List<Long> ids) {
         return userRepository.findAllById(ids);
     }
+
+    public List<User> findAllByIds(List<Long> assigneeIds) {
+        return userRepository.findAllById(assigneeIds);
+    }
 }
