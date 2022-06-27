@@ -96,7 +96,8 @@ public class IssueControllerTest extends ControllerTest {
                         fieldWithPath("milestones[].createdDateTime").description("CreatedDateTime of milestones"),
                         fieldWithPath("milestones[].dueDate").description("DueDate of milestones"),
                         fieldWithPath("milestones[].openedIssues").description("OpenedIssues count of milestones"),
-                        fieldWithPath("milestones[].closedIssues").description("ClosedIssues count of milestones")
+                        fieldWithPath("milestones[].closedIssues").description("ClosedIssues count of milestones"),
+                        fieldWithPath("milestones[].checked").description("Is checked milestone?")
                 )
         ));
     }
@@ -214,7 +215,8 @@ public class IssueControllerTest extends ControllerTest {
                         fieldWithPath("milestone.createdDateTime").description("Milestone created date-time"),
                         fieldWithPath("milestone.dueDate").description("Due-date of milestone"),
                         fieldWithPath("milestone.openedIssues").description("OpenedIssues of milestone"),
-                        fieldWithPath("milestone.closedIssues").description("ClosedIssues of milestone")
+                        fieldWithPath("milestone.closedIssues").description("ClosedIssues of milestone"),
+                        fieldWithPath("milestone.checked").description("Is checked milestone?")
                 )
         ));
     }

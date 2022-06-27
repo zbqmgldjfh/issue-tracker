@@ -17,8 +17,9 @@ public class MilestoneDto {
     private LocalDate dueDate;
     private Long openedIssues;
     private Long closedIssues;
+    private Boolean checked;
 
-    private MilestoneDto(Milestone milestone) {
+    private MilestoneDto(Milestone milestone, Boolean checked) {
         this.id = milestone.getId();
         this.title = milestone.getTitle();
         this.description = milestone.getDescription();
@@ -26,9 +27,14 @@ public class MilestoneDto {
         this.dueDate = milestone.getDueDate();
         this.openedIssues = milestone.countOpenedIssues();
         this.closedIssues = milestone.countClosedIssues();
+        this.checked = checked;
     }
 
     public static MilestoneDto of(Milestone milestone) {
-        return new MilestoneDto(milestone);
+        return new MilestoneDto(milestone, true);
+    }
+
+    public static MilestoneDto of(Milestone milestone, Boolean open) {
+        return new MilestoneDto(milestone, open);
     }
 }

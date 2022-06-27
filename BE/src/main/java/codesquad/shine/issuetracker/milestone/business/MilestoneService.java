@@ -2,6 +2,7 @@ package codesquad.shine.issuetracker.milestone.business;
 
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import codesquad.shine.issuetracker.milestone.domain.MilestoneRepository;
@@ -50,14 +51,14 @@ public class MilestoneService {
 
     public MilestoneListResponse findALL() {
         List<MilestoneDto> milestoneDtoList = milestoneRepository.findAll().stream()
-                .map(m -> MilestoneDto.of(m))
+                .map(m -> MilestoneDto.of(m, false))
                 .collect(Collectors.toList());
         return new MilestoneListResponse(milestoneDtoList);
     }
 
     public List<MilestoneDto> findAllDto() {
         return milestoneRepository.findAll().stream()
-                .map(m -> MilestoneDto.of(m))
+                .map(m -> MilestoneDto.of(m, false))
                 .collect(Collectors.toList());
     }
 
@@ -71,5 +72,18 @@ public class MilestoneService {
 
     public Long count() {
         return milestoneRepository.count();
+    }
+
+    public List<MilestoneDto> findAllWithCheckAssignee(Issue issue) {
+        return milestoneRepository.findAll().stream()
+                .map(milestone -> MilestoneDto.of(milestone, isAssigneeMilestone(milestone, issue)))
+                .collect(Collectors.toList());
+    }
+
+    private Boolean isAssigneeMilestone(Milestone milestone, Issue issue) {
+        if (issue.getMilestone() == null) {
+            return false;
+        }
+        return issue.getMilestone().equals(milestone);
     }
 }
