@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LabelListResponse {
+public class LabelsResponse {
 
     private List<LabelDto> labels;
 }
