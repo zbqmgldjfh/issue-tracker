@@ -9,6 +9,7 @@ import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
@@ -338,6 +339,41 @@ public class IssueControllerTest extends ControllerTest {
                 pathParameters(
                         parameterWithName("issueId").description("Id of Issue"),
                         parameterWithName("commentId").description("Id of Comment")
+                )
+        ));
+    }
+
+    @Test
+    public void change_title_login_user_success_test() throws Exception {
+        // given
+        IssueTitleRequest request = new IssueTitleRequest("변경된 title");
+
+        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
+        given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
+
+        // when
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/issues/{issueId}/title", 1L)
+                .header("Authorization", "Bearer " + "testAccessToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        ).andDo(print());
+
+        // then
+        resultActions.andExpect(status().isOk());
+
+        //documentation
+        resultActions.andDo(document("issue-title-edit-success",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("header content type"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
+                ),
+                requestFields(
+                        fieldWithPath("title").description("title of issue")
+                ),
+                pathParameters(
+                        parameterWithName("issueId").description("Id of Issue")
                 )
         ));
     }

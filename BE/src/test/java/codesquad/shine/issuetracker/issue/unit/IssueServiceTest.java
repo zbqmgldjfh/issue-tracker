@@ -5,6 +5,7 @@ import codesquad.shine.issuetracker.issue.business.IssueService;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
 import codesquad.shine.issuetracker.label.business.LabelService;
@@ -26,6 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
@@ -81,7 +83,6 @@ public class IssueServiceTest {
         verify(userService, times(1)).getAllAssignee();
         verify(labelService, times(1)).findAllDto();
         verify(milestoneService, times(1)).findAllDto();
-
     }
 
     @Test
@@ -134,5 +135,25 @@ public class IssueServiceTest {
         // then
         then(issueList).extracting("open").containsExactly(false, false, false, true, false);
         then(issueList).extracting("author").containsExactly(owner, owner, owner, other, other);
+    }
+
+    @Test
+    @DisplayName("Issue의 title을 변경한다.")
+    public void change_issue_title_test() {
+        // given
+        User owner = new User(1L, "shine", "shine@naver.com", "avatar");
+        Issue issue = new Issue("title1", true, owner);
+
+        IssueTitleRequest request = new IssueTitleRequest("변경된 title");
+        given(issueRepository.optimizationFindById(any())).willReturn(Optional.of(issue));
+        given(userService.findUserByEmail(any(String.class))).willReturn(owner);
+
+        // when
+        issueService.changeTitle(1L, request, "test@naver.com");
+
+        // then
+        then(issue.getTitle()).isEqualTo("변경된 title");
+        verify(issueRepository, times(1)).optimizationFindById(any());
+        verify(userService, times(1)).findUserByEmail(any());
     }
 }
