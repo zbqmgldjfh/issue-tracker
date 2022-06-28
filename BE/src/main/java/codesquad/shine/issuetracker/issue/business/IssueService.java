@@ -176,12 +176,7 @@ public class IssueService {
 
     public void editAssignees(Long issueId, AssigneesEditRequest request) {
         Issue findIssue = findIssue(issueId);
-
-        List<Long> assigneeIds = request.getAssignees().stream()
-                .filter(Assignee::isAssigned)
-                .map(Assignee::getUserId)
-                .collect(Collectors.toList());
-
+        List<Long> assigneeIds = request.getAssigneeIds();
         List<User> users = userService.findAllByIds(assigneeIds);
         findIssue.editAssignees(users);
     }
