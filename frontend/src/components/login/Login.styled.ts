@@ -15,10 +15,6 @@ export const FlexBox = styled.div`
     font-weight: 700;
     color: ${({ theme }) => theme.color.subText};
   }
-
-  a {
-    text-decoration: none;
-  }
 `;
 
 export const Title = styled.div`
