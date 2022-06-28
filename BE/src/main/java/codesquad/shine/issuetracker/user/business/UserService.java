@@ -3,6 +3,7 @@ package codesquad.shine.issuetracker.user.business;
 import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,19 @@ public class UserService {
 
     public List<User> findAllByIds(List<Long> assigneeIds) {
         return userRepository.findAllById(assigneeIds);
+    }
+
+    public List<Assignee> findAllWithCheckAssignee(Issue issue) {
+        return userRepository.findAll().stream()
+                .map(user -> Assignee.of(user, isInIssue(user, issue)))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isInIssue(User targetUser, Issue issue) {
+        return issue.getIssueAssignees().stream()
+                .map(ia -> ia.getUser())
+                .filter(user -> user.equals(targetUser))
+                .findAny()
+                .isPresent();
     }
 }

@@ -170,7 +170,8 @@ public class IssueService {
     @Transactional(readOnly = true)
     public AssigneesResponse getAssignees(Long issueId) {
         Issue findIssue = findIssue(issueId);
-        return new AssigneesResponse(AssigneeGraph(findIssue));
+        List<Assignee> assignees = userService.findAllWithCheckAssignee(findIssue);
+        return new AssigneesResponse(assignees);
     }
 
     public void editAssignees(Long issueId, AssigneesEditRequest request) {
