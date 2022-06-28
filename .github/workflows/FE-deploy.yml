@@ -1,0 +1,54 @@
+
+name: FE-deploy
+
+on:
+  push:
+    branches: [FE-deploy]
+
+permissions:
+  contents: read
+
+env:
+  S3_BUCKET_NAME: shine-issue-tracker-fe
+
+jobs:
+  react:
+    name: react build & deploy
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      # npm 패키지 설치
+      - name: install yarn dependencies
+        run: yarn install
+
+      # 리액트 빌드
+      - name: build react
+        run: yarn build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # react 빌드한 /dist를 s3로 업로드
+      - name: Upload /dist to S3
+        run: aws s3 sync ./dist s3://$S3_BUCKET_NAME
+        
+      # 업로드한 s3 파일을 각 CDN 캐시 무효화하여 리프레시 하기
+      - name: CloudFront Invalidation
+        env: 
+          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
+        run: aws cloudfront create-invalidation --distribution-id $CLOUD_FRONT_ID --paths "/*"
