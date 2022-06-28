@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import DropdownCaret from 'src/assets/DropdownCaret.svg';
 import Label from 'src/assets/Label.svg';
 import Milestone from 'src/assets/Milestone.svg';
@@ -19,7 +20,9 @@ export default function IssueHeader() {
         <IssueAttribute SVG={Label} text={'Labels'} number={13} />
         <IssueAttribute SVG={Milestone} text={'Milestone'} number={3} />
       </AttributesBox>
-      <NewIssueButton>New issue</NewIssueButton>
+      <Link to="/issues-new">
+        <NewIssueButton>New issue</NewIssueButton>
+      </Link>
     </HeaderBox>
   );
 }

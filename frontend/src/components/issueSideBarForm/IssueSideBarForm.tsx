@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Setting from 'src/assets/Setting.svg';
+import { Icon } from '../common/icon/Icon';
 import IssueModal from '../issueModal/IssueModal';
 import { IssueSideBarFormBox, IssueSideBarFormContent, IssueSideBarHeader } from './IssueSideBarForm.styled';
 
@@ -36,7 +36,7 @@ export default function IssueSideBarForm({
         <div>{title}</div>
         {hasModal && (
           <div onClick={handleClick}>
-            <Setting />
+            <Icon name="Setting" />
           </div>
         )}
       </IssueSideBarHeader>

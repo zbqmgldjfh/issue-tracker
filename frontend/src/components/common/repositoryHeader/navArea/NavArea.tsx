@@ -1,16 +1,16 @@
 import React from 'react';
+import { Icon, IconPropType } from '../../icon/Icon';
 import { NavBox, NavText } from './NavArea.styled';
 
 type NavAreaType = {
-  text: string;
-  SVG: any;
+  content: IconPropType;
 };
 
-export default function NavArea({ text, SVG }: NavAreaType) {
+export default function NavArea({ content }: NavAreaType) {
   return (
     <NavBox>
-      {<SVG />}
-      <NavText>{text}</NavText>
+      <Icon name={content} />
+      <NavText>{content}</NavText>
     </NavBox>
   );
 }

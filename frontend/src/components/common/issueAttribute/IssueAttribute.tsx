@@ -1,17 +1,17 @@
 import React from 'react';
+import { Icon, IconPropType } from '../icon/Icon';
 import ItemsNumber from '../itemsNumber/itemsNumber';
 import AttributeBox from './IssueAttribute.styled';
 
 type propsType = {
-  SVG: any;
-  text: string;
+  text: IconPropType;
   number: number;
 };
 
-export default function IssueAttribute({ SVG, text, number }: propsType) {
+export default function IssueAttribute({ text, number }: propsType) {
   return (
     <AttributeBox>
-      {<SVG />}
+      <Icon name={text} />
       {text}
       <ItemsNumber number={number} />
     </AttributeBox>

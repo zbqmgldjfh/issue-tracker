@@ -1,6 +1,5 @@
 import React from 'react';
-import ClosedIssues from 'src/assets/ClosedIssues.svg';
-import OpenIssues from 'src/assets/OpenIssues.svg';
+import { Icon } from '../common/icon/Icon';
 import DropdownButton from './DropdownButton';
 import { ToolbarBox, ToggleBox, OpenText, ClosedText, Toggle, DropdownList } from './IssuesToolbar.styled';
 
@@ -14,11 +13,11 @@ export default function IssuesToolbar() {
       <ToggleBox>
         <input type="checkbox" />
         <Toggle>
-          <OpenIssues />
+          <Icon name="OpenIssues" />
           <OpenText>7 Open</OpenText>
         </Toggle>
         <Toggle>
-          <ClosedIssues />
+          <Icon name="ClosedIssues" />
           <ClosedText>10 Closed</ClosedText>
         </Toggle>
       </ToggleBox>

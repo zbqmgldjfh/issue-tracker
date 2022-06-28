@@ -26,6 +26,7 @@
     "object-curly-spacing": [2, "always"],
     "consistent-return": "off",
     "max-len": ["error", { "code": 120 }],
-    "arrow-parens": "as-needed"
+    "arrow-parens": "as-needed",
+    "react/react-in-jsx-scope": 0
   }
 }
