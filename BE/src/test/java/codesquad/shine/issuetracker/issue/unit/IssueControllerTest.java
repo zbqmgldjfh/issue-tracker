@@ -90,6 +90,7 @@ public class IssueControllerTest extends ControllerTest {
                         fieldWithPath("labels[].description").description("Description of label"),
                         fieldWithPath("labels[].backgroundColorCode").description("Background Color"),
                         fieldWithPath("labels[].fontColorCode").description("FontColor Color"),
+                        fieldWithPath("labels[].checked").description("Is checked Color"),
                         fieldWithPath("milestones[].id").description("Id of milestones"),
                         fieldWithPath("milestones[].title").description("Title of milestones"),
                         fieldWithPath("milestones[].description").description("Description of milestones"),
@@ -208,6 +209,7 @@ public class IssueControllerTest extends ControllerTest {
                         fieldWithPath("labels[].description").description("Description of labels"),
                         fieldWithPath("labels[].backgroundColorCode").description("Background Color of labels"),
                         fieldWithPath("labels[].fontColorCode").description("Font Color of labels"),
+                        fieldWithPath("labels[].checked").description("Is checked labels"),
 
                         fieldWithPath("milestone.id").description("Id of milestone"),
                         fieldWithPath("milestone.title").description("Title of milestone"),

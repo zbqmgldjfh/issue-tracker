@@ -160,11 +160,12 @@ class LabelControllerTest extends ControllerTest {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
                 ),
                 responseFields(
-                        fieldWithPath("labels[].id").description("result validation"),
-                        fieldWithPath("labels[].title").description("result message"),
-                        fieldWithPath("labels[].description").description("result message"),
-                        fieldWithPath("labels[].backgroundColorCode").description("result message"),
-                        fieldWithPath("labels[].fontColorCode").description("result message")
+                        fieldWithPath("labels[].id").description("id of label"),
+                        fieldWithPath("labels[].title").description("title of label"),
+                        fieldWithPath("labels[].description").description("description of label"),
+                        fieldWithPath("labels[].backgroundColorCode").description("backgroundColorCode of label"),
+                        fieldWithPath("labels[].fontColorCode").description("fontColorCode of label"),
+                        fieldWithPath("labels[].checked").description("Is checked label?")
                 )
         ));
     }
