@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../common/icon/Icon';
+import { Icon } from 'src/components/common/icon/Icon';
 import DropdownButton from './DropdownButton';
 import { ToolbarBox, ToggleBox, OpenText, ClosedText, Toggle, DropdownList } from './IssuesToolbar.styled';
 

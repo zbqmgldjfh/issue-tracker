@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import DropdownCaret from 'src/assets/DropdownCaret.svg';
-import Label from 'src/assets/Label.svg';
-import Milestone from 'src/assets/Milestone.svg';
+import { Icon } from 'src/components/common/icon/Icon';
 import IssueAttribute from '../common/issueAttribute/IssueAttribute';
 import { HeaderBox, FilterBox, FilterButton, FilterInput, AttributesBox, NewIssueButton } from './IssuesHeader.styled';
 
@@ -12,13 +10,13 @@ export default function IssueHeader() {
       <FilterBox>
         <FilterButton>
           Filters
-          <DropdownCaret />
+          <Icon name="DropdownCaret" />
         </FilterButton>
         <FilterInput />
       </FilterBox>
       <AttributesBox>
-        <IssueAttribute SVG={Label} text={'Labels'} number={13} />
-        <IssueAttribute SVG={Milestone} text={'Milestone'} number={3} />
+        <IssueAttribute text={'Labels'} number={13} />
+        <IssueAttribute text={'Milestone'} number={3} />
       </AttributesBox>
       <Link to="/issues-new">
         <NewIssueButton>New issue</NewIssueButton>

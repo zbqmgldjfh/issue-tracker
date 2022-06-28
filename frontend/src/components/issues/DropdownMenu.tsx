@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { shallowEqual, useSelector } from 'react-redux';
 import { RootState } from 'src';
-import CloseIcon from 'src/assets/Close.svg';
 import { deleteTab } from 'src/modules/clickedTab';
+import { Icon } from 'src/components/common/icon/Icon';
 import { MenuBox, Title, Main, Header, Input } from './DropdownMenu.styled';
 
 type PropsType = {
@@ -20,7 +20,7 @@ export default function DropdownMenu({ modalWidth, detail, makeItem }: PropsType
     <MenuBox isClicked={clickedTab.clickedTab === detail} width={modalWidth}>
       <Header>
         <Title>Filter by {detail}</Title>
-        <CloseIcon onClick={() => dispatch(deleteTab())} />
+        <Icon name="CloseIcon" onClick={() => dispatch(deleteTab())} />
       </Header>
       <br />
       <Main>

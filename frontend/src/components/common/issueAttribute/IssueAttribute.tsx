@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, IconPropType } from '../icon/Icon';
+import { Icon, IconPropType } from 'src/components/common/icon/Icon';
 import ItemsNumber from '../itemsNumber/itemsNumber';
 import AttributeBox from './IssueAttribute.styled';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Icon } from '../common/icon/Icon';
+import { Icon } from 'src/components/common/icon/Icon';
 import IssueModal from '../issueModal/IssueModal';
 import { IssueSideBarFormBox, IssueSideBarFormContent, IssueSideBarHeader } from './IssueSideBarForm.styled';
 

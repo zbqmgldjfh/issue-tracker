@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../common/icon/Icon';
+import { Icon } from 'src/components/common/icon/Icon';
 import { Assignee, FlexBox, IssuesItemBox, ItemMain, OpenedBy, Review, ReviewNum, Title } from './IssuesItem.styled';
 
 export default function IssuesItem() {

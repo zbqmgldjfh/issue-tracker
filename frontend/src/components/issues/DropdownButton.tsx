@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { RootState } from 'src';
-import DropdownCaret from 'src/assets/DropdownCaret.svg';
 import { changeTab, deleteTab } from 'src/modules/clickedTab';
+import { Icon } from 'src/components/common/icon/Icon';
 import { ButtonBox, Button } from './DropdownButton.styled';
 import DropdownMenu from './DropdownMenu';
 
@@ -25,7 +25,7 @@ export default function DropdownButton({ modalWidth, text, makeItem }: propsType
     <ButtonBox>
       <Button onClick={btnEvent} data-buttonname={text}>
         {text}
-        <DropdownCaret />
+        <Icon name="DropdownCaret" />
       </Button>
       <DropdownMenu modalWidth={modalWidth} detail={text} makeItem={makeItem} />
     </ButtonBox>

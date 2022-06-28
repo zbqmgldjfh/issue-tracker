@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon } from '../icon/Icon';
+import { Icon } from 'src/components/common/icon/Icon';
 import ItemsNumber from '../itemsNumber/itemsNumber';
 import NavArea from './navArea/NavArea';
 

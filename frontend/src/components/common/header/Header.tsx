@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '../icon/Icon';
+import { Icon } from 'src/components/common/icon/Icon';
 
 import { HeaderBox, FlexBox, NavBar, SearchBox, Thumbnail } from './Header.styled';
 
