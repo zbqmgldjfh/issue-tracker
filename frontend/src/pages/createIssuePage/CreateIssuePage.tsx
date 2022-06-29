@@ -2,10 +2,9 @@
 import React from 'react';
 import CreateIssue from 'src/components/createIssue/CreateIssue';
 import IssueSideBarForm from 'src/components/issueSideBarForm/IssueSideBarForm';
+import { createKey } from 'src/utils/utils';
 
 import { CreateIssuePageBox, SideBar } from './CreateIssuePage.styled';
-
-const createKey = (value: string, key: number) => `value:${value}-key:${key}`;
 
 const sideBarInfo = [
   {
@@ -55,7 +54,7 @@ const sideBarInfo = [
   },
 ];
 
-export default function AddIssuePage() {
+export default function CreateIssuePage() {
   return (
     <CreateIssuePageBox>
       <CreateIssue />
