@@ -42,7 +42,7 @@ export default function LoadingPage() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
+    if (token) {
       navigate(`/`);
     }
   }, [token]);
