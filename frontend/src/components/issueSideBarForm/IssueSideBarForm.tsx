@@ -44,6 +44,7 @@ export default function IssueSideBarForm({
       {modalInfo && isModal && (
         <IssueModal
           title={modalInfo.title || ''}
+          setIsModal={setIsModal}
           searchText={modalInfo.searchText || ''}
           searchResultArray={modalInfo.searchResultArray || []}
         />

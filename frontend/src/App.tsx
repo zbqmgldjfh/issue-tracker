@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './common/GlobalStyle';
 import { darkMode, lightMode } from './common/Theme';
 import ThemeButton from './components/themeButton/ThemeButton';
-import AddIssuePage from './pages/createIssuePage/AddIssuePage';
+import AddIssuePage from './pages/createIssuePage/CreateIssuePage';
 import HeaderPage from './pages/header/HeaderPage';
 import IssuesPage from './pages/issues/IssuesPage';
 import LoadingPage from './pages/loading/LoadingPage';

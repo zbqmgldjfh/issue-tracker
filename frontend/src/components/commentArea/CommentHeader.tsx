@@ -1,10 +1,9 @@
 /* eslint-disable no-confusing-arrow */
 import React from 'react';
+import { createKey } from 'src/utils/utils';
 import { CommentHeaderBox, CommentHeaderButtons, CommentHeaderTabNav, Tab } from './CommentHeader.styled';
 
 const tabList = ['Write', 'Preview'];
-
-const createKey = (str: string, idx: number) => `value:${str}-idx:${idx}`;
 
 export default function CommentHeader() {
   const tempState = 0;
