@@ -3,10 +3,20 @@ import { Icon } from 'src/components/common/icon/Icon';
 import DropdownButton from './DropdownButton';
 import { ToolbarBox, ToggleBox, OpenText, ClosedText, Toggle, DropdownList } from './IssuesToolbar.styled';
 
-export default function IssuesToolbar() {
+type IssuesCountType = {
+  openCount: number;
+  closedCount: number;
+};
+
+type IssuesToolbarType = {
+  issuesCount: IssuesCountType;
+};
+
+export default function IssuesToolbar({ issuesCount }: IssuesToolbarType) {
   const makeAuthorMenu = () => {
     return <></>;
   };
+  const { openCount, closedCount } = issuesCount;
 
   return (
     <ToolbarBox>
@@ -14,11 +24,11 @@ export default function IssuesToolbar() {
         <input type="checkbox" />
         <Toggle>
           <Icon name="OpenIssues" />
-          <OpenText>7 Open</OpenText>
+          <OpenText>{openCount} Open</OpenText>
         </Toggle>
         <Toggle>
           <Icon name="ClosedIssues" />
-          <ClosedText>10 Closed</ClosedText>
+          <ClosedText>{closedCount} Closed</ClosedText>
         </Toggle>
       </ToggleBox>
       <DropdownList>
