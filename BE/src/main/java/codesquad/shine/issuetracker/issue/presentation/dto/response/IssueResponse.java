@@ -4,7 +4,7 @@ import codesquad.shine.issuetracker.common.vo.Assignee;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.milestone.business.dto.MilestoneDto;
 import codesquad.shine.issuetracker.user.presentation.dto.UserResponseDto;
-import lombok.AllArgsConstructor;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class IssueResponse {
 
     private String title;
@@ -24,4 +23,14 @@ public class IssueResponse {
     private List<Assignee> assignees;
     private List<LabelDto> labels;
     private MilestoneDto milestone;
+
+    @QueryProjection
+    public IssueResponse(String title, UserResponseDto author, LocalDateTime createdDateTime, List<Assignee> assignees, List<LabelDto> labels, MilestoneDto milestone) {
+        this.title = title;
+        this.author = author;
+        this.createdDateTime = createdDateTime;
+        this.assignees = assignees;
+        this.labels = labels;
+        this.milestone = milestone;
+    }
 }

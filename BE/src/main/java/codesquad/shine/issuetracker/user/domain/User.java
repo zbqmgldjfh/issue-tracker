@@ -35,4 +35,12 @@ public class User {
                 .avatarUrl(user.getAvatarUrl())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }

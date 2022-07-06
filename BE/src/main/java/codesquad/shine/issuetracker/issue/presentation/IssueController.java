@@ -26,6 +26,16 @@ public class IssueController {
     private final IssueService issueService;
 
     @ForLoginUser
+    @GetMapping("/search")
+    public IssuesResponse search(
+            SearchConditionRequest condition,
+            @PageableDefault(size = 5, page = 0, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestAttribute String userEmail
+    ) {
+        return issueService.search(userEmail, condition, pageable);
+    }
+
+    @ForLoginUser
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{issueId}/comments")
     public void addComment(@PathVariable Long issueId, @RequestBody CommentRequest request, @RequestAttribute String userEmail) {

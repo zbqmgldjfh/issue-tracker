@@ -8,11 +8,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface IssueRepository extends JpaRepository<Issue, Long> {
+public interface IssueRepository extends JpaRepository<Issue, Long>, IssueDynamicRepository {
 
     @Query("select i from Issue i " +
             "join fetch i.author u " +
-            "join fetch i.milestone m " +
+            "left join fetch i.milestone m " +
             "where i.id = :id")
     Optional<Issue> optimizationFindById(@Param("id") Long id);
 
