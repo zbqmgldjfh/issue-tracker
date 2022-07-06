@@ -6,6 +6,7 @@ import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import codesquad.shine.issuetracker.user.domain.User;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
+@Slf4j
 @Getter
 @Entity
 @EqualsAndHashCode(of = "id")

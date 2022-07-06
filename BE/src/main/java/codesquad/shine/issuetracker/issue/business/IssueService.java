@@ -208,4 +208,21 @@ public class IssueService {
         Milestone findMilestone = milestoneService.findById(request.getMilestoneId());
         findIssue.changeMilestone(findMilestone);
     }
+
+    public IssuesResponse search(String userEmail, SearchConditionRequest condition, Pageable pageable) {
+        User findUser = userService.findUserByEmail(userEmail);
+        Page<IssueResponse> issues = issueRepository.searchIssueByCondition(findUser, condition, pageable)
+                .map(i -> new IssueResponse(i.getTitle(), UserResponseDto.of(i.getAuthor()), i.getCreatedDateTime(),
+                        AssigneeGraph(i), LabelToDto(i.getLabels()), MilestoneDto.of(i.getMilestone())
+                ));
+
+        // TODO : count를 구하는 다른 방법 찾아보기, 너무 매번 쿼리를 날려서 count 하고 있음
+        Long totalElementsCount = issueRepository.count();
+        Long openCount = issues.getTotalElements();
+        Long closedCount = totalElementsCount - openCount;
+        Long labelCount = labelService.count();
+        Long milestoneCount = milestoneService.count();
+
+        return new IssuesResponse(openCount, closedCount, labelCount, milestoneCount, issues);
+    }
 }
