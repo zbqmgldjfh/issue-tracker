@@ -8,6 +8,10 @@
 #### 👨‍ 아울 [@아울](https://github.com/bukim0329)
 #### 👨‍ Shine [@zbqmgldjfh](https://github.com/zbqmgldjfh)
 
+## 실행 영상
+![이슈트래커](https://user-images.githubusercontent.com/60593969/179674790-8fb09d82-77f2-4470-af8d-65a9d2ae0c91.gif)
+
+
 ## Ground Rule
 
 - 10:00 ~ 10:30
