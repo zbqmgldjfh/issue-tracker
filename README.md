@@ -11,6 +11,25 @@
 ## 실행 영상
 ![이슈트래커](https://user-images.githubusercontent.com/60593969/179674790-8fb09d82-77f2-4470-af8d-65a9d2ae0c91.gif)
 
+## BE 2.0ver TODO List
+- [ ] DB Cleanup Class 구현하기, 테스트간에 격리용도
+- [ ] 로그인 업데이트
+  - [ ] 로그인 인수 조건 도출
+  - [ ] 로그인 인수 테스트 작성
+    - [ ] Form 기반 로그인 기능 구현
+    - [ ] Bearer 기반 로그인 기능 구현
+    - [ ] Basic 기반 로그인 기능 구현
+- [ ] 인수 테스트를 수행하기 전 공통으로 필요한 상용자는 초기에 설정하기
+  - [ ] DataLoader 구현하기
+
+## BE 1.0ver 기능
+기본적인 API 기능을 제공    
+[API 명세서 바로가기](https://github.com/zbqmgldjfh/issue-tracker/wiki/API-%EB%AA%85%EC%84%B8)
+- Issue 관련 기능
+- Label 관련 기능
+- MileStone 관련 기능
+- Comment 관련 기능
+- Image 등록 기능
 
 ## Ground Rule
 
