@@ -12,22 +12,36 @@ public class SecurityContextPersistenceFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
+        SecurityContext contextFromSession = loadContext(request);
+        SecurityContextHolder.setContext(contextFromSession);
+        return true;
+    }
 
-        if (session == null) {
-            return false;
+    private SecurityContext loadContext(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        SecurityContext securityContext = readSecurityContextFromSession(session);
+
+        if (securityContext == null) {
+            return SecurityContextHolder.createEmptyContext();
         }
 
-        Object contextFromSession = session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+        return securityContext;
+    }
+
+    private SecurityContext readSecurityContextFromSession(HttpSession httpSession) {
+        if (httpSession == null) {
+            return null;
+        }
+
+        Object contextFromSession = httpSession.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
         if (contextFromSession == null) {
-            contextFromSession = SecurityContextHolder.createEmptyContext();
+            return null;
         }
 
         if (!(contextFromSession instanceof SecurityContext)) {
-            return false;
+            return null;
         }
 
-        SecurityContextHolder.setContext((SecurityContext) contextFromSession);
-        return true;
+        return (SecurityContext) contextFromSession;
     }
 }
