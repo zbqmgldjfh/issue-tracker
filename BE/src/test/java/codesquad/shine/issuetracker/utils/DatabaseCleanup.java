@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Profile("test")
@@ -27,13 +28,30 @@ public class DatabaseCleanup implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        List<String> blackList = Arrays.asList("CONSTANTS"
+                , "ENUM_VALUES"
+                , "INDEXES"
+                , "INDEX_COLUMNS"
+                , "INFORMATION_SCHEMA_CATALOG_NAME"
+                , "IN_DOUBT"
+                , "LOCKS"
+                , "QUERY_STATISTICS"
+                , "RIGHTS"
+                , "ROLES"
+                , "SESSIONS"
+                , "SESSION_STATE"
+                , "SETTINGS"
+                , "SYNONYMS");
+
         tableNames = new ArrayList<>();
         try {
             DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
             ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
             while (tables.next()) {
                 String tableName = tables.getString("TABLE_NAME");
-                tableNames.add(tableName);
+                if (!blackList.contains(tableName)) {
+                    tableNames.add(tableName);
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException();
