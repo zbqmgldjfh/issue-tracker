@@ -3,7 +3,14 @@ package codesquad.shine.issuetracker.issue.presentation;
 import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.issue.business.CommentService;
 import codesquad.shine.issuetracker.issue.business.IssueService;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.*;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.LabelsCheckRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.MilestoneCheckRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.SearchConditionRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
@@ -15,11 +22,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/issues")
+@RequestMapping("/api/issues")
 public class IssueController {
 
     private final CommentService commentService;

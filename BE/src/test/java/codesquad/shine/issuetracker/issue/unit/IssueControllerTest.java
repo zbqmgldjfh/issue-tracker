@@ -36,9 +36,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -62,7 +66,7 @@ public class IssueControllerTest extends ControllerTest {
         given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naver.com");
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/issues/form")
+        ResultActions resultActions = mockMvc.perform(get("/api/issues/form")
                 .header("Authorization", "Bearer " + "testAccessToken")
         ).andDo(print());
 
@@ -114,7 +118,7 @@ public class IssueControllerTest extends ControllerTest {
         willDoNothing().given(issueService).create(any(IssueRequest.class), any(String.class));
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/issues/form")
+        ResultActions resultActions = mockMvc.perform(post("/api/issues/form")
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
@@ -166,7 +170,7 @@ public class IssueControllerTest extends ControllerTest {
         given(issueService.findIssueDetailById(any(Long.class))).willReturn(response);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/issues/{issueId}", 1L)
+        ResultActions resultActions = mockMvc.perform(get("/api/issues/{issueId}", 1L)
                 .header("Authorization", "Bearer " + "testAccessToken")
         ).andDo(print());
 
@@ -234,7 +238,7 @@ public class IssueControllerTest extends ControllerTest {
         willDoNothing().given(commentService).add(any(Long.class), any(String.class), any(String.class));
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/issues/{issueId}/comments", 1L)
+        ResultActions resultActions = mockMvc.perform(post("/api/issues/{issueId}/comments", 1L)
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
@@ -267,7 +271,7 @@ public class IssueControllerTest extends ControllerTest {
         given(jwtTokenFactory.parsePayload(any(String.class))).willThrow(NotAvailableException.class);
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/issues/{issueId}/comments", 1L)
+        ResultActions resultActions = mockMvc.perform(post("/api/issues/{issueId}/comments", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         ).andDo(print());
@@ -287,7 +291,7 @@ public class IssueControllerTest extends ControllerTest {
         willDoNothing().given(commentService).delete(any(Long.class), any(Long.class), any(String.class));
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/issues/{issueId}/comments/{commentId}", 1L, 2L)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/issues/{issueId}/comments/{commentId}", 1L, 2L)
                 .header("Authorization", "Bearer " + "testAccessToken")
         ).andDo(print());
 
@@ -320,7 +324,7 @@ public class IssueControllerTest extends ControllerTest {
         willDoNothing().given(commentService).edit(any(Long.class), any(Long.class), any(String.class), any(String.class));
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/issues/{issueId}/comments/{commentId}", 1L, 2L)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/issues/{issueId}/comments/{commentId}", 1L, 2L)
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changeRequest))
@@ -356,7 +360,7 @@ public class IssueControllerTest extends ControllerTest {
         given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/issues/{issueId}/title", 1L)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/issues/{issueId}/title", 1L)
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
