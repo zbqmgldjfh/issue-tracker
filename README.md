@@ -12,7 +12,7 @@
 ![이슈트래커](https://user-images.githubusercontent.com/60593969/179674790-8fb09d82-77f2-4470-af8d-65a9d2ae0c91.gif)
 
 ## BE 2.0ver TODO List
-- [ ] DB Cleanup Class 구현하기, 테스트간에 격리용도
+- [x] DB Cleanup Class 구현하기, 테스트간에 격리용도
 - [ ] 로그인 업데이트
   - [x] 로그인 인수 조건 도출 [wiki 링크](https://github.com/zbqmgldjfh/issue-tracker/wiki/%EC%9D%B8%EC%88%98%EC%A1%B0%EA%B1%B4-%EB%8F%84%EC%B6%9C)
   - [ ] 로그인 인수 테스트 작성
