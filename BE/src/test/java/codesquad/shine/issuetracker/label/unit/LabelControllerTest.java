@@ -28,9 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,7 +57,7 @@ class LabelControllerTest extends ControllerTest {
         given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naverc.com");
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/labels")
+        ResultActions resultActions = mockMvc.perform(post("/api/labels")
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
@@ -89,7 +93,7 @@ class LabelControllerTest extends ControllerTest {
         given(jwtTokenFactory.parsePayload(any(String.class))).willThrow(NotAvailableException.class);
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/labels")
+        ResultActions resultActions = mockMvc.perform(post("/api/labels")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         ).andDo(print());
@@ -140,7 +144,7 @@ class LabelControllerTest extends ControllerTest {
         given(labelService.findALL()).willReturn(response);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/labels")
+        ResultActions resultActions = mockMvc.perform(get("/api/labels")
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaTypes.HAL_JSON)
@@ -189,7 +193,7 @@ class LabelControllerTest extends ControllerTest {
         willDoNothing().given(labelService).delete(any(Long.class));
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/labels/{labelId}", 1L)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/labels/{labelId}", 1L)
                 .header("Authorization", "Bearer " + "testAccessToken")
         ).andDo(print());
 
@@ -230,7 +234,7 @@ class LabelControllerTest extends ControllerTest {
         LabelEditRequest request = new LabelEditRequest("색상 after", "edit!!", new Color("bg", "fg"));
 
         // when
-        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/labels/{labelId}", 1L)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/labels/{labelId}", 1L)
                 .header("Authorization", "Bearer " + "testAccessToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
