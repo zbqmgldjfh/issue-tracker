@@ -135,7 +135,7 @@ class LabelControllerTest extends ControllerTest {
         LabelsResponse response = new LabelsResponse(labelDtoList);
 
         // 가입된 유저
-        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
+        User newUser = new User(2L, "test user", "zbqmgldjfh@gmail.com", "url");
         userRepository.save(newUser);
 
         // 유저의 token 생성
