@@ -59,7 +59,7 @@ public class CustomUserDetailsServiceTest {
     @Test
     public void load_user_by_username_exception_Test() {
         // given
-        given(userRepository.findUserByEmail(anyString())).willThrow(new AuthenticationException());
+        given(userRepository.findUserByEmail(anyString())).willThrow(new AuthenticationException("해당 사용자를 찾을 수 없습니다."));
 
         // when
         ThrowableAssert.ThrowingCallable actual = () -> userDetailsService.loadUserByUsername(EMAIL);

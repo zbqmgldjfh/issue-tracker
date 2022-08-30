@@ -45,7 +45,7 @@ class CommentServiceTest {
         // given
         Issue test1 = Issue.createBasic("test1");
         CommentRequest commentRequest = new CommentRequest("test내용 입니다!");
-        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
+        User newUser = new User(2L, "test user", "zbqmgldjfh@gmail.com", "url");
 
         given(issueRepository.findById(any(Long.class))).willReturn(Optional.of(test1));
         given(userRepository.findUserByEmail(any(String.class))).willReturn(Optional.of(newUser));
@@ -65,7 +65,7 @@ class CommentServiceTest {
     public void delete_comment_test() {
         // given
         Issue testIssue = Issue.createBasic("test1");
-        User newUser = new User("test user", "zbqmgldjfh@gmail.com", "url");
+        User newUser = new User(2L, "test user", "zbqmgldjfh@gmail.com", "url");
         Comment comment = Comment.builder()
                 .description("댓글")
                 .issue(testIssue)
@@ -93,7 +93,7 @@ class CommentServiceTest {
     public void edit_comment_test() {
         // given
         Issue testIssue = Issue.createBasic("test1");
-        User newUser = new User("test user", "testUser@naver.com", "url");
+        User newUser = new User(2L, "test user", "testUser@naver.com", "url");
         Comment comment = new Comment(2L, "댓글", testIssue, newUser);
 
         testIssue.addComment(comment);
