@@ -8,6 +8,10 @@ public class Authentication implements Serializable {
     private Object credentials;
     private List<String> authorities;
 
+    public Authentication(Object principal, List<String> authorities) {
+        this(principal, null, authorities);
+    }
+
     public Authentication(Object principal, Object credentials, List<String> authorities) {
         this.principal = principal;
         this.credentials = credentials;
