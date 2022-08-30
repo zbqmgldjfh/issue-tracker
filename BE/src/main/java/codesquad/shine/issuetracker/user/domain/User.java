@@ -5,18 +5,21 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import java.util.List;
 
 @Builder
-@Getter
 @Entity
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
@@ -31,12 +34,42 @@ public class User {
 
     private String userName;
     private String email;
+    private String password;
     private String avatarUrl;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "MEMBER_ROLE",
+            joinColumns = @JoinColumn(name = "id", referencedColumnName = "id")
+    )
+    @Column(name = "role")
+    private List<String> roles;
 
     public User(String userName, String email, String avatarUrl) {
         this.userName = userName;
         this.email = email;
         this.avatarUrl = avatarUrl;
+        this.roles = List.of(RoleType.ROLE_MEMBER.name());
+    }
+
+    public User(Long id, String userName, String email, String avatarUrl) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.avatarUrl = avatarUrl;
+        this.roles = List.of(RoleType.ROLE_MEMBER.name());
+    }
+
+    public User(String userName, String email, String password, String avatarUrl) {
+        this(userName, email, password, avatarUrl, List.of(RoleType.ROLE_MEMBER.name()));
+    }
+
+    public User(String userName, String email, String password, String avatarUrl, List<String> roles) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.avatarUrl = avatarUrl;
+        this.roles = roles;
     }
 
     public static User of(OAuthUser user) {
@@ -45,6 +78,30 @@ public class User {
                 .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
                 .build();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public List<String> getRoles() {
+        return roles;
     }
 
     @Override
