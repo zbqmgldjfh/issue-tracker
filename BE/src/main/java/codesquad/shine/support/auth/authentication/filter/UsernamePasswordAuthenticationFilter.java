@@ -1,10 +1,10 @@
 package codesquad.shine.support.auth.authentication.filter;
 
 import codesquad.shine.issuetracker.user.domain.RoleType;
+import codesquad.shine.support.auth.authentication.context.Authentication;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.provider.AuthenticationManager;
-import codesquad.shine.support.auth.context.Authentication;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,5 +37,15 @@ public class UsernamePasswordAuthenticationFilter extends AbstractAuthentication
         String username = paramMap.get(USERNAME_FIELD)[0];
         String password = paramMap.get(PASSWORD_FIELD)[0];
         return new Authentication(username, password, List.of(RoleType.ROLE_ANONYMOUS.name()));
+    }
+
+    @Override
+    protected boolean getContinueChainBeforeSuccessfulAuthentication() {
+        return false;
+    }
+
+    @Override
+    protected boolean getContinueChainBeforeUnsuccessfulAuthentication() {
+        return false;
     }
 }
