@@ -47,4 +47,24 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(폼_로그인_응답.jsonPath().getString("name")).isEqualTo(NAME)
         );
     }
+
+    @DisplayName("Basic 인증방식의 로그인")
+    @Test
+    public void basic_login() {
+        // given
+        ExtractableResponse<Response> 베이직_로그인_응답 = RestAssured.given().log().all()
+                .auth().preemptive().basic(EMAIL, PASSWORD)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/users/me")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+
+        // when
+        assertAll(
+                () -> assertThat(베이직_로그인_응답.jsonPath().getString("id")).isNotNull(),
+                () -> assertThat(베이직_로그인_응답.jsonPath().getString("email")).isEqualTo(EMAIL),
+                () -> assertThat(베이직_로그인_응답.jsonPath().getString("name")).isEqualTo(NAME)
+        );
+    }
 }
