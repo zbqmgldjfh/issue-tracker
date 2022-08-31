@@ -40,10 +40,10 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "MEMBER_ROLE",
-            joinColumns = @JoinColumn(name = "id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "user_id")
     )
-    @Column(name = "role")
-    private List<String> roles;
+    @Column(name = "ROLE")
+    private List<String> roles = new ArrayList<>();
 
     public User(String userName, String email, String avatarUrl) {
         this.userName = userName;
