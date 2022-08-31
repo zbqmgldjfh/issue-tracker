@@ -1,0 +1,15 @@
+package codesquad.shine.support.auth.authentication.handler;
+
+import codesquad.shine.support.auth.authentication.context.SecurityContextHolder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class LoginAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, Exception failed) throws IOException {
+        SecurityContextHolder.clearContext();
+    }
+}
