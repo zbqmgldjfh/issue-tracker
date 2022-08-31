@@ -1,4 +1,4 @@
-package codesquad.shine.support.auth.authentication.userdetails;
+package codesquad.shine.support.auth.userdetails;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package codesquad.shine.support.auth.authentication.filter;
 
-import codesquad.shine.support.auth.authentication.context.Authentication;
-import codesquad.shine.support.auth.authentication.context.SecurityContextHolder;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.provider.AuthenticationManager;
+import codesquad.shine.support.auth.context.Authentication;
+import codesquad.shine.support.auth.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

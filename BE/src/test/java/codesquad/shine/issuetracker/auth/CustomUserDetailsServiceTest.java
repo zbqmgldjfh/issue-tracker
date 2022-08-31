@@ -4,7 +4,7 @@ import codesquad.shine.issuetracker.user.business.CustomUserDetailsService;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import codesquad.shine.support.auth.authentication.AuthenticationException;
-import codesquad.shine.support.auth.authentication.userdetails.UserDetails;
+import codesquad.shine.support.auth.userdetails.UserDetails;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

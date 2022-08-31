@@ -1,10 +1,10 @@
 package codesquad.shine.support.auth.authentication.filter;
 
 import codesquad.shine.issuetracker.user.domain.RoleType;
-import codesquad.shine.support.auth.authentication.context.Authentication;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.provider.AuthenticationManager;
+import codesquad.shine.support.auth.context.Authentication;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;

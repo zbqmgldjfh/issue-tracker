@@ -1,6 +1,6 @@
 package codesquad.shine.support.auth.authentication.handler;
 
-import codesquad.shine.support.auth.authentication.context.SecurityContextHolder;
+import codesquad.shine.support.auth.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
