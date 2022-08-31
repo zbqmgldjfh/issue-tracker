@@ -5,6 +5,7 @@ import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import codesquad.shine.support.auth.authentication.AuthenticationException;
 import codesquad.shine.support.auth.authentication.filter.BasicAuthenticationFilter;
+import codesquad.shine.support.auth.authentication.filter.TokenAuthenticationInterceptor;
 import codesquad.shine.support.auth.authentication.filter.UsernamePasswordAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.handler.DefaultAuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.DefaultAuthenticationSuccessHandler;
@@ -121,6 +122,28 @@ public class AbstractAuthenticationProcessingFilterTest {
 
         // when
         Authentication authentication = authenticationFilter.attemptAuthentication(request, response);
+
+        // then
+        assertAll(
+                () -> assertThat(authentication.getPrincipal()).isEqualTo(EMAIL),
+                () -> assertThat(authentication.getCredentials()).isEqualTo(PASSWORD)
+        );
+    }
+
+    @DisplayName("Bearer 인증방식으로 로그인에 성공한다")
+    @Test
+    public void bearer_authentication_success() throws IOException {
+        // given
+        String requestBody = "{\"email\": \"admin@email.com\", \"password\": \"password\"}";
+
+        request.setContent(requestBody.getBytes());
+
+        TokenAuthenticationInterceptor authenticationInterceptor = new TokenAuthenticationInterceptor(successHandler, failureHandler, provider);
+
+        given(userRepository.findUserByEmail(EMAIL)).willReturn(Optional.of(user));
+
+        // when
+        Authentication authentication = authenticationInterceptor.attemptAuthentication(request, response);
 
         // then
         assertAll(
