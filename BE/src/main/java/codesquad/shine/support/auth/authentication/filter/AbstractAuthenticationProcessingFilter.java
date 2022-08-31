@@ -17,7 +17,7 @@ public abstract class AbstractAuthenticationProcessingFilter implements HandlerI
     private AuthenticationFailureHandler failureHandler;
     private AuthenticationManager authenticationManager;
 
-    public AbstractAuthenticationProcessingFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, AuthenticationManager authenticationManager) {
+    protected AbstractAuthenticationProcessingFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, AuthenticationManager authenticationManager) {
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
         this.authenticationManager = authenticationManager;
