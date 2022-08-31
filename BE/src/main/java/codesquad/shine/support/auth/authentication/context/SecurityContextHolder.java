@@ -1,4 +1,4 @@
-package codesquad.shine.support.auth.context;
+package codesquad.shine.support.auth.authentication.context;
 
 public class SecurityContextHolder {
 

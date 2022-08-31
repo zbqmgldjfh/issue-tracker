@@ -1,8 +1,8 @@
 package codesquad.shine.issuetracker.auth;
 
-import codesquad.shine.support.auth.context.SecurityContext;
-import codesquad.shine.support.auth.context.SecurityContextHolder;
-import codesquad.shine.support.auth.context.SecurityContextPersistenceFilter;
+import codesquad.shine.support.auth.authentication.context.SecurityContext;
+import codesquad.shine.support.auth.authentication.context.SecurityContextHolder;
+import codesquad.shine.support.auth.authentication.context.SecurityContextPersistenceFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;

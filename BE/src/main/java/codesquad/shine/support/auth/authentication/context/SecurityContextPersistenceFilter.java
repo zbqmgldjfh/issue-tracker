@@ -1,4 +1,4 @@
-package codesquad.shine.support.auth.context;
+package codesquad.shine.support.auth.authentication.context;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static codesquad.shine.support.auth.context.SecurityContextHolder.SPRING_SECURITY_CONTEXT_KEY;
+import static codesquad.shine.support.auth.authentication.context.SecurityContextHolder.SPRING_SECURITY_CONTEXT_KEY;
 
 public class SecurityContextPersistenceFilter implements HandlerInterceptor {
 
@@ -15,6 +15,13 @@ public class SecurityContextPersistenceFilter implements HandlerInterceptor {
         SecurityContext contextFromSession = loadContext(request);
         SecurityContextHolder.setContext(contextFromSession);
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        SecurityContext contextAfterChainExecution = SecurityContextHolder.getContext();
+        SecurityContextHolder.clearContext();
+        saveContext(contextAfterChainExecution, request);
     }
 
     private SecurityContext loadContext(HttpServletRequest request) {
@@ -43,5 +50,10 @@ public class SecurityContextPersistenceFilter implements HandlerInterceptor {
         }
 
         return (SecurityContext) contextFromSession;
+    }
+
+    private void saveContext(SecurityContext securityContext, HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        httpSession.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
     }
 }
