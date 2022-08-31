@@ -33,9 +33,9 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         // given
         ExtractableResponse<Response> 폼_로그인_응답 = RestAssured
                 .given().log().all()
-                .auth().form(EMAIL, PASSWORD, new FormAuthConfig("/api/login/form", USERNAME_FIELD, PASSWORD_FIELD))
+                .auth().form(EMAIL, PASSWORD, new FormAuthConfig("/login/form", USERNAME_FIELD, PASSWORD_FIELD))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/auth/me")
+                .when().get("/api/users/me")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();
