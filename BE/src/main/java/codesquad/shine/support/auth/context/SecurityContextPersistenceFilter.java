@@ -1,4 +1,4 @@
-package codesquad.shine.support.auth.authentication.context;
+package codesquad.shine.support.auth.context;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static codesquad.shine.support.auth.authentication.context.SecurityContextHolder.SPRING_SECURITY_CONTEXT_KEY;
+import static codesquad.shine.support.auth.context.SecurityContextHolder.SPRING_SECURITY_CONTEXT_KEY;
 
 public class SecurityContextPersistenceFilter implements HandlerInterceptor {
 

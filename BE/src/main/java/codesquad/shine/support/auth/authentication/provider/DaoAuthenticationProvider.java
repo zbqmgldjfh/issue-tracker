@@ -2,8 +2,8 @@ package codesquad.shine.support.auth.authentication.provider;
 
 import codesquad.shine.issuetracker.user.business.CustomUserDetailsService;
 import codesquad.shine.support.auth.authentication.AuthenticationException;
-import codesquad.shine.support.auth.authentication.context.Authentication;
-import codesquad.shine.support.auth.authentication.userdetails.UserDetails;
+import codesquad.shine.support.auth.context.Authentication;
+import codesquad.shine.support.auth.userdetails.UserDetails;
 
 public class DaoAuthenticationProvider implements AuthenticationManager {
 

@@ -44,7 +44,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(폼_로그인_응답.jsonPath().getString("id")).isNotNull(),
                 () -> assertThat(폼_로그인_응답.jsonPath().getString("email")).isEqualTo(EMAIL),
-                () -> assertThat(폼_로그인_응답.jsonPath().getInt("name")).isEqualTo(NAME)
+                () -> assertThat(폼_로그인_응답.jsonPath().getString("name")).isEqualTo(NAME)
         );
     }
 }

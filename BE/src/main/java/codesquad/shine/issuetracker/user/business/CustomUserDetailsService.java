@@ -3,9 +3,9 @@ package codesquad.shine.issuetracker.user.business;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import codesquad.shine.support.auth.authentication.AuthenticationException;
-import codesquad.shine.support.auth.authentication.userdetails.AuthUser;
-import codesquad.shine.support.auth.authentication.userdetails.UserDetails;
-import codesquad.shine.support.auth.authentication.userdetails.UserDetailsService;
+import codesquad.shine.support.auth.userdetails.AuthUser;
+import codesquad.shine.support.auth.userdetails.UserDetails;
+import codesquad.shine.support.auth.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service

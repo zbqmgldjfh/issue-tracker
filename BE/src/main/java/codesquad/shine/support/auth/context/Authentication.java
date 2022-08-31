@@ -1,4 +1,4 @@
-package codesquad.shine.support.auth.authentication.context;
+package codesquad.shine.support.auth.context;
 
 import java.io.Serializable;
 import java.util.List;

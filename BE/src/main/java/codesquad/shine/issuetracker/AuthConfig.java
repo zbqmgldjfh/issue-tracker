@@ -1,7 +1,6 @@
 package codesquad.shine.issuetracker;
 
 import codesquad.shine.issuetracker.user.business.CustomUserDetailsService;
-import codesquad.shine.support.auth.authentication.context.SecurityContextPersistenceFilter;
 import codesquad.shine.support.auth.authentication.filter.UsernamePasswordAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
@@ -9,6 +8,7 @@ import codesquad.shine.support.auth.authentication.handler.DefaultAuthentication
 import codesquad.shine.support.auth.authentication.handler.DefaultAuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.handler.LoginAuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.provider.DaoAuthenticationProvider;
+import codesquad.shine.support.auth.context.SecurityContextPersistenceFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
