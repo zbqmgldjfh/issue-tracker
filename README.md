@@ -13,14 +13,14 @@
 
 ## BE 2.0ver TODO List
 - [x] DB Cleanup Class 구현하기, 테스트간에 격리용도
-- [ ] 로그인 업데이트
+- [x] 로그인 업데이트
   - [x] 로그인 인수 조건 도출 [wiki 링크](https://github.com/zbqmgldjfh/issue-tracker/wiki/%EC%9D%B8%EC%88%98%EC%A1%B0%EA%B1%B4-%EB%8F%84%EC%B6%9C)
-  - [ ] 로그인 인수 테스트 작성
-    - [ ] Form 기반 로그인 기능 구현
-    - [ ] Bearer 기반 로그인 기능 구현
-    - [ ] Basic 기반 로그인 기능 구현
-- [ ] 인수 테스트를 수행하기 전 공통으로 필요한 상용자는 초기에 설정하기
-  - [ ] DataLoader 구현하기
+  - [x] 로그인 인수 테스트 작성
+    - [x] Form 기반 로그인 기능 구현
+    - [x] Bearer 기반 로그인 기능 구현
+    - [x] Basic 기반 로그인 기능 구현
+- [x] 인수 테스트를 수행하기 전 공통으로 필요한 상용자는 초기에 설정하기
+  - [x] DataLoader 구현하기
 
 ## BE 1.0ver 기능
 기본적인 API 기능을 제공    
