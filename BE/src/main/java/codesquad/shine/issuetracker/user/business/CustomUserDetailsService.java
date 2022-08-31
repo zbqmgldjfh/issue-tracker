@@ -1,9 +1,14 @@
-package codesquad.shine.support.auth.authentication.userdetails;
+package codesquad.shine.issuetracker.user.business;
 
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
 import codesquad.shine.support.auth.authentication.AuthenticationException;
+import codesquad.shine.support.auth.authentication.userdetails.AuthUser;
+import codesquad.shine.support.auth.authentication.userdetails.UserDetails;
+import codesquad.shine.support.auth.authentication.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
