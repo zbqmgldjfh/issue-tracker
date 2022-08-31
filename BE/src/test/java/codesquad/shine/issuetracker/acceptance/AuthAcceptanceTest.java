@@ -31,21 +31,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     public void form_login() {
         // when
-        ExtractableResponse<Response> 폼_로그인_응답 = RestAssured
-                .given().log().all()
-                .auth().form(EMAIL, PASSWORD, new FormAuthConfig("/login/form", USERNAME_FIELD, PASSWORD_FIELD))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/users/me")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract();
+        ExtractableResponse<Response> 폼_로그인_응답 = 폼_로그인_후_회원_정보_조회(EMAIL, PASSWORD);
 
         // then
-        assertAll(
-                () -> assertThat(폼_로그인_응답.jsonPath().getString("id")).isNotNull(),
-                () -> assertThat(폼_로그인_응답.jsonPath().getString("email")).isEqualTo(EMAIL),
-                () -> assertThat(폼_로그인_응답.jsonPath().getString("name")).isEqualTo(NAME)
-        );
+        회원_정보_조회(폼_로그인_응답, EMAIL, NAME);
     }
 
     /**
@@ -58,20 +47,39 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     public void basic_login() {
         // when
-        ExtractableResponse<Response> 베이직_로그인_응답 = RestAssured
+        ExtractableResponse<Response> 베이직_로그인_응답 = 베이직_로그인_후_회원_정보_조회(EMAIL, PASSWORD);
+
+        // then
+        회원_정보_조회(베이직_로그인_응답, EMAIL, NAME);
+    }
+
+    private ExtractableResponse<Response> 베이직_로그인_후_회원_정보_조회(String email, String password) {
+        return RestAssured
                 .given().log().all()
-                .auth().preemptive().basic(EMAIL, PASSWORD)
+                .auth().preemptive().basic(email, password)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/users/me")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();
+    }
 
-        // then
+    private ExtractableResponse<Response> 폼_로그인_후_회원_정보_조회(String email, String password) {
+        return RestAssured
+                .given().log().all()
+                .auth().form(email, password, new FormAuthConfig("/login/form", USERNAME_FIELD, PASSWORD_FIELD))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/users/me")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    private void 회원_정보_조회(ExtractableResponse<Response> response, String email, String name) {
         assertAll(
-                () -> assertThat(베이직_로그인_응답.jsonPath().getString("id")).isNotNull(),
-                () -> assertThat(베이직_로그인_응답.jsonPath().getString("email")).isEqualTo(EMAIL),
-                () -> assertThat(베이직_로그인_응답.jsonPath().getString("name")).isEqualTo(NAME)
+                () -> assertThat(response.jsonPath().getString("id")).isNotNull(),
+                () -> assertThat(response.jsonPath().getString("email")).isEqualTo(email),
+                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(name)
         );
     }
 }
