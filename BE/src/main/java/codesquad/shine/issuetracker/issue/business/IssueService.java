@@ -8,8 +8,18 @@ import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.*;
-import codesquad.shine.issuetracker.issue.presentation.dto.response.*;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.LabelsCheckRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.MilestoneCheckRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.SearchConditionRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Label;
@@ -96,7 +106,7 @@ public class IssueService {
 
         return IssueDetailResponse.builder()
                 .title(findIssue.getTitle()) // 즉시로딩
-                .author(UserResponseDto.of(findIssue.getAuthor())) // lazy로딩 fetch-join
+                .author(UserResponseDto.of(findIssue.getUser())) // lazy로딩 fetch-join
                 .open(findIssue.getOpen()) // 즉시로딩
                 .createdDateTime(findIssue.getCreatedDateTime()) // 즉시로딩
                 .comments(commentToDto(findIssue.getComments())) // lazy로딩 batch-fetch
@@ -118,7 +128,7 @@ public class IssueService {
     @Transactional(readOnly = true)
     public IssuesResponse searchIssueByStatus(Boolean status, Pageable pageable) {
         Page<IssueResponse> issues = issueRepository.optimizationFindIssueByStatus(status, pageable)
-                .map(i -> new IssueResponse(i.getTitle(), UserResponseDto.of(i.getAuthor()), i.getCreatedDateTime(),
+                .map(i -> new IssueResponse(i.getTitle(), UserResponseDto.of(i.getUser()), i.getCreatedDateTime(),
                         AssigneeGraph(i), LabelToDto(i.getLabels()), MilestoneDto.of(i.getMilestone())
                 ));
 
@@ -212,7 +222,7 @@ public class IssueService {
     public IssuesResponse search(String userEmail, SearchConditionRequest condition, Pageable pageable) {
         User findUser = userService.findUserByEmail(userEmail);
         Page<IssueResponse> issues = issueRepository.searchIssueByCondition(findUser, condition, pageable)
-                .map(i -> new IssueResponse(i.getTitle(), UserResponseDto.of(i.getAuthor()), i.getCreatedDateTime(),
+                .map(i -> new IssueResponse(i.getTitle(), UserResponseDto.of(i.getUser()), i.getCreatedDateTime(),
                         AssigneeGraph(i), LabelToDto(i.getLabels()), MilestoneDto.of(i.getMilestone())
                 ));
 

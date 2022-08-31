@@ -135,7 +135,7 @@ public class IssueServiceTest {
 
         // then
         then(issueList).extracting("open").containsExactly(false, false, false, true, false);
-        then(issueList).extracting("author").containsExactly(owner, owner, owner, other, other);
+        then(issueList).extracting("user").containsExactly(owner, owner, owner, other, other);
     }
 
     @Test

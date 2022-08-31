@@ -5,11 +5,24 @@ import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import codesquad.shine.issuetracker.user.domain.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +44,9 @@ public class Issue extends BaseTimeEntity {
 
     private Boolean open;
 
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = LAZY)
-    private User author;
+    private User user;
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
     private List<IssueAssignee> issueAssignees = new ArrayList<>();
@@ -57,18 +70,18 @@ public class Issue extends BaseTimeEntity {
                 .build();
     }
 
-    public Issue(String title, Boolean open, User author) {
+    public Issue(String title, Boolean open, User user) {
         this.title = title;
         this.open = open;
-        this.author = author;
+        this.user = user;
     }
 
     @Builder
-    public Issue(String title, boolean open, User author, Milestone milestone) {
+    public Issue(String title, boolean open, User user, Milestone milestone) {
         Assert.hasText(title, "title must not be null");
         this.title = title;
         this.open = open;
-        this.author = author;
+        this.user = user;
         this.milestone = milestone;
     }
 
@@ -124,7 +137,7 @@ public class Issue extends BaseTimeEntity {
     }
 
     public boolean isSameAuthor(User user) {
-        return this.author.equals(user);
+        return this.user.equals(user);
     }
 
     public void changeOpenStatus(Boolean open) {

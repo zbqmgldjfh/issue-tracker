@@ -25,7 +25,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "USERS")
+@Table(name = "users")
 public class User {
 
     @Id

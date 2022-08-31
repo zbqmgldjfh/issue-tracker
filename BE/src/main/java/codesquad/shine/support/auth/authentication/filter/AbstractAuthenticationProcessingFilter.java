@@ -1,10 +1,11 @@
 package codesquad.shine.support.auth.authentication.filter;
 
-import codesquad.shine.support.auth.authentication.context.Authentication;
-import codesquad.shine.support.auth.authentication.context.SecurityContextHolder;
+import codesquad.shine.support.auth.authentication.AuthenticationToken;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.provider.AuthenticationManager;
+import codesquad.shine.support.auth.context.Authentication;
+import codesquad.shine.support.auth.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public abstract class AbstractAuthenticationProcessingFilter implements HandlerI
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         try {
             Authentication authentication = attemptAuthentication(request, response);
-            this.successfulAuthentication(request, response, authentication);
+            successfulAuthentication(request, response, authentication);
             return getContinueChainBeforeSuccessfulAuthentication();
         } catch (Exception e) {
             unsuccessfulAuthentication(request, response, e);
@@ -46,10 +47,16 @@ public abstract class AbstractAuthenticationProcessingFilter implements HandlerI
         failureHandler.onAuthenticationFailure(request, response, failed);
     }
 
-    protected abstract Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        AuthenticationToken token = convert(request);
 
-    protected AuthenticationManager getAuthenticationManager() {
-        return this.authenticationManager;
+        return authenticationManager.authenticate(token);
+    }
+
+    protected abstract AuthenticationToken convert(HttpServletRequest request) throws IOException;
+
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
     }
 
     protected boolean getContinueChainBeforeSuccessfulAuthentication() {

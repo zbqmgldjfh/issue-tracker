@@ -38,25 +38,30 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.7.0'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.7.0'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-	//querydsl 추가
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    //querydsl 추가
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+    //AOP
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.6.6'
 
-	testImplementation 'io.rest-assured:rest-assured:4.2.0'
-	testImplementation 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // test
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:4.2.0'
+    testImplementation 'com.h2database:h2'
 }
 
 // RestDocs 설정 시작
