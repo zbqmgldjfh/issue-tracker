@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -51,6 +54,46 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
         // then
         회원_정보_조회(베이직_로그인_응답, EMAIL, NAME);
+    }
+
+    /**
+     * Given 이미 가입된 사용자가 있고
+     * And 아직 로그인하지 않은 상태일때
+     * When Bearer Token 인증으로 로그인을 시도하면
+     * Then 성공적으로 로그인된다
+     */
+    @DisplayName("Bearer Token 인증방식의 로그인")
+    @Test
+    public void bearer_token_login() {
+        // given
+        Map<String, String> params = new HashMap<>();
+        params.put("email", EMAIL);
+        params.put("password", PASSWORD);
+
+        ExtractableResponse<Response> tokenResponse = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().post("/login/token")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value()).extract();
+
+        String accessToken = tokenResponse.jsonPath().getString("accessToken");
+
+        // when
+        ExtractableResponse<Response> 베어러_로그인_응답 = 베어러_인증으로_내_회원_정보_조회_요청(accessToken);
+
+        // then
+        회원_정보_조회(베어러_로그인_응답, EMAIL, NAME);
+    }
+
+    public static ExtractableResponse<Response> 베어러_인증으로_내_회원_정보_조회_요청(String accessToken) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/members/me")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
     }
 
     private ExtractableResponse<Response> 베이직_로그인_후_회원_정보_조회(String email, String password) {
