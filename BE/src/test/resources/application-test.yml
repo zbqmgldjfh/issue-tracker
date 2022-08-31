@@ -63,3 +63,10 @@ management:
         include: health
     health:
       show-details: always
+
+
+security:
+  jwt:
+    token:
+      secret-key: shine-secret-key
+      expire-length: 3600000

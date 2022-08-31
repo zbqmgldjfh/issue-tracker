@@ -28,3 +28,9 @@ cloud:
       auto: false
     s3:
       bucket: ${BUCKET_NAME}
+
+security:
+  jwt:
+    token:
+      secret-key: shine-secret-key
+      expire-length: 3600000
