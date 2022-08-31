@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker.acceptance;
 
+import codesquad.shine.issuetracker.DataLoader;
 import codesquad.shine.issuetracker.utils.DatabaseCleanup;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +19,13 @@ public class AcceptanceTest {
     @Autowired
     private DatabaseCleanup databaseCleanup;
 
+    @Autowired
+    private DataLoader dataLoader;
+
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
         databaseCleanup.execute();
+        dataLoader.loadData();
     }
 }
