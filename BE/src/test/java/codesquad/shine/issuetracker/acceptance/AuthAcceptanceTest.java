@@ -90,7 +90,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         return RestAssured.given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/me")
+                .when().get("/api/users/me")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();

@@ -3,6 +3,7 @@ package codesquad.shine.issuetracker.auth;
 import codesquad.shine.issuetracker.auth.dto.UserInfo;
 import codesquad.shine.issuetracker.user.domain.User;
 import codesquad.shine.issuetracker.user.domain.UserRepository;
+import codesquad.shine.support.auth.token.JwtTokenFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

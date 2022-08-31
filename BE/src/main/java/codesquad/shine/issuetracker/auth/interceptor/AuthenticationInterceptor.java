@@ -1,10 +1,10 @@
 package codesquad.shine.issuetracker.auth.interceptor;
 
-import codesquad.shine.issuetracker.auth.JwtTokenFactory;
 import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
+import codesquad.shine.support.auth.token.JwtTokenFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
