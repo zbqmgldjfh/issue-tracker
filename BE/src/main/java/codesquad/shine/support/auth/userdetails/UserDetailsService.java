@@ -1,4 +1,4 @@
-package codesquad.shine.support.auth.authentication.userdetails;
+package codesquad.shine.support.auth.userdetails;
 
 public interface UserDetailsService {
     UserDetails loadUserByUsername(String username);
