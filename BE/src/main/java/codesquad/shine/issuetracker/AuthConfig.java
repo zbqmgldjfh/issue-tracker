@@ -1,6 +1,7 @@
 package codesquad.shine.issuetracker;
 
 import codesquad.shine.issuetracker.user.business.CustomUserDetailsService;
+import codesquad.shine.support.auth.authentication.filter.BasicAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.filter.UsernamePasswordAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
@@ -30,6 +31,7 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SecurityContextPersistenceFilter());
         registry.addInterceptor(new UsernamePasswordAuthenticationFilter(successHandler(), loginFailureHandler(), daoAuthenticationProvider())).addPathPatterns("/login/form");
+        registry.addInterceptor(new BasicAuthenticationFilter(successHandler(), failureHandler(), daoAuthenticationProvider()));
     }
 
     @Override
