@@ -19,7 +19,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
     private static final String EMAIL = "admin@email.com";
     private static final String PASSWORD = "password";
-    private static final String NAME = "Shine";
+    private static final String NAME = "admin";
 
     /**
      * Given 이미 가입된 사용자가 있고
