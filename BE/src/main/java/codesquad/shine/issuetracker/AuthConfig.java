@@ -8,11 +8,14 @@ import codesquad.shine.support.auth.authentication.handler.DefaultAuthentication
 import codesquad.shine.support.auth.authentication.handler.DefaultAuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.handler.LoginAuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.provider.DaoAuthenticationProvider;
+import codesquad.shine.support.auth.authorization.AuthenticationPrincipalArgumentResolver;
 import codesquad.shine.support.auth.context.SecurityContextPersistenceFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
@@ -27,6 +30,11 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SecurityContextPersistenceFilter());
         registry.addInterceptor(new UsernamePasswordAuthenticationFilter(successHandler(), loginFailureHandler(), daoAuthenticationProvider())).addPathPatterns("/login/form");
+    }
+
+    @Override
+    public void addArgumentResolvers(List argumentResolvers) {
+        argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());
     }
 
     @Bean
