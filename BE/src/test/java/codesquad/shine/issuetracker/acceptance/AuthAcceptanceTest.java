@@ -14,13 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
 
-    public static final String USERNAME_FIELD = "username";
-    public static final String PASSWORD_FIELD = "password";
-
-    private static final String EMAIL = "admin@email.com";
-    private static final String PASSWORD = "password";
-    private static final String NAME = "admin";
-
     /**
      * Given 이미 가입된 사용자가 있고
      * And 아직 로그인하지 않은 상태일때

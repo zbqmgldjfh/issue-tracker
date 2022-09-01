@@ -15,6 +15,7 @@ import codesquad.shine.support.auth.authentication.provider.AuthenticationManage
 import codesquad.shine.support.auth.authentication.provider.DaoAuthenticationProvider;
 import codesquad.shine.support.auth.authentication.provider.TokenAuthenticationProvider;
 import codesquad.shine.support.auth.authorization.AuthenticationPrincipalArgumentResolver;
+import codesquad.shine.support.auth.authorization.secured.SecuredAnnotationValidator;
 import codesquad.shine.support.auth.context.SecurityContextPersistenceFilter;
 import codesquad.shine.support.auth.token.JwtTokenFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,5 +88,10 @@ public class AuthConfig implements WebMvcConfigurer {
     @Bean
     AuthenticationFailureHandler loginFailureHandler() {
         return new LoginAuthenticationFailureHandler();
+    }
+
+    @Bean
+    SecuredAnnotationValidator securedAnnotationValidator() {
+        return new SecuredAnnotationValidator();
     }
 }
