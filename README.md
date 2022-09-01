@@ -43,18 +43,18 @@
     - [x] Basic 기반 로그인 기능 구현
 - [x] 인수 테스트를 수행하기 전 공통으로 필요한 상용자는 초기에 설정하기
   - [x] DataLoader 구현하기
-- [ ] issue, label, comment, milestone CRUD 인수테스트 작성하기
+- [ ] issue, label, comment, milestone CRUD 인수테스트 작성하기 [wiki 링크](https://github.com/zbqmgldjfh/issue-tracker/wiki/%EC%9D%B8%EC%88%98%EC%A1%B0%EA%B1%B4-%EB%8F%84%EC%B6%9C)
   - [ ] issue 인수테스트
-    - [ ] 인수조건 추출
+    - [x] 인수조건 추출
     - [ ] 인수테스트 작성
   - [ ] label 인수테스트
-    - [ ] 인수조건 추출
+    - [x] 인수조건 추출
     - [ ] 인수테스트 작성
   - [ ] comment 인수테스트
-    - [ ] 인수조건 추출
+    - [x] 인수조건 추출
     - [ ] 인수테스트 작성
   - [ ] milestone 인수테스트
-    - [ ] 인수조건 추출
+    - [x] 인수조건 추출
     - [ ] 인수테스트 작성
 
 ## BE 1.0ver 기능
