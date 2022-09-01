@@ -1,17 +1,14 @@
 package codesquad.shine.issuetracker.acceptance;
 
-import io.restassured.RestAssured;
-import io.restassured.authentication.FormAuthConfig;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.로그인_되어_있음;
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.베어러_인증으로_내_회원_정보_조회_요청;
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.베이직_로그인_후_회원_정보_조회;
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.폼_로그인_후_회원_정보_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -66,8 +63,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     public void bearer_token_login() {
         // given
-        var 로그인_요청_응답 = 로그인_요청(EMAIL, PASSWORD);
-        String accessToken = 로그인_요청_응답.jsonPath().getString("accessToken");
+        String accessToken = 로그인_되어_있음(EMAIL, PASSWORD);
 
         // when
         ExtractableResponse<Response> 베어러_로그인_응답 = 베어러_인증으로_내_회원_정보_조회_요청(accessToken);
@@ -76,37 +72,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         회원_정보_조회(베어러_로그인_응답, EMAIL, NAME);
     }
 
-    public static ExtractableResponse<Response> 베어러_인증으로_내_회원_정보_조회_요청(String accessToken) {
-        return RestAssured.given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/users/me")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract();
-    }
 
-    private ExtractableResponse<Response> 베이직_로그인_후_회원_정보_조회(String email, String password) {
-        return RestAssured
-                .given().log().all()
-                .auth().preemptive().basic(email, password)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/users/me")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 폼_로그인_후_회원_정보_조회(String email, String password) {
-        return RestAssured
-                .given().log().all()
-                .auth().form(email, password, new FormAuthConfig("/login/form", USERNAME_FIELD, PASSWORD_FIELD))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/users/me")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract();
-    }
 
     private void 회원_정보_조회(ExtractableResponse<Response> response, String email, String name) {
         assertAll(
@@ -114,18 +80,5 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.jsonPath().getString("email")).isEqualTo(email),
                 () -> assertThat(response.jsonPath().getString("name")).isEqualTo(name)
         );
-    }
-
-    public static ExtractableResponse<Response> 로그인_요청(String email, String password) {
-        Map<String, String> params = new HashMap<>();
-        params.put("email", email);
-        params.put("password", password);
-
-        return RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().post("/login/token")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value()).extract();
     }
 }
