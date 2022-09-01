@@ -3,18 +3,15 @@ package codesquad.shine.issuetracker.acceptance;
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.support.auth.context.SecurityContextHolder;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.로그인_되어_있음;
-import static org.assertj.core.api.Assertions.assertThat;
+import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_생성_요청;
+import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_생성_응답_확인;
 
 public class SecuredAcceptanceTest extends AcceptanceTest {
 
@@ -33,19 +30,10 @@ public class SecuredAcceptanceTest extends AcceptanceTest {
         String accessToken = 로그인_되어_있음("member@email.com", PASSWORD);
 
         // when
-        ExtractableResponse<Response> Label_생성_요청_응답 = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .auth().oauth2(accessToken)
-                .body(label)
-                .when()
-                .post("/api/labels")
-                .then().log().all()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract();
+        var 라벨_생성_요청_응답 = 라벨_생성_요청(label, accessToken);
 
         // then
-        assertThat(Label_생성_요청_응답.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        라벨_생성_응답_확인(라벨_생성_요청_응답, HttpStatus.CREATED);
     }
 
     /**
@@ -62,19 +50,10 @@ public class SecuredAcceptanceTest extends AcceptanceTest {
         String accessToken = 로그인_되어_있음(EMAIL, PASSWORD);
 
         // when
-        ExtractableResponse<Response> Label_생성_요청_응답 = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .auth().oauth2(accessToken)
-                .body(label)
-                .when()
-                .post("/api/labels")
-                .then().log().all()
-                .statusCode(HttpStatus.UNAUTHORIZED.value())
-                .extract();
+        var 라벨_생성_요청_응답 = 라벨_생성_요청(label, accessToken);
 
         // then
-        assertThat(Label_생성_요청_응답.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        라벨_생성_응답_확인(라벨_생성_요청_응답, HttpStatus.UNAUTHORIZED);
     }
 
     @AfterEach
