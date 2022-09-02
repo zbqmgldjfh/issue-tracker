@@ -1,15 +1,37 @@
 # Team-26
 
 ## 👨‍👩‍👧‍👦 멤버소개
+### Frontend
+|호이|아울|
+|:--:|:--:|
+|<img src="https://avatars.githubusercontent.com/u/87521172?v=4" alt="호이" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/83114018?v=4" alt="아울" width="100" height="100">|
+|[youryu0212](https://github.com/youryu0212)|[bukim0329](https://github.com/bukim0329)|
 
----
 
-#### 👨‍ 호이 [@호이](https://github.com/youryu0212)
-#### 👨‍ 아울 [@아울](https://github.com/bukim0329)
-#### 👨‍ Shine [@zbqmgldjfh](https://github.com/zbqmgldjfh)
+### Backend
+|Shine|
+|:-:|
+|<img src="https://avatars.githubusercontent.com/u/60593969?v=4" alt="shine" width="100" height="100">|
+|[zbqmgldjfh](https://github.com/zbqmgldjfh)|
 
-## 실행 영상
+## 🎮 실행 영상
 ![이슈트래커](https://user-images.githubusercontent.com/60593969/179674790-8fb09d82-77f2-4470-af8d-65a9d2ae0c91.gif)
+
+## 🛠 Tech Stack
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/jpa-00555?style=for-the-badge&logo=jpa&logoColor=white">
+<img src="https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white">
+<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+    
+<img src="https://img.shields.io/badge/aws-FF9E0F?style=for-the-badge&logo=aws&logoColor=white">
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white">
+<img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=Nginx&logoColor=white">
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+
+## 🔌 Infrastructures
+<img width="1033" alt="스크린샷 2022-09-02 오전 11 43 24" src="https://user-images.githubusercontent.com/60593969/188048356-b1a7516a-87fc-4498-86d7-8c6a94d84e28.png">
 
 ## BE 2.0ver TODO List
 - [x] DB Cleanup Class 구현하기, 테스트간에 격리용도
