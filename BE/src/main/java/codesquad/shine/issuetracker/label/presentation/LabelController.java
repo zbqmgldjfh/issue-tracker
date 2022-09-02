@@ -1,9 +1,9 @@
 package codesquad.shine.issuetracker.label.presentation;
 
-import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
+import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
 import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import codesquad.shine.support.auth.authorization.secured.Secured;
 import lombok.RequiredArgsConstructor;
@@ -40,13 +40,14 @@ public class LabelController {
         return labelService.findALL();
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/{labelId}")
-    public void edit(@PathVariable Long labelId, @RequestBody LabelEditRequest request) {
-        labelService.edit(labelId, request);
+    public LabelEditResponse edit(@PathVariable Long labelId, @RequestBody LabelEditRequest request) {
+        return labelService.edit(labelId, request);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{labelId}")
     public void delete(@PathVariable Long labelId) {
         labelService.delete(labelId);

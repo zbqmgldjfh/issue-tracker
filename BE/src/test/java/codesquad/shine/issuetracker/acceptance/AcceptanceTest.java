@@ -16,7 +16,8 @@ public class AcceptanceTest {
     public static final String USERNAME_FIELD = "username";
     public static final String PASSWORD_FIELD = "password";
 
-    protected static final String EMAIL = "admin@email.com";
+    protected static final String ADMIN_EMAIL = "admin@email.com";
+    protected static final String MEMBER_EMAIL = "member@email.com";
     protected static final String PASSWORD = "password";
     protected static final String NAME = "admin";
 
