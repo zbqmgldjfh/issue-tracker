@@ -24,10 +24,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     public void form_login() {
         // when
-        var 폼_로그인_응답 = 폼_로그인_후_회원_정보_조회(EMAIL, PASSWORD);
+        var 폼_로그인_응답 = 폼_로그인_후_회원_정보_조회(ADMIN_EMAIL, PASSWORD);
 
         // then
-        회원_정보_조회(폼_로그인_응답, EMAIL, NAME);
+        회원_정보_조회(폼_로그인_응답, ADMIN_EMAIL, NAME);
     }
 
     /**
@@ -40,10 +40,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     public void basic_login() {
         // when
-        var 베이직_로그인_응답 = 베이직_로그인_후_회원_정보_조회(EMAIL, PASSWORD);
+        var 베이직_로그인_응답 = 베이직_로그인_후_회원_정보_조회(ADMIN_EMAIL, PASSWORD);
 
         // then
-        회원_정보_조회(베이직_로그인_응답, EMAIL, NAME);
+        회원_정보_조회(베이직_로그인_응답, ADMIN_EMAIL, NAME);
     }
 
     /**
@@ -56,13 +56,13 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     public void bearer_token_login() {
         // given
-        String accessToken = 로그인_되어_있음(EMAIL, PASSWORD);
+        String accessToken = 로그인_되어_있음(ADMIN_EMAIL, PASSWORD);
 
         // when
         ExtractableResponse<Response> 베어러_로그인_응답 = 베어러_인증으로_내_회원_정보_조회_요청(accessToken);
 
         // then
-        회원_정보_조회(베어러_로그인_응답, EMAIL, NAME);
+        회원_정보_조회(베어러_로그인_응답, ADMIN_EMAIL, NAME);
     }
 
 

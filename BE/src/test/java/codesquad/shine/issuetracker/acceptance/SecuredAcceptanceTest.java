@@ -47,7 +47,7 @@ public class SecuredAcceptanceTest extends AcceptanceTest {
     public void authorized_fail_member_create_label_test() throws JSONException {
         // given
         Label label = new Label("title", "테스트 입니다", new Color("bg", "fg"));
-        String accessToken = 로그인_되어_있음(EMAIL, PASSWORD);
+        String accessToken = 로그인_되어_있음(ADMIN_EMAIL, PASSWORD);
 
         // when
         var 라벨_생성_요청_응답 = 라벨_생성_요청(label, accessToken);
