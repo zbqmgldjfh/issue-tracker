@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker.milestone.business;
 
+import codesquad.shine.issuetracker.common.vo.Status;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
@@ -85,5 +86,13 @@ public class MilestoneService {
             return false;
         }
         return issue.getMilestone().equals(milestone);
+    }
+
+    public MilestoneListResponse findAllByStatus(String status) {
+        List<MilestoneDto> milestoneDtoList = milestoneRepository.findAllByIsOpen(Status.toBoolean(status))
+                .stream()
+                .map(MilestoneDto::of)
+                .collect(Collectors.toList());
+        return new MilestoneListResponse(milestoneDtoList);
     }
 }
