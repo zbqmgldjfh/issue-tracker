@@ -88,8 +88,8 @@ public class MilestoneService {
         return issue.getMilestone().equals(milestone);
     }
 
-    public MilestoneListResponse findAllByStatus(String status) {
-        List<MilestoneDto> milestoneDtoList = milestoneRepository.findAllByIsOpen(Status.toBoolean(status))
+    public MilestoneListResponse findAllByStatus(Status status) {
+        List<MilestoneDto> milestoneDtoList = milestoneRepository.findAllByIsOpen(status.toBoolean())
                 .stream()
                 .map(MilestoneDto::of)
                 .collect(Collectors.toList());

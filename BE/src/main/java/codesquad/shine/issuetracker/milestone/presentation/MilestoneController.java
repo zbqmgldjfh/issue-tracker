@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker.milestone.presentation;
 
+import codesquad.shine.issuetracker.common.vo.Status;
 import codesquad.shine.issuetracker.milestone.business.MilestoneService;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneEditRequest;
@@ -34,7 +35,8 @@ public class MilestoneController {
     }
 
     @GetMapping
-    public MilestoneListResponse search(@RequestParam String status) {
+    public MilestoneListResponse search(@RequestParam Status status) {
+        System.out.println("status = " + status.toBoolean());
         return milestoneService.findAllByStatus(status);
     }
 
