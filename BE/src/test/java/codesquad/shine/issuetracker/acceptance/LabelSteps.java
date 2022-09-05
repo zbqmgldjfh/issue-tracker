@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LabelSteps {
 
-    public static void 라벨_생성_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
+    public static void 라벨_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
         assertThat(response.statusCode()).isEqualTo(httpStatus.value());
     }
 
