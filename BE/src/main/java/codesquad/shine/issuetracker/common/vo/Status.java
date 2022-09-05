@@ -11,7 +11,7 @@ public enum Status {
         this.bool = bool;
     }
 
-    public static boolean toBoolean(String status) {
-        return Status.valueOf(status.toUpperCase()).bool;
+    public boolean toBoolean() {
+        return this.bool;
     }
 }

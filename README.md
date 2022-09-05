@@ -17,18 +17,10 @@
 ## 🎮 실행 영상
 ![이슈트래커](https://user-images.githubusercontent.com/60593969/179674790-8fb09d82-77f2-4470-af8d-65a9d2ae0c91.gif)
 
-## 🛠 Tech Stack
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
-<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-<img src="https://img.shields.io/badge/jpa-00555?style=for-the-badge&logo=jpa&logoColor=white">
-<img src="https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white">
-<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+## 🛠 BE Tech Stack
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"><img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"><img src="https://img.shields.io/badge/jpa-00555?style=for-the-badge&logo=jpa&logoColor=white"><img src="https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white"><img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
     
-<img src="https://img.shields.io/badge/aws-FF9E0F?style=for-the-badge&logo=aws&logoColor=white">
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
-<img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white">
-<img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=Nginx&logoColor=white">
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/aws-FF9E0F?style=for-the-badge&logo=aws&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"><img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white"><img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=Nginx&logoColor=white"><img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 
 ## 🔌 Infrastructures
 <img width="1033" alt="스크린샷 2022-09-02 오전 11 43 24" src="https://user-images.githubusercontent.com/60593969/188048356-b1a7516a-87fc-4498-86d7-8c6a94d84e28.png">
@@ -47,15 +39,15 @@
   - [ ] issue 인수테스트
     - [x] 인수조건 추출
     - [ ] 인수테스트 작성
-  - [ ] label 인수테스트
+  - [x] label 인수테스트
     - [x] 인수조건 추출
-    - [ ] 인수테스트 작성
+    - [x] 인수테스트 작성
   - [ ] comment 인수테스트
     - [x] 인수조건 추출
     - [ ] 인수테스트 작성
-  - [ ] milestone 인수테스트
+  - [x] milestone 인수테스트
     - [x] 인수조건 추출
-    - [ ] 인수테스트 작성
+    - [x] 인수테스트 작성
 
 ## BE 1.0ver 기능
 기본적인 API 기능을 제공    
