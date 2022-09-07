@@ -2,16 +2,16 @@ package codesquad.shine.issuetracker.acceptance;
 
 import codesquad.shine.issuetracker.issue.presentation.dto.request.CommentRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.로그인_되어_있음;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈_생성_요청;
+import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈_응답_상태_확인;
+import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈_응답_확인;
+import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈에_댓글_삭제_요청;
+import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈에_댓글_추가_요청;
+import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈에_댓글_편집_요청;
 
 public class CommentAcceptanceTest extends AcceptanceTest {
 
@@ -31,61 +31,16 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     public void comment_crud_test() {
         String accessToken = 로그인_되어_있음(MEMBER_EMAIL, PASSWORD);
 
-        IssueRequest issueRequest = new IssueRequest("new issue", "", null, null, null);
-        ExtractableResponse<Response> 이슈_생성_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(issueRequest)
-                .when()
-                .post("/api/issues/form")
-                .then().log().all()
-                .extract();
+        var 이슈_생성_요청_결과 = 이슈_생성_요청(accessToken, new IssueRequest("new issue", "", null, null, null));
         Long issueId = 이슈_응답_확인(이슈_생성_요청_결과, HttpStatus.CREATED);
 
-        CommentRequest commentRequest = new CommentRequest("this is comment!");
-        ExtractableResponse<Response> 이슈에_댓글_추가_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(commentRequest)
-                .when()
-                .post("/api/issues/" + issueId + "/comments")
-                .then().log().all()
-                .extract();
+        var 이슈에_댓글_추가_요청_결과 = 이슈에_댓글_추가_요청(accessToken, issueId, new CommentRequest("this is comment!"));
         Long commentId = 이슈_응답_확인(이슈에_댓글_추가_요청_결과, HttpStatus.CREATED);
 
-        CommentRequest commentEditRequest = new CommentRequest("edit comment!");
-        ExtractableResponse<Response> 이슈에_댓글_편집_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(commentEditRequest)
-                .when()
-                .patch("/api/issues/" + issueId + "/comments/" + commentId)
-                .then().log().all()
-                .extract();
+        var 이슈에_댓글_편집_요청_결과 = 이슈에_댓글_편집_요청(accessToken, issueId, commentId, new CommentRequest("edit comment!"));
         이슈_응답_상태_확인(이슈에_댓글_편집_요청_결과, HttpStatus.OK);
 
-        ExtractableResponse<Response> 이슈에_댓글_삭제_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when()
-                .delete("/api/issues/" + issueId + "/comments/" + commentId)
-                .then().log().all()
-                .extract();
+        var 이슈에_댓글_삭제_요청_결과 = 이슈에_댓글_삭제_요청(accessToken, issueId, commentId);
         이슈_응답_상태_확인(이슈에_댓글_삭제_요청_결과, HttpStatus.NO_CONTENT);
-    }
-
-    public void 이슈_응답_상태_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
-        assertThat(response.statusCode()).isEqualTo(httpStatus.value());
-    }
-
-    public Long 이슈_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(httpStatus.value()),
-                () -> assertThat(response.jsonPath().getLong("id")).isNotNull()
-        );
-        return response.jsonPath().getLong("id");
     }
 }
