@@ -1,28 +1,28 @@
 package codesquad.shine.issuetracker.comment.presentation.dto.response;
 
 import codesquad.shine.issuetracker.comment.domain.Comment;
-import codesquad.shine.issuetracker.user.domain.User;
+import codesquad.shine.issuetracker.user.presentation.dto.UserResponseDto;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CommentDto {
-    private User user;
-    private String description;
-    private String avatarUrl;
-    private LocalDateTime createdDateTime;
 
-    private CommentDto(User user, String description, String avatarUrl, LocalDateTime createdDateTime) {
-        this.user = user;
-        this.description = description;
-        this.avatarUrl = avatarUrl;
-        this.createdDateTime = createdDateTime;
-    }
+    private final Long id;
+    private final UserResponseDto userResponseDto;
+    private final String description;
+    private final String avatarUrl;
+    private final LocalDateTime createdDateTime;
 
     public static CommentDto of(Comment comment) {
-        return new CommentDto(comment.getUser(), comment.getDescription(), comment.getUser().getAvatarUrl(), comment.getCreatedDateTime());
+        return new CommentDto(comment.getId(),
+                UserResponseDto.of(comment.getUser()),
+                comment.getDescription(),
+                comment.getUser().getAvatarUrl(),
+                comment.getCreatedDateTime()
+        );
     }
 }

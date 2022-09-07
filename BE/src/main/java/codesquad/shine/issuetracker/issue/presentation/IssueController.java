@@ -1,6 +1,7 @@
 package codesquad.shine.issuetracker.issue.presentation;
 
 import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
+import codesquad.shine.issuetracker.comment.presentation.dto.response.CommentDto;
 import codesquad.shine.issuetracker.issue.business.CommentService;
 import codesquad.shine.issuetracker.issue.business.IssueService;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
@@ -14,9 +15,13 @@ import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest
 import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueIdResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
 import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
+import codesquad.shine.support.auth.authorization.AuthenticationPrincipal;
+import codesquad.shine.support.auth.authorization.secured.Secured;
+import codesquad.shine.support.auth.userdetails.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -52,27 +57,28 @@ public class IssueController {
         return issueService.search(userEmail, condition, pageable);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{issueId}/comments")
-    public void addComment(@PathVariable Long issueId, @RequestBody CommentRequest request, @RequestAttribute String userEmail) {
-        commentService.add(issueId, request.getComment(), userEmail);
+    public CommentDto addComment(@PathVariable Long issueId, @RequestBody CommentRequest request, @AuthenticationPrincipal AuthUser user) {
+        return commentService.add(issueId, request.getComment(), user.getUsername().toString());
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{issueId}/comments/{commentId}")
-    public void deleteComment(@PathVariable Long issueId, @PathVariable Long commentId, @RequestAttribute String userEmail) {
-        commentService.delete(issueId, commentId, userEmail);
+    public void deleteComment(@PathVariable Long issueId, @PathVariable Long commentId, @AuthenticationPrincipal AuthUser user) {
+        commentService.delete(issueId, commentId, user.getUsername().toString());
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/{issueId}/comments/{commentId}")
     public void editComment(
             @PathVariable Long issueId,
             @PathVariable Long commentId,
             @RequestBody CommentRequest request,
-            @RequestAttribute String userEmail) {
-        commentService.edit(issueId, commentId, request.getComment(), userEmail);
+            @AuthenticationPrincipal AuthUser user) {
+        commentService.edit(issueId, commentId, request.getComment(), user.getUsername().toString());
     }
 
     @GetMapping
@@ -88,11 +94,11 @@ public class IssueController {
         return issueService.getIssueForm();
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/form")
-    public void createIssue(@RequestBody IssueRequest request, @RequestAttribute String userEmail) {
-        issueService.create(request, userEmail);
+    public IssueIdResponse createIssue(@RequestBody IssueRequest request, @AuthenticationPrincipal AuthUser user) {
+        return issueService.create(request, user.getUsername().toString());
     }
 
     @ForLoginUser
