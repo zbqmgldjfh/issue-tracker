@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,9 @@ public class LabelService {
 
     @Transactional(readOnly = true)
     public List<Label> getLabelsInId(List<Long> ids) {
+        if (ids == null) {
+            return Collections.emptyList();
+        }
         return labelRepository.findAllById(ids);
     }
 
