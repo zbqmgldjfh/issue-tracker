@@ -8,8 +8,19 @@ import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
-import codesquad.shine.issuetracker.issue.presentation.dto.request.*;
-import codesquad.shine.issuetracker.issue.presentation.dto.response.*;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.LabelsCheckRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.MilestoneCheckRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.SearchConditionRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.AssigneesResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueIdResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssuesResponse;
 import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Label;
@@ -50,7 +61,7 @@ public class IssueService {
         return new IssueFormResponse(assigneeList, labelList, milestoneList);
     }
 
-    public void create(IssueRequest request, String userEmail) {
+    public IssueIdResponse create(IssueRequest request, String userEmail) {
         User findUser = userService.findUserByEmail(userEmail);
 
         // 코멘트 생성
@@ -66,7 +77,11 @@ public class IssueService {
         List<Label> labelList = labelService.getLabelsInId(request.getLabelIds());
 
         // 이슈 생성
-        Issue newIssue = new Issue(request.getTitle(), true, findUser);
+        Issue newIssue = Issue.builder()
+                .title(request.getTitle())
+                .open(true)
+                .author(findUser)
+                .build();
 
         // 할당
         newIssue.addComment(newComment);
@@ -75,7 +90,8 @@ public class IssueService {
         newIssue.addLabels(labelList);
 
         // 저장
-        issueRepository.save(newIssue);
+        Issue savedIssue = issueRepository.save(newIssue);
+        return new IssueIdResponse(savedIssue.getId());
     }
 
     private Comment createComment(User findUser, String comment) {

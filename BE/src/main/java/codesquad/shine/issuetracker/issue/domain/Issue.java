@@ -5,11 +5,24 @@ import codesquad.shine.issuetracker.common.imbeddable.BaseTimeEntity;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.domain.Milestone;
 import codesquad.shine.issuetracker.user.domain.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +103,9 @@ public class Issue extends BaseTimeEntity {
     }
 
     public void addComment(Comment comment) {
+        if (comment == null) {
+            return;
+        }
         this.comments.add(comment);
         comment.addIssue(this);
     }
@@ -108,6 +124,9 @@ public class Issue extends BaseTimeEntity {
     }
 
     public void addAssignees(List<User> assigneeList) {
+        if (assigneeList == null) {
+            return;
+        }
         assigneeList.forEach(assignee -> {
             this.issueAssignees.add(new IssueAssignee(this, assignee));
         });
@@ -120,6 +139,9 @@ public class Issue extends BaseTimeEntity {
     }
 
     public void addLabels(List<Label> labelList) {
+        if (labelList == null) {
+            return;
+        }
         labelList.forEach(label -> addLabel(label));
     }
 
@@ -141,5 +163,10 @@ public class Issue extends BaseTimeEntity {
 
     public void changeMilestone(Milestone milestone) {
         this.milestone = milestone;
+    }
+
+    public Comment getLastComment() {
+        int size = comments.size();
+        return comments.get(size - 1);
     }
 }
