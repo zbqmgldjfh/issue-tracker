@@ -9,11 +9,9 @@ import java.util.List;
 @NoArgsConstructor
 public class StatusRequest {
 
-    private Boolean open;
     private List<Long> issueNumbers;
 
-    public StatusRequest(Boolean open, List<Long> issueNumbers) {
-        this.open = open;
+    public StatusRequest(List<Long> issueNumbers) {
         this.issueNumbers = issueNumbers;
     }
 }

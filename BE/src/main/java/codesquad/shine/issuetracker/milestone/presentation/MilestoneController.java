@@ -5,6 +5,7 @@ import codesquad.shine.issuetracker.milestone.business.MilestoneService;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneEditRequest;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneEditResponse;
+import codesquad.shine.issuetracker.milestone.dto.response.MilestoneIdResponse;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
 import codesquad.shine.support.auth.authorization.secured.Secured;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class MilestoneController {
     @Secured("ROLE_MEMBER")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void create(@RequestBody MilestoneCreateRequest request) {
-        milestoneService.create(request);
+    public MilestoneIdResponse create(@RequestBody MilestoneCreateRequest request) {
+        return milestoneService.create(request);
     }
 
     @GetMapping
