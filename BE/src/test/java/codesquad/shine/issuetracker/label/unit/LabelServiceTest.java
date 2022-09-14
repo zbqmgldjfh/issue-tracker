@@ -8,6 +8,7 @@ import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelIdResponse;
 import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,10 +45,10 @@ class LabelServiceTest {
         given(labelRepository.save(Label.createEntity(request.getTitle(), request.getDescription(), request.getColor()))).willReturn(newLabel);
 
         // when
-        Long labelId = labelService.create(request);
+        LabelIdResponse labelIdResponse = labelService.create(request);
 
         // then
-        then(labelId).isEqualTo(1L);
+        then(labelIdResponse.getId()).isEqualTo(1L);
         verify(labelRepository, times(1)).save(any());
     }
 

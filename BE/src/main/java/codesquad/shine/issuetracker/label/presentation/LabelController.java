@@ -4,6 +4,7 @@ import codesquad.shine.issuetracker.label.business.LabelService;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelIdResponse;
 import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import codesquad.shine.support.auth.authorization.secured.Secured;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,8 @@ public class LabelController {
     @Secured("ROLE_MEMBER")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody LabelCreateRequest request) {
-        log.info("여기");
-        labelService.create(request);
+    public LabelIdResponse create(@RequestBody LabelCreateRequest request) {
+        return labelService.create(request);
     }
 
     @GetMapping
