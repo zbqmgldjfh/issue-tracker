@@ -1,6 +1,7 @@
 package codesquad.shine.issuetracker.issue.unit;
 
 import codesquad.shine.issuetracker.common.vo.Assignee;
+import codesquad.shine.issuetracker.common.vo.Status;
 import codesquad.shine.issuetracker.issue.business.IssueService;
 import codesquad.shine.issuetracker.issue.domain.Issue;
 import codesquad.shine.issuetracker.issue.domain.IssueRepository;
@@ -125,13 +126,13 @@ public class IssueServiceTest {
         Issue issue5 = new Issue("title-test-2", false, other);
         List<Issue> issueList = List.of(issue1, issue2, issue3, issue4, issue5);
 
-        StatusRequest request = new StatusRequest(false, new ArrayList<>());
+        StatusRequest request = new StatusRequest(new ArrayList<>());
 
         given(userService.findUserByEmail(any(String.class))).willReturn(owner);
         given(issueRepository.findAllById(any())).willReturn(issueList);
 
         // when
-        issueService.changeOpenStatus(request, "test@naver.com");
+        issueService.changeOpenStatus(request, Status.CLOSED, "test@naver.com");
 
         // then
         then(issueList).extracting("open").containsExactly(false, false, false, true, false);

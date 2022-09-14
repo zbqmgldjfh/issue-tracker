@@ -3,6 +3,7 @@ package codesquad.shine.issuetracker.issue.business;
 import codesquad.shine.issuetracker.comment.domain.Comment;
 import codesquad.shine.issuetracker.comment.presentation.dto.response.CommentDto;
 import codesquad.shine.issuetracker.common.vo.Assignee;
+import codesquad.shine.issuetracker.common.vo.Status;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
@@ -122,13 +123,13 @@ public class IssueService {
                 .build();
     }
 
-    public void changeOpenStatus(StatusRequest request, String userEmail) {
+    public void changeOpenStatus(StatusRequest request, Status status, String userEmail) {
         User findUser = userService.findUserByEmail(userEmail);
 
         List<Issue> issueList = issueRepository.findAllById(request.getIssueNumbers());
         issueList.stream()
                 .filter(issue -> issue.isSameAuthor(findUser))
-                .forEach(issue -> issue.changeOpenStatus(request.getOpen()));
+                .forEach(issue -> issue.changeOpenStatus(status.toBoolean()));
     }
 
     @Transactional(readOnly = true)

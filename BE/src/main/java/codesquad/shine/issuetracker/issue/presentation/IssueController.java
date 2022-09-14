@@ -1,7 +1,7 @@
 package codesquad.shine.issuetracker.issue.presentation;
 
-import codesquad.shine.issuetracker.auth.annotation.ForLoginUser;
 import codesquad.shine.issuetracker.comment.presentation.dto.response.CommentDto;
+import codesquad.shine.issuetracker.common.vo.Status;
 import codesquad.shine.issuetracker.issue.business.CommentService;
 import codesquad.shine.issuetracker.issue.business.IssueService;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.AssigneesEditRequest;
@@ -47,7 +47,7 @@ public class IssueController {
     private final CommentService commentService;
     private final IssueService issueService;
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @GetMapping("/search")
     public IssuesResponse search(
             SearchConditionRequest condition,
@@ -88,7 +88,7 @@ public class IssueController {
         return issueService.searchIssueByStatus(status, pageable);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @GetMapping("/form")
     public IssueFormResponse showIssueForm() {
         return issueService.getIssueForm();
@@ -101,55 +101,55 @@ public class IssueController {
         return issueService.create(request, user.getUsername().toString());
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @GetMapping("/{issueId}")
     public IssueDetailResponse showIssueDetail(@PathVariable Long issueId) {
         return issueService.findIssueDetailById(issueId);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping
-    public void changeOpenStatus(@RequestBody StatusRequest request, @RequestAttribute String userEmail) {
-        issueService.changeOpenStatus(request, userEmail);
+    public void changeOpenStatus(@RequestBody StatusRequest request, @RequestParam Status status, @AuthenticationPrincipal AuthUser user) {
+        issueService.changeOpenStatus(request, status, user.getUsername().toString());
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/{issueId}/title")
-    public void changeTitle(@RequestBody IssueTitleRequest request, @PathVariable Long issueId, @RequestAttribute String userEmail) {
-        issueService.changeTitle(issueId, request, userEmail);
+    public void changeTitle(@RequestBody IssueTitleRequest request, @PathVariable Long issueId, @AuthenticationPrincipal AuthUser user) {
+        issueService.changeTitle(issueId, request, user.getUsername().toString());
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @GetMapping("/{issueId}/assignees")
     public AssigneesResponse getIssueAssignee(@PathVariable Long issueId) {
         return issueService.getAssignees(issueId);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/{issueId}/assignees")
     public void editIssueAssignee(@PathVariable Long issueId, @RequestBody AssigneesEditRequest request) {
         issueService.editAssignees(issueId, request);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @GetMapping("/{issueId}/labels")
     public LabelsResponse getLabels(@PathVariable Long issueId) {
         return issueService.getLabelsByIssueId(issueId);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/{issueId}/labels")
     public void editLabels(@PathVariable Long issueId, @RequestBody LabelsCheckRequest request) {
         issueService.editLabelsByIssueId(issueId, request);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @GetMapping("/{issueId}/milestones")
     public MilestoneListResponse getMilestoneList(@PathVariable Long issueId) {
         return issueService.getMilestonesByIssueId(issueId);
     }
 
-    @ForLoginUser
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/{issueId}/milestones")
     public void editMilestone(@PathVariable Long issueId, @RequestBody MilestoneCheckRequest request) {
         issueService.editMilestoneByIssueId(issueId, request);
