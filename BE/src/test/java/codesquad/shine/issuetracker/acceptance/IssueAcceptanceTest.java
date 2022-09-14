@@ -139,5 +139,16 @@ public class IssueAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract();
         assertThat(이슈_라벨_조회_요청_결과.jsonPath().getString("labels[0].title")).isEqualTo("title");
+
+        ExtractableResponse<Response> 이슈_마일스톤_조회_요청_결과 = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/api/issues/{issueId}/milestones", issueId)
+                .then().log().all()
+                .extract();
+        assertThat(이슈_마일스톤_조회_요청_결과.jsonPath().getString("milestones[0].title")).isEqualTo("milestone");
+
     }
 }
