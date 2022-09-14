@@ -9,6 +9,7 @@ import codesquad.shine.issuetracker.label.domain.LabelRepository;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelCreateRequest;
 import codesquad.shine.issuetracker.label.dto.reqeust.LabelEditRequest;
 import codesquad.shine.issuetracker.label.dto.response.LabelEditResponse;
+import codesquad.shine.issuetracker.label.dto.response.LabelIdResponse;
 import codesquad.shine.issuetracker.label.dto.response.LabelsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,9 @@ public class LabelService {
 
     private final LabelRepository labelRepository;
 
-    public Long create(LabelCreateRequest request) {
+    public LabelIdResponse create(LabelCreateRequest request) {
         Label label = labelRepository.save(Label.createEntity(request.getTitle(), request.getDescription(), request.getColor()));
-        return label.getId();
+        return new LabelIdResponse(label.getId());
     }
 
     @Transactional(readOnly = true)
