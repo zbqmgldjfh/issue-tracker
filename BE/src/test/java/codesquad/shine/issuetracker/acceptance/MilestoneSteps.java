@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class MilestoneSteps {
 
@@ -58,8 +59,12 @@ public class MilestoneSteps {
                 .extract();
     }
 
-    public static void 마일스톤_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
-        assertThat(response.statusCode()).isEqualTo(httpStatus.value());
+    public static Long 마일스톤_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(httpStatus.value()),
+                () -> assertThat(response.jsonPath().getLong("id")).isNotNull()
+        );
+        return response.jsonPath().getLong("id");
     }
 
     public static String 마일스톤_아이디_조회(ExtractableResponse<Response> 마일스톤_조회_요청_응답) {

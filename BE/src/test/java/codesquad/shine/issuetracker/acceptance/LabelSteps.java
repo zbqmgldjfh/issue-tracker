@@ -9,11 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class LabelSteps {
 
-    public static void 라벨_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
-        assertThat(response.statusCode()).isEqualTo(httpStatus.value());
+    public static Long 라벨_응답_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(httpStatus.value()),
+                () -> assertThat(response.jsonPath().getLong("id")).isNotNull()
+        );
+        return response.jsonPath().getLong("id");
     }
 
     public static ExtractableResponse<Response> 라벨_생성_요청(Label label, String accessToken) {

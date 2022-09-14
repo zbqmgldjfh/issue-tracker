@@ -6,6 +6,7 @@ import codesquad.shine.issuetracker.milestone.domain.MilestoneRepository;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneEditRequest;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneEditResponse;
+import codesquad.shine.issuetracker.milestone.dto.response.MilestoneIdResponse;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,10 +45,10 @@ class MilestoneServiceTest {
         given(milestoneRepository.save(any(Milestone.class))).willReturn(milestone);
 
         // when
-        Long labelId = milestoneService.create(request);
+        MilestoneIdResponse milestoneIdResponse = milestoneService.create(request);
 
         // then
-        then(labelId).isNotNull();
+        then(milestoneIdResponse.getId()).isNotNull();
         verify(milestoneRepository, times(1)).save(any());
     }
 
