@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.로그인_되어_있음;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_생성_요청;
+import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_응답_상태_확인;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_응답_확인;
 
 public class SecuredAcceptanceTest extends AcceptanceTest {
@@ -53,7 +54,7 @@ public class SecuredAcceptanceTest extends AcceptanceTest {
         var 라벨_생성_요청_응답 = 라벨_생성_요청(label, accessToken);
 
         // then
-        라벨_응답_확인(라벨_생성_요청_응답, HttpStatus.UNAUTHORIZED);
+        라벨_응답_상태_확인(라벨_생성_요청_응답, HttpStatus.UNAUTHORIZED);
     }
 
     @AfterEach

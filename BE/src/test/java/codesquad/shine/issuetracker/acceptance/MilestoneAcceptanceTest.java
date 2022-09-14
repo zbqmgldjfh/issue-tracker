@@ -12,6 +12,7 @@ import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스�
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_생성_요청;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_수정_요청;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_아이디_조회;
+import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_응답_상태_확인;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_응답_확인;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_제목_수정_확인;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_조회_요청;
@@ -47,6 +48,6 @@ public class MilestoneAcceptanceTest extends AcceptanceTest {
         마일스톤_제목_수정_확인(마일스톤_수정_응답, "change");
 
         var 마일스톤_삭제_응답 = 마일스톤_삭제_요청(accessToken, mileStoneId);
-        마일스톤_응답_확인(마일스톤_삭제_응답, HttpStatus.NO_CONTENT);
+        마일스톤_응답_상태_확인(마일스톤_삭제_응답, HttpStatus.NO_CONTENT);
     }
 }

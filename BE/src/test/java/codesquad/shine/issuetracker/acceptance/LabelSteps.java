@@ -21,6 +21,10 @@ public class LabelSteps {
         return response.jsonPath().getLong("id");
     }
 
+    public static void 라벨_응답_상태_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
+        assertThat(response.statusCode()).isEqualTo(httpStatus.value());
+    }
+
     public static ExtractableResponse<Response> 라벨_생성_요청(Label label, String accessToken) {
         return RestAssured
                 .given().log().all()

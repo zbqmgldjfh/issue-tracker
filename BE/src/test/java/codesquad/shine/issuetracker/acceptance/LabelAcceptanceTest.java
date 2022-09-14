@@ -12,6 +12,7 @@ import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_삭제_�
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_생성_요청;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_수정_요청;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_아이디_조회;
+import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_응답_상태_확인;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_응답_확인;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_제목_수정_확인;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_조회_요청;
@@ -49,6 +50,6 @@ public class LabelAcceptanceTest extends AcceptanceTest {
         라벨_제목_수정_확인(라벨_수정_요청_응답, "change title");
 
         var 라벨_삭제_요청_응답 = 라벨_삭제_요청(labelId, accessToken);
-        라벨_응답_확인(라벨_삭제_요청_응답, HttpStatus.NO_CONTENT);
+        라벨_응답_상태_확인(라벨_삭제_요청_응답, HttpStatus.NO_CONTENT);
     }
 }
