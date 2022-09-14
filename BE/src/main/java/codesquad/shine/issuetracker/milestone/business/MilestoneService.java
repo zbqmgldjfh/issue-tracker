@@ -10,6 +10,7 @@ import codesquad.shine.issuetracker.milestone.domain.MilestoneRepository;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneEditRequest;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneEditResponse;
+import codesquad.shine.issuetracker.milestone.dto.response.MilestoneIdResponse;
 import codesquad.shine.issuetracker.milestone.dto.response.MilestoneListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ public class MilestoneService {
 
     private final MilestoneRepository milestoneRepository;
 
-    public Long create(MilestoneCreateRequest request) {
+    public MilestoneIdResponse create(MilestoneCreateRequest request) {
         Milestone milestone = Milestone.of(request);
         Milestone saved = milestoneRepository.save(milestone);
-        return saved.getId();
+        return new MilestoneIdResponse(saved.getId());
     }
 
     public void delete(Long milestoneId) {
