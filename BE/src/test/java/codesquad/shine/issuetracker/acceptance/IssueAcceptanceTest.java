@@ -7,12 +7,8 @@ import codesquad.shine.issuetracker.issue.presentation.dto.request.StatusRequest
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
 import codesquad.shine.issuetracker.milestone.dto.request.MilestoneCreateRequest;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,11 +18,18 @@ import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈_생성
 import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈_응답_상태_확인;
 import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈_응답_확인;
 import static codesquad.shine.issuetracker.acceptance.CommentSteps.이슈에_댓글_추가_요청;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_라벨_조회_요청;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_라벨_확인;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_마일스톤_조회_요청;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_마일스톤_확인;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_상태_변경_요청;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_타이틀_변경_요청;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_할당자_조회_요청;
+import static codesquad.shine.issuetracker.acceptance.IssueSteps.이슈_할당자_확인;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_생성_요청;
 import static codesquad.shine.issuetracker.acceptance.LabelSteps.라벨_응답_확인;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_생성_요청;
 import static codesquad.shine.issuetracker.acceptance.MilestoneSteps.마일스톤_응답_확인;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class IssueAcceptanceTest extends AcceptanceTest {
 
@@ -68,87 +71,35 @@ public class IssueAcceptanceTest extends AcceptanceTest {
     public void issue_crud_test() {
         String accessToken = 로그인_되어_있음(MEMBER_EMAIL, PASSWORD);
 
-        Label label = new Label("title", "테스트 입니다", new Color("bg", "fg"));
-        var 라벨_생성_요청_응답 = 라벨_생성_요청(label, accessToken);
+        var 라벨_생성_요청_응답 = 라벨_생성_요청(new Label("title", "테스트 입니다", new Color("bg", "fg")), accessToken);
         Long labelId = 라벨_응답_확인(라벨_생성_요청_응답, HttpStatus.CREATED);
 
-        MilestoneCreateRequest createRequest = new MilestoneCreateRequest("milestone", "테스트 입니다", LocalDate.now());
-        var response = 마일스톤_생성_요청(createRequest, accessToken);
+        var response = 마일스톤_생성_요청(new MilestoneCreateRequest("milestone", "테스트 입니다", LocalDate.now()), accessToken);
         Long milestoneId = 마일스톤_응답_확인(response, HttpStatus.CREATED);
 
         var 이슈_생성_요청_결과 = 이슈_생성_요청(accessToken, new IssueRequest("new issue", "", null, List.of(labelId), milestoneId));
         Long issueId = 이슈_응답_확인(이슈_생성_요청_결과, HttpStatus.CREATED);
 
         StatusRequest statusRequest = new StatusRequest(List.of(issueId));
-        ExtractableResponse<Response> 이슈_닫기_변경_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .param("status", "closed")
-                .body(statusRequest)
-                .when()
-                .patch("/api/issues")
-                .then().log().all()
-                .extract();
+        var 이슈_닫기_변경_요청_결과 = 이슈_상태_변경_요청(accessToken, statusRequest, "closed");
         이슈_응답_상태_확인(이슈_닫기_변경_요청_결과, HttpStatus.OK);
 
-        ExtractableResponse<Response> 이슈_열기_변경_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .param("status", "open")
-                .body(statusRequest)
-                .when()
-                .patch("/api/issues")
-                .then().log().all()
-                .extract();
+        var 이슈_열기_변경_요청_결과 = 이슈_상태_변경_요청(accessToken, statusRequest, "open");
         이슈_응답_상태_확인(이슈_열기_변경_요청_결과, HttpStatus.OK);
 
-        IssueTitleRequest titleRequest = new IssueTitleRequest("change title");
-        ExtractableResponse<Response> 이슈_타이트_변경_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(titleRequest)
-                .when()
-                .patch("/api/issues/{issueId}/title", issueId)
-                .then().log().all()
-                .extract();
-        이슈_응답_상태_확인(이슈_타이트_변경_요청_결과, HttpStatus.OK);
+        var 이슈_타이틀_변경_요청_결과 = 이슈_타이틀_변경_요청(accessToken, issueId, new IssueTitleRequest("change title"));
+        이슈_응답_상태_확인(이슈_타이틀_변경_요청_결과, HttpStatus.OK);
 
         var 이슈에_댓글_추가_요청_결과 = 이슈에_댓글_추가_요청(accessToken, issueId, new CommentRequest("this is comment!"));
         Long commentId = 이슈_응답_확인(이슈에_댓글_추가_요청_결과, HttpStatus.CREATED);
 
-        ExtractableResponse<Response> 이슈_할당자_조회_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .get("/api/issues/{issueId}/assignees", issueId)
-                .then().log().all()
-                .extract();
-        String userName = 이슈_할당자_조회_요청_결과.jsonPath().getString("assignees[0].userName");
-        assertThat(userName).isEqualTo("admin");
+        var 이슈_할당자_조회_요청_결과 = 이슈_할당자_조회_요청(accessToken, issueId);
+        이슈_할당자_확인(이슈_할당자_조회_요청_결과);
 
-        ExtractableResponse<Response> 이슈_라벨_조회_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .get("/api/issues/{issueId}/labels", issueId)
-                .then().log().all()
-                .extract();
-        assertThat(이슈_라벨_조회_요청_결과.jsonPath().getString("labels[0].title")).isEqualTo("title");
+        var 이슈_라벨_조회_요청_결과 = 이슈_라벨_조회_요청(accessToken, issueId);
+        이슈_라벨_확인(이슈_라벨_조회_요청_결과);
 
-        ExtractableResponse<Response> 이슈_마일스톤_조회_요청_결과 = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .get("/api/issues/{issueId}/milestones", issueId)
-                .then().log().all()
-                .extract();
-        assertThat(이슈_마일스톤_조회_요청_결과.jsonPath().getString("milestones[0].title")).isEqualTo("milestone");
-
+        var 이슈_마일스톤_조회_요청_결과 = 이슈_마일스톤_조회_요청(accessToken, issueId);
+        이슈_마일스톤_확인(이슈_마일스톤_조회_요청_결과);
     }
 }
