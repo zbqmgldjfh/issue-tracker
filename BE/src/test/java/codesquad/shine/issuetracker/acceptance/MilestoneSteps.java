@@ -67,6 +67,10 @@ public class MilestoneSteps {
         return response.jsonPath().getLong("id");
     }
 
+    public static void 마일스톤_응답_상태_확인(ExtractableResponse<Response> response, HttpStatus httpStatus) {
+        assertThat(response.statusCode()).isEqualTo(httpStatus.value());
+    }
+
     public static String 마일스톤_아이디_조회(ExtractableResponse<Response> 마일스톤_조회_요청_응답) {
         return 마일스톤_조회_요청_응답.jsonPath().getString("milestones[0].id");
     }
