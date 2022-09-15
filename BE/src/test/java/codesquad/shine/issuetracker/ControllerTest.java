@@ -46,4 +46,7 @@ public class ControllerTest {
 
     @MockBean
     protected UserService userService;
+
+    @MockBean
+    protected AuthConfig authConfig;
 }
