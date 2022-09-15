@@ -12,6 +12,7 @@ import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.request.IssueTitleRequest;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueDetailResponse;
 import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueFormResponse;
+import codesquad.shine.issuetracker.issue.presentation.dto.response.IssueIdResponse;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
@@ -115,7 +116,11 @@ public class IssueControllerTest extends ControllerTest {
 
         given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
         given(jwtTokenFactory.parsePayload(any(String.class))).willReturn("test@naver.com");
-        willDoNothing().given(issueService).create(any(IssueRequest.class), any(String.class));
+        given(issueService.create(any(IssueRequest.class), any(String.class))).willReturn(new IssueIdResponse(1L));
+        //willDoNothing().given(issueService).create(any(IssueRequest.class), any(String.class));
+
+//        SecurityContext securityContext = new SecurityContext(new Authentication("test@naver.com", "test@naver.com", List.of("ROLE_MEMBER")));
+//        SecurityContextHolder.setContext(securityContext);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/api/issues/form")

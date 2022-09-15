@@ -1,8 +1,6 @@
 package codesquad.shine.issuetracker.label.unit;
 
 import codesquad.shine.issuetracker.ControllerTest;
-import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
-import codesquad.shine.issuetracker.exception.unchecked.NotFoundException;
 import codesquad.shine.issuetracker.label.business.dto.response.LabelDto;
 import codesquad.shine.issuetracker.label.domain.Color;
 import codesquad.shine.issuetracker.label.domain.Label;
@@ -24,7 +22,6 @@ import java.util.List;
 
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentRequest;
 import static codesquad.shine.issuetracker.docs.ApiDocumentUtils.getDocumentResponse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -73,44 +70,6 @@ class LabelControllerTest extends ControllerTest {
                 requestHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("header content type"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("bearer token")
-                ),
-                requestFields(
-                        fieldWithPath("title").description("title of label"),
-                        fieldWithPath("description").description("description of label"),
-                        fieldWithPath("color.backgroundColorCode").description("backgroundColorCode of label"),
-                        fieldWithPath("color.fontColorCode").description("fontColorCode of label")
-                )
-        ));
-    }
-
-    @Test
-    @DisplayName("토큰이 없는 회원이 Label을 생성하면 예외를 던진다.")
-    public void create_label_without_login_fail_test() throws Exception {
-        // given
-        LabelCreateRequest request = new LabelCreateRequest("색상1", "test", new Color("bg", "font"));
-
-        given(jwtTokenFactory.createAccessToken(any(String.class))).willReturn("testAccessToken");
-        given(jwtTokenFactory.parsePayload(any(String.class))).willThrow(NotAvailableException.class);
-
-        // when
-        ResultActions resultActions = mockMvc.perform(post("/api/labels")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        ).andDo(print());
-
-        // then
-        resultActions.andExpect(
-                (result) -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(NotFoundException.class))
-        ).andReturn();
-
-        resultActions.andExpect(status().isNotFound());
-
-        //documentation
-        resultActions.andDo(document("label-create-fail",
-                getDocumentRequest(),
-                getDocumentResponse(),
-                requestHeaders(
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("header content type")
                 ),
                 requestFields(
                         fieldWithPath("title").description("title of label"),
@@ -198,7 +157,7 @@ class LabelControllerTest extends ControllerTest {
         ).andDo(print());
 
         // then
-        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(status().isNoContent());
 
         //documentation
         resultActions.andDo(document("label-delete-success",

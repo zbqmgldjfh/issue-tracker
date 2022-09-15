@@ -48,6 +48,7 @@ class CommentServiceTest {
         User newUser = new User(2L, "test user", "zbqmgldjfh@gmail.com", "url");
 
         given(issueRepository.findById(any(Long.class))).willReturn(Optional.of(test1));
+        given(issueRepository.save(any())).willReturn(test1);
         given(userRepository.findUserByEmail(any(String.class))).willReturn(Optional.of(newUser));
 
         // when

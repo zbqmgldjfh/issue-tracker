@@ -96,11 +96,18 @@ public class IssueServiceTest {
         Milestone milestone = new Milestone(3L, "mile", "this is mile", LocalDate.now(), true);
 
         IssueRequest request = new IssueRequest("title", "this is comment", null, null, 2L);
+        Issue newIssue = Issue.builder()
+                .title(request.getTitle())
+                .open(true)
+                .author(user)
+                .build();
+
 
         given(userService.findUserByEmail(any())).willReturn(user);
         given(milestoneService.findById(any())).willReturn(milestone);
         given(userService.getAssigneeInId(any())).willReturn(List.of(user));
         given(labelService.getLabelsInId(any())).willReturn(List.of(label));
+        given(issueRepository.save(any())).willReturn(newIssue);
 
         // when
         issueService.create(request, "shine@naver.com");
