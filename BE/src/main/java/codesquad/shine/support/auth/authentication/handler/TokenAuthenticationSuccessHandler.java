@@ -19,8 +19,9 @@ public class TokenAuthenticationSuccessHandler implements AuthenticationSuccessH
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String token = jwtTokenFactory.createToken(authentication.getPrincipal().toString(), authentication.getAuthorities());
-        TokenResponse tokenResponse = new TokenResponse(token);
+        String accessToken = jwtTokenFactory.createAccessToken(authentication.getPrincipal().toString(), authentication.getAuthorities());
+        String refreshToken = jwtTokenFactory.createRefreshToken(authentication.getPrincipal().toString(), authentication.getAuthorities());
+        TokenResponse tokenResponse = new TokenResponse(accessToken, refreshToken);
 
         String responseToClient = new ObjectMapper().writeValueAsString(tokenResponse);
         response.setStatus(HttpServletResponse.SC_OK);
