@@ -23,8 +23,9 @@ oauth:
 
 jwt:
   token:
-    validate-time: 1800
-    token-secret: "Shine"
+    secret-key: shine-key
+    expire-length: 1800000 # 30min
+    refresh-length: 86400000 # 1day
 
 # graceful shutdown
 server:

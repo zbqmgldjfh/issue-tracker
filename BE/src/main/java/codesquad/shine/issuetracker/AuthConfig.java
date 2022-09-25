@@ -1,5 +1,6 @@
 package codesquad.shine.issuetracker;
 
+import codesquad.shine.issuetracker.common.redis.RedisService;
 import codesquad.shine.issuetracker.user.business.CustomUserDetailsService;
 import codesquad.shine.support.auth.authentication.filter.BasicAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.filter.BearerTokenAuthenticationFilter;
@@ -29,16 +30,21 @@ import java.util.List;
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
 
-    @Value("${security.jwt.token.secret-key}")
+    @Value("${jwt.token.secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.token.expire-length}")
+    @Value("${jwt.token.expire-length}")
     private long validityInMilliseconds;
 
-    private CustomUserDetailsService customUserDetailsService;
+    @Value("${jwt.token.refresh-length}")
+    private long refreshInMilliseconds;
 
-    public AuthConfig(CustomUserDetailsService customUserDetailsService) {
+    private CustomUserDetailsService customUserDetailsService;
+    private RedisService redisService;
+
+    public AuthConfig(CustomUserDetailsService customUserDetailsService, RedisService redisService) {
         this.customUserDetailsService = customUserDetailsService;
+        this.redisService = redisService;
     }
 
     @Override
@@ -72,7 +78,7 @@ public class AuthConfig implements WebMvcConfigurer {
 
     @Bean
     JwtTokenFactory jwtTokenFactory() {
-        return new JwtTokenFactory(secretKey, validityInMilliseconds);
+        return new JwtTokenFactory(secretKey, validityInMilliseconds, refreshInMilliseconds, redisService);
     }
 
     @Bean

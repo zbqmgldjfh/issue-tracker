@@ -1,5 +1,6 @@
 package codesquad.shine.support.auth.token;
 
+import codesquad.shine.issuetracker.common.redis.RedisService;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
 import io.jsonwebtoken.Claims;
@@ -10,18 +11,23 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class JwtTokenFactory {
 
-    private final long accessTokenValidityTime;
     private final String secretKey;
+    private final long accessTokenValidityTime;
+    private final long refreshTokenValidityTime;
+    private final RedisService redisService;
 
-    public JwtTokenFactory(String secretKey, long accessTokenValidityTime) {
-        this.accessTokenValidityTime = accessTokenValidityTime;
+    public JwtTokenFactory(String secretKey, long accessTokenValidityTime, long refreshTokenValidityTime, RedisService redisService) {
         this.secretKey = secretKey;
+        this.accessTokenValidityTime = accessTokenValidityTime;
+        this.refreshTokenValidityTime = refreshTokenValidityTime;
+        this.redisService = redisService;
     }
 
     public String createAccessToken(String payload) {
@@ -37,11 +43,26 @@ public class JwtTokenFactory {
                 .compact();
     }
 
-    public String createToken(String principal, List<String> roles) {
+    public String createAccessToken(String principal, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(principal);
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + accessTokenValidityTime);
 
+        return this.buildToken(roles, claims, createdDate, expirationDate);
+    }
+
+    public String createRefreshToken(String principal, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(principal);
+        Date createdDate = new Date();
+        Date expirationDate = new Date(createdDate.getTime() + refreshTokenValidityTime);
+        String refreshToken = buildToken(roles, claims, createdDate, expirationDate);
+
+        redisService.setValuesWithDuration(principal, refreshToken, Duration.ofMillis(refreshTokenValidityTime));
+
+        return refreshToken;
+    }
+
+    private String buildToken(List<String> roles, Claims claims, Date createdDate, Date expirationDate) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(createdDate)

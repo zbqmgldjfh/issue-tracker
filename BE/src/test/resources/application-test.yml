@@ -65,8 +65,9 @@ management:
       show-details: always
 
 # token info
-security:
-  jwt:
-    token:
-      secret-key: shine-key
-      expire-length: 3600000
+#security:
+#  jwt:
+#    token:
+#      secret-key: shine-key
+#      expire-length: 3600000
+#      refresh-length: 86400000
