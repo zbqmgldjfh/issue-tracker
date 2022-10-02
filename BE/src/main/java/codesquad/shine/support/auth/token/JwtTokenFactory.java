@@ -3,6 +3,7 @@ package codesquad.shine.support.auth.token;
 import codesquad.shine.issuetracker.common.redis.RedisService;
 import codesquad.shine.issuetracker.exception.ErrorCode;
 import codesquad.shine.issuetracker.exception.unchecked.NotAvailableException;
+import codesquad.shine.support.auth.authentication.AuthenticationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JwtTokenFactory {
@@ -94,5 +96,17 @@ public class JwtTokenFactory {
 
     public List<String> getRoles(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("roles", List.class);
+    }
+
+    public String reissueAccessToken(String refreshToken) {
+        String principal = parsePayload(refreshToken);
+        List<String> roles = getRoles(refreshToken);
+
+        String refreshTokenInRedis = redisService.getValues(principal);
+        if (Objects.isNull(refreshTokenInRedis)) {
+            throw new AuthenticationException("인증 정보가 만료된 회원 입니다.");
+        }
+
+        return createAccessToken(principal, roles);
     }
 }
