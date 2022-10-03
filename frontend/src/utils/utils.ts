@@ -25,4 +25,6 @@ export const fetchData = async (url: string) => {
   }
 };
 
+export const createKey = (value: string, key: number) => `value:${value}-key:${key}`;
+
 export const setBackgroundColor = (background: string) => `background-color:${background}`;
