@@ -1,23 +1,28 @@
 import React from 'react';
-import OpenIssues from 'src/assets/OpenIssues.svg';
-import ReviewIcon from 'src/assets/Review.svg';
+import { Icon } from 'src/components/common/icon/Icon';
 import { Assignee, FlexBox, IssuesItemBox, ItemMain, OpenedBy, Review, ReviewNum, Title } from './IssuesItem.styled';
 
-export default function IssuesItem() {
+type IssueItemType = {
+  title: string;
+  author: string;
+  avatarUrl: string;
+};
+
+export default function IssuesItem({ title, author, avatarUrl }: IssueItemType) {
   return (
     <IssuesItemBox>
       <input type="checkbox" />
-      <OpenIssues />
+      <Icon name="OpenIssues" />
       <ItemMain>
-        <Title>[FE] 이슈 페이지 컴포넌트 구현</Title>
-        <OpenedBy>#25 opened 5 hours ago by owl</OpenedBy>
+        <Title>{title}</Title>
+        <OpenedBy>{author}</OpenedBy>
       </ItemMain>
       <FlexBox />
       <Assignee>
-        <img src="https://avatars.githubusercontent.com/u/83114018?s=40&amp;v=4" />
+        <img src={avatarUrl} />
       </Assignee>
       <Review>
-        <ReviewIcon />
+        <Icon name="ReviewIcon" />
         <ReviewNum>13</ReviewNum>
       </Review>
     </IssuesItemBox>

@@ -1,16 +1,6 @@
 import React from 'react';
-import Actions from 'src/assets/Actions.svg';
-import Code from 'src/assets/Code.svg';
-import Fork from 'src/assets/Fork.svg';
-import Insights from 'src/assets/Insights.svg';
-import Issues from 'src/assets/Issues.svg';
-import Projects from 'src/assets/Projects.svg';
-import PullRequests from 'src/assets/PullRequests.svg';
-import Repository from 'src/assets/Repository.svg';
-import Security from 'src/assets/Security.svg';
-import Star from 'src/assets/Star.svg';
-import Watch from 'src/assets/Watch.svg';
-import Wiki from 'src/assets/Wiki.svg';
+import { Link } from 'react-router-dom';
+import { Icon } from 'src/components/common/icon/Icon';
 import ItemsNumber from '../itemsNumber/itemsNumber';
 import NavArea from './navArea/NavArea';
 
@@ -29,36 +19,42 @@ export default function RepositoryHeader() {
     <RepositoryHeaderBox>
       <TopArea>
         <ContentArea>
-          <Repository />
-          <TitleText>Howl</TitleText>/<TitleText>Issue-tracker</TitleText>
+          <Icon name="Repository" />
+          <Link to="/">
+            <TitleText>Howl</TitleText>
+          </Link>
+          /
+          <Link to="/">
+            <TitleText>Issue-tracker</TitleText>
+          </Link>
         </ContentArea>
         <ContentArea>
           <Status>
-            <Watch />
+            <Icon name="Watch" />
             <StatusText>Watch</StatusText>
             <ItemsNumber number={0} />
           </Status>
           <Status>
-            <Fork />
+            <Icon name="Fork" />
             <StatusText>Fork</StatusText>
             <ItemsNumber number={50} />
           </Status>
           <Status>
-            <Star />
+            <Icon name="Star" />
             <StatusText>Star</StatusText>
             <ItemsNumber number={0} />
           </Status>
         </ContentArea>
       </TopArea>
       <BottomArea>
-        <NavArea text="Code" SVG={Code} />
-        <NavArea text="Issues" SVG={Issues} />
-        <NavArea text="Pull Requests" SVG={PullRequests} />
-        <NavArea text="Actions" SVG={Actions} />
-        <NavArea text="Projects" SVG={Projects} />
-        <NavArea text="Wiki" SVG={Wiki} />
-        <NavArea text="Security" SVG={Security} />
-        <NavArea text="Insights" SVG={Insights} />
+        <NavArea content="Code" />
+        <NavArea content="Issues" />
+        <NavArea content="Pull Requests" />
+        <NavArea content="Actions" />
+        <NavArea content="Projects" />
+        <NavArea content="Wiki" />
+        <NavArea content="Security" />
+        <NavArea content="Insights" />
       </BottomArea>
     </RepositoryHeaderBox>
   );

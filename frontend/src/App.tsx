@@ -4,9 +4,10 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './common/GlobalStyle';
 import { darkMode, lightMode } from './common/Theme';
 import ThemeButton from './components/themeButton/ThemeButton';
-import AddIssuePage from './pages/createIssuePage/AddIssuePage';
+import AddIssuePage from './pages/createIssuePage/CreateIssuePage';
 import HeaderPage from './pages/header/HeaderPage';
 import IssuesPage from './pages/issues/IssuesPage';
+import LoadingPage from './pages/loading/LoadingPage';
 import LoginPage from './pages/login/LoginPage';
 
 export default function App() {
@@ -23,9 +24,10 @@ export default function App() {
         <GlobalStyle />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/loading" element={<LoadingPage />} />
             <Route path="/" element={<HeaderPage />}>
-              <Route path="/issues" element={<IssuesPage />} />
+              <Route path="/" element={<IssuesPage />} />
               <Route path="/issues-new" element={<AddIssuePage />} />
             </Route>
           </Routes>
