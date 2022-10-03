@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 public class AuthSteps {
 
     public static final String USERNAME_FIELD = "username";
@@ -64,5 +67,33 @@ public class AuthSteps {
     public static String 로그인_되어_있음(String email, String password) {
         ExtractableResponse<Response> response = 로그인_요청(email, password);
         return response.jsonPath().getString("accessToken");
+    }
+
+    public static void access_token_재발급_요청_확인(String accessToken, ExtractableResponse<Response> refreshResponse) {
+        String newAccessToken = refreshResponse.jsonPath().getString("accessToken");
+        assertThat(newAccessToken).isNotNull();
+        assertThat(newAccessToken).isNotEqualTo(accessToken);
+    }
+
+    public static ExtractableResponse<Response> access_token_재발급_요청(String refreshToken) {
+        Map<String, String> params = new HashMap<>();
+        params.put("refreshToken", refreshToken);
+
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().post("/login/reissue")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+
+    public static void 회원_정보_조회(ExtractableResponse<Response> response, String email, String name) {
+        assertAll(
+                () -> assertThat(response.jsonPath().getString("id")).isNotNull(),
+                () -> assertThat(response.jsonPath().getString("email")).isEqualTo(email),
+                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(name)
+        );
     }
 }

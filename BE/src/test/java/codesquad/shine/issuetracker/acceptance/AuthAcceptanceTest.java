@@ -1,23 +1,18 @@
 package codesquad.shine.issuetracker.acceptance;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.access_token_재발급_요청;
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.access_token_재발급_요청_확인;
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.로그인_되어_있음;
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.로그인_요청;
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.베어러_인증으로_내_회원_정보_조회_요청;
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.베이직_로그인_후_회원_정보_조회;
 import static codesquad.shine.issuetracker.acceptance.AuthSteps.폼_로그인_후_회원_정보_조회;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static codesquad.shine.issuetracker.acceptance.AuthSteps.회원_정보_조회;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
 
@@ -66,7 +61,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         String accessToken = 로그인_되어_있음(ADMIN_EMAIL, PASSWORD);
 
         // when
-        ExtractableResponse<Response> 베어러_로그인_응답 = 베어러_인증으로_내_회원_정보_조회_요청(accessToken);
+        var 베어러_로그인_응답 = 베어러_인증으로_내_회원_정보_조회_요청(accessToken);
 
         // then
         회원_정보_조회(베어러_로그인_응답, ADMIN_EMAIL, NAME);
@@ -86,32 +81,12 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         String accessToken = response.jsonPath().getString("accessToken");
         String refreshToken = response.jsonPath().getString("refreshToken");
 
-        Thread.sleep(500); // 0.5초 정도 시간이 지난 후
+        Thread.sleep(1000); // 1초 정도 시간이 지난 후
 
         // when
-        Map<String, String> params = new HashMap<>();
-        params.put("refreshToken", refreshToken);
-
-        ExtractableResponse<Response> refreshResponse = RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().post("/login/reissue")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value()).extract();
+        var 토큰_재발급_응답 = access_token_재발급_요청(refreshToken);
 
         // then
-        String newAccessToken = refreshResponse.jsonPath().getString("accessToken");
-
-        assertThat(newAccessToken).isNotNull();
-        assertThat(newAccessToken).isNotEqualTo(accessToken);
-    }
-
-
-    private void 회원_정보_조회(ExtractableResponse<Response> response, String email, String name) {
-        assertAll(
-                () -> assertThat(response.jsonPath().getString("id")).isNotNull(),
-                () -> assertThat(response.jsonPath().getString("email")).isEqualTo(email),
-                () -> assertThat(response.jsonPath().getString("name")).isEqualTo(name)
-        );
+        access_token_재발급_요청_확인(accessToken, 토큰_재발급_응답);
     }
 }
