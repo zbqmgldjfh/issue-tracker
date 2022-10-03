@@ -2,7 +2,9 @@ package codesquad.shine.issuetracker.acceptance;
 
 import codesquad.shine.issuetracker.DataLoader;
 import codesquad.shine.issuetracker.utils.DatabaseCleanup;
+import codesquad.shine.support.auth.context.SecurityContextHolder;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,5 +37,10 @@ public class AcceptanceTest {
         RestAssured.port = port;
         databaseCleanup.execute();
         dataLoader.loadData();
+    }
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 }

@@ -107,6 +107,10 @@ public class JwtTokenFactory {
             throw new AuthenticationException("인증 정보가 만료된 회원 입니다.");
         }
 
+        if (!refreshTokenInRedis.equals(refreshToken)) {
+            throw new AuthenticationException("인증 정보가 만료된 회원 입니다.");
+        }
+
         return createAccessToken(principal, roles);
     }
 }

@@ -5,15 +5,18 @@ import codesquad.shine.issuetracker.user.business.CustomUserDetailsService;
 import codesquad.shine.support.auth.authentication.filter.BasicAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.filter.BearerTokenAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.filter.TokenAuthenticationInterceptor;
+import codesquad.shine.support.auth.authentication.filter.TokenRefreshInterceptor;
 import codesquad.shine.support.auth.authentication.filter.UsernamePasswordAuthenticationFilter;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.AuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.handler.DefaultAuthenticationFailureHandler;
 import codesquad.shine.support.auth.authentication.handler.DefaultAuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.handler.LoginAuthenticationFailureHandler;
+import codesquad.shine.support.auth.authentication.handler.RefreshTokenAuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.handler.TokenAuthenticationSuccessHandler;
 import codesquad.shine.support.auth.authentication.provider.AuthenticationManager;
 import codesquad.shine.support.auth.authentication.provider.DaoAuthenticationProvider;
+import codesquad.shine.support.auth.authentication.provider.RefreshTokenAuthenticationProvider;
 import codesquad.shine.support.auth.authentication.provider.TokenAuthenticationProvider;
 import codesquad.shine.support.auth.authorization.AuthenticationPrincipalArgumentResolver;
 import codesquad.shine.support.auth.authorization.secured.SecuredAnnotationValidator;
@@ -51,6 +54,7 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SecurityContextPersistenceFilter());
         registry.addInterceptor(new UsernamePasswordAuthenticationFilter(successHandler(), loginFailureHandler(), daoAuthenticationProvider())).addPathPatterns("/login/form");
+        registry.addInterceptor(new TokenRefreshInterceptor(refreshTokenAuthenticationSuccessHandler(), failureHandler(), refreshTokenAuthenticationProvider())).addPathPatterns("/login/reissue");
         registry.addInterceptor(new TokenAuthenticationInterceptor(tokenAuthenticationSuccessHandler(), failureHandler(), daoAuthenticationProvider())).addPathPatterns("/login/token");
         registry.addInterceptor(new BasicAuthenticationFilter(successHandler(), failureHandler(), daoAuthenticationProvider()));
         registry.addInterceptor(new BearerTokenAuthenticationFilter(successHandler(), failureHandler(), tokenAuthenticationProvider()));
@@ -74,6 +78,16 @@ public class AuthConfig implements WebMvcConfigurer {
     @Bean
     TokenAuthenticationSuccessHandler tokenAuthenticationSuccessHandler() {
         return new TokenAuthenticationSuccessHandler(jwtTokenFactory());
+    }
+
+    @Bean
+    RefreshTokenAuthenticationProvider refreshTokenAuthenticationProvider() {
+        return new RefreshTokenAuthenticationProvider();
+    }
+
+    @Bean
+    RefreshTokenAuthenticationSuccessHandler refreshTokenAuthenticationSuccessHandler() {
+        return new RefreshTokenAuthenticationSuccessHandler(jwtTokenFactory());
     }
 
     @Bean

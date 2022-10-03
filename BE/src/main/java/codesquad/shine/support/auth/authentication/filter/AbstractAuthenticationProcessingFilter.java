@@ -36,7 +36,10 @@ public abstract class AbstractAuthenticationProcessingFilter implements HandlerI
     }
 
     private void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (authentication.getAuthorities() != null) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        //SecurityContextHolder.getContext().setAuthentication(authentication);
 
         successHandler.onAuthenticationSuccess(request, response, authentication);
     }

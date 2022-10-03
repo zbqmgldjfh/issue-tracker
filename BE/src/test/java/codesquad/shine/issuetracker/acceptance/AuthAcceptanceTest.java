@@ -80,11 +80,13 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("Refresh Token으로 요청할 경우 새로운 AccessToken을 반환한다.")
     @Test
-    public void bearer_token_login_with_refresh_token() {
+    public void bearer_token_login_with_refresh_token() throws InterruptedException {
         // given
         ExtractableResponse<Response> response = 로그인_요청(ADMIN_EMAIL, PASSWORD);
         String accessToken = response.jsonPath().getString("accessToken");
         String refreshToken = response.jsonPath().getString("refreshToken");
+
+        Thread.sleep(500); // 0.5초 정도 시간이 지난 후
 
         // when
         Map<String, String> params = new HashMap<>();
@@ -98,8 +100,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value()).extract();
 
         // then
-        assertThat(refreshResponse.jsonPath().getString("accessToken")).isNotNull();
-        assertThat(refreshResponse.jsonPath().getString("accessToken")).isNotEqualTo(accessToken);
+        String newAccessToken = refreshResponse.jsonPath().getString("accessToken");
+
+        assertThat(newAccessToken).isNotNull();
+        assertThat(newAccessToken).isNotEqualTo(accessToken);
     }
 
 
