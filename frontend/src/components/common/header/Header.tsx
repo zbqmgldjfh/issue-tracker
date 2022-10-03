@@ -1,7 +1,6 @@
 import React from 'react';
-import Bell from 'src/assets/Bell.svg';
-import GithubIcon from 'src/assets/Github.svg';
-import Plus from 'src/assets/Plus.svg';
+import { Icon } from 'src/components/common/icon/Icon';
+
 import { HeaderBox, FlexBox, NavBar, SearchBox, Thumbnail } from './Header.styled';
 
 export default function Header() {
@@ -9,7 +8,7 @@ export default function Header() {
     <>
       <HeaderBox>
         <FlexBox>
-          <GithubIcon />
+          <Icon name="GithubIcon" />
           <SearchBox>
             <input placeholder="Search or jump to..."></input>
           </SearchBox>
@@ -21,8 +20,8 @@ export default function Header() {
           </NavBar>
         </FlexBox>
         <FlexBox>
-          <Bell />
-          <Plus />
+          <Icon name="Bell" />
+          <Icon name="Plus" />
           <Thumbnail />
         </FlexBox>
       </HeaderBox>

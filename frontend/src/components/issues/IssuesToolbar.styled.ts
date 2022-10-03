@@ -7,6 +7,7 @@ export const ToolbarBox = styled.div`
   background-color: ${({ theme }) => theme.background.primary};
   padding: 16px;
   color-scheme: dark;
+  white-space: nowrap;
 `;
 
 export const ToggleBox = styled.div`
@@ -41,9 +42,4 @@ export const DropdownList = styled.div`
   color: ${({ theme }) => theme.color.bold};
   fill: ${({ theme }) => theme.color.bold};
   font-size: 0.875rem;
-  div:hover {
-    color: ${({ theme }) => theme.color.basic};
-    fill: ${({ theme }) => theme.color.basic};
-    cursor: pointer;
-  }
 `;

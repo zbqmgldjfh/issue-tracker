@@ -1,5 +1,7 @@
 import React from 'react';
-import DropdownCaret from 'src/assets/DropdownCaret.svg';
+import { useDispatch } from 'react-redux';
+import { changeTab } from 'src/modules/clickedTab';
+import { Icon } from 'src/components/common/icon/Icon';
 import ButtonBox from './DropdownButton.styled';
 
 type propTypes = {
@@ -7,10 +9,12 @@ type propTypes = {
 };
 
 export default function DropdownButton({ text }: propTypes) {
+  const dispatch = useDispatch();
+
   return (
-    <ButtonBox>
+    <ButtonBox onClick={() => dispatch(changeTab(text))}>
       <div>{text}</div>
-      <DropdownCaret />
+      <Icon name="DropdownCaret" />
     </ButtonBox>
   );
 }
